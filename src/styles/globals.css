@@ -20,3 +20,24 @@ a {
     color-scheme: dark;
   }
 }
+
+.dark-mode-button {
+  border: none;
+  border-radius: 25px;
+  border: 1px solid rgba(152, 161, 192, 0.24);
+  box-shadow: 3px 4px 4px rgba(0, 0, 0, 0.4);
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.dark-mode-button:hover {
+  box-shadow: 0px 0px 8px 8px rgba(30, 136, 229, 0.2);
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}

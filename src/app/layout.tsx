@@ -2,12 +2,12 @@ import { type ReactNode } from "react";
 
 import "@/styles/globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 
 import "@rainbow-me/rainbowkit/styles.css";
 import { Providers } from "./providers";
 
-const inter = Inter({ subsets: ["latin"] });
+const open_sans = Open_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Next-Web3-Boilerplate",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={open_sans.className}>
         <Providers>{children}</Providers>
       </body>
     </html>

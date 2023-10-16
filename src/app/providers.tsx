@@ -6,13 +6,27 @@ import { WagmiConfig } from "wagmi";
 
 import { chains, config } from "@/wagmi";
 
+import { CacheProvider } from "@chakra-ui/next-js";
+import { extendTheme, ChakraProvider } from "@chakra-ui/react";
+
 export function Providers({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
+
+  const themeConfig = {
+    initialColorMode: "dark",
+    useSystemColorMode: false,
+  };
+  const theme = extendTheme(themeConfig);
+
   return (
     <WagmiConfig config={config}>
-      <RainbowKitProvider chains={chains}>{mounted && children}</RainbowKitProvider>
+      <CacheProvider>
+        <ChakraProvider resetCSS theme={theme}>
+          <RainbowKitProvider chains={chains}>{mounted && children}</RainbowKitProvider>
+        </ChakraProvider>
+      </CacheProvider>
     </WagmiConfig>
   );
 }
