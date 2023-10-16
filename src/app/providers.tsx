@@ -1,13 +1,12 @@
 "use client";
 import { type ReactNode, useState, useEffect } from "react";
 
+import { CacheProvider } from "@chakra-ui/next-js";
+import { extendTheme, ChakraProvider } from "@chakra-ui/react";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiConfig } from "wagmi";
 
 import { chains, config } from "@/wagmi";
-
-import { CacheProvider } from "@chakra-ui/next-js";
-import { extendTheme, ChakraProvider } from "@chakra-ui/react";
 
 export function Providers({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false);

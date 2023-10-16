@@ -2,7 +2,6 @@
 import { type FC } from "react";
 
 import { Box } from "@chakra-ui/react";
-
 import Link from "next/link";
 
 const Footer: FC = () => {

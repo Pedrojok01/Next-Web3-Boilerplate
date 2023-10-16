@@ -3,8 +3,8 @@ import { ReactNode, type FC } from "react";
 
 import { Box, Flex } from "@chakra-ui/react";
 
-import { Header } from "./Header";
 import { Footer } from "./Footer";
+import { Header } from "./Header";
 
 type LayoutProps = {
   children: ReactNode;

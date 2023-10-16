@@ -2,12 +2,13 @@
 import { type FC } from "react";
 
 import { HStack, Heading } from "@chakra-ui/react";
-import Image from "next/image";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { DarkModeButton } from "../DarkModeButton";
+import Image from "next/image";
+import logo from "public/img/logo_transparent.png";
+
 import { useWindowWidthAndHeight } from "@/hooks/useWindowWidthAndHeight";
 
-import logo from "public/img/logo_transparent.png";
+import { DarkModeButton } from "../DarkModeButton";
 
 const Header: FC = () => {
   const { isMobile } = useWindowWidthAndHeight();
