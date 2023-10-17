@@ -1,8 +1,8 @@
 import React, { useState, useCallback, type FC, type ChangeEvent } from "react";
 
-import { Box, Input, Spinner } from "@chakra-ui/react";
+import { Box, Input, InputGroup, InputLeftAddon, Spinner } from "@chakra-ui/react";
 import Image from "next/image";
-import { isAddress } from "viem";
+import { isAddress, zeroAddress } from "viem";
 import { useEnsResolver } from "wagmi";
 
 import { useDebounce, useNotify } from "@/hooks";
@@ -24,17 +24,20 @@ const AddressInput: FC<AddressInputProps> = ({ setReceiver }) => {
   } = useEnsResolver({
     name: inputValue,
   });
+
   const debouncedReceiver = useDebounce(inputValue, 2000);
   const notify = useNotify();
+
+  const isValidEthAddress = (value: string) => value.startsWith("0x") && value.length === 42;
 
   const handleInput = useCallback(
     (e: ChangeEvent<HTMLInputElement>): void => {
       const value = e.target.value;
       setInputValue(value);
 
-      if (value.startsWith("0x") && value.length === 42) {
+      if (isValidEthAddress(value)) {
         setReceiver(value);
-      } else if (resolvedAddress) {
+      } else if (resolvedAddress && resolvedAddress !== zeroAddress) {
         setReceiver(resolvedAddress);
       } else if (debouncedReceiver && debouncedReceiver.length > 0 && isError) {
         notify({
@@ -42,31 +45,24 @@ const AddressInput: FC<AddressInputProps> = ({ setReceiver }) => {
           message: error?.message ?? "Invalid address or ENS name.",
           status: "error",
         });
-      } else if (value.length === 0) {
-        setInputValue("");
+      } else if (!value.length) {
         setReceiver("");
       }
     },
     [resolvedAddress, debouncedReceiver, isError, error?.message, notify, setReceiver],
   );
 
-  const jazziconsIcon = () => {
-    const address = isAddress(inputValue)
+  const getAddonContent = (): JSX.Element | null => {
+    if (isResolvingInProgress) return <Spinner />;
+    const validAddress = isValidEthAddress(inputValue)
       ? inputValue
-      : isAddress(resolvedAddress || "")
+      : isAddress(resolvedAddress as string) && resolvedAddress !== zeroAddress
       ? resolvedAddress
       : undefined;
 
-    if (address) {
-      return <Jazzicons seed={address.toLowerCase()} size={30} />;
-    }
-  };
-
-  return (
-    <Box w={"100%"}>
-      {isResolvingInProgress && <Spinner />}
-      {jazziconsIcon()}
-      {isError && (
+    if (validAddress) return <Jazzicons seed={validAddress.toLowerCase()} size={30} />;
+    if (!resolvedAddress && inputValue && !isResolvingInProgress)
+      return (
         <Image
           alt="warning icon"
           src={warningImage.src}
@@ -74,17 +70,24 @@ const AddressInput: FC<AddressInputProps> = ({ setReceiver }) => {
           width={30}
           height={30}
         />
-      )}
+      );
+    return null;
+  };
 
-      <Input
-        value={inputValue}
-        onChange={handleInput}
-        placeholder="Enter Ethereum name or address"
-        name="ethereum"
-        spellCheck={false}
-      />
-
-      {/* {resolvedAddress && <div className="resolved">{resolvedAddress}</div>} */}
+  return (
+    <Box w={"100%"}>
+      <InputGroup>
+        <InputLeftAddon w={"50px"} p={0} justifyContent={"center"}>
+          {getAddonContent()}
+        </InputLeftAddon>
+        <Input
+          value={inputValue}
+          onChange={handleInput}
+          placeholder="Enter Ethereum name or address"
+          name="ethereum"
+          spellCheck={false}
+        />
+      </InputGroup>
     </Box>
   );
 };
