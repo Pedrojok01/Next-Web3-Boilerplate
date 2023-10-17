@@ -9,9 +9,9 @@ import { getEllipsisTxt } from "@/utils/formatters";
 const Address: FC = () => {
   const { address } = useAccount();
   const { data: ensName } = useEnsName({ address });
-  const { isMobile } = useWindowSize();
+  const { isTablet } = useWindowSize();
 
-  const displayedAddress = isMobile && address ? getEllipsisTxt(address, 4) : address;
+  const displayedAddress = isTablet && address ? getEllipsisTxt(address, 4) : address;
 
   return (
     <Box>

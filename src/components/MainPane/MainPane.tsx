@@ -2,6 +2,7 @@
 import { type FC } from "react";
 
 import { Box, Divider, Flex, Heading, useColorMode } from "@chakra-ui/react";
+import { useAccount } from "wagmi";
 
 import styles from "@/styles/mainPane.module.css";
 
@@ -16,6 +17,7 @@ import {
 } from "./components";
 
 const MainPane: FC = () => {
+  const { isConnected } = useAccount();
   const { colorMode } = useColorMode();
 
   return (
@@ -29,17 +31,28 @@ const MainPane: FC = () => {
 
       <Flex className={styles.content}>
         <Status />
-        <Address />
-        <Chain />
-        <Balance />
-        <BlockNumber />
 
-        <Divider mb={5} />
+        {isConnected && (
+          <>
+            <Address />
+            <Chain />
+            <Balance />
+            <BlockNumber />
 
-        <Flex w={"100%"} display={"flex"} justifyContent={"space-around"} flexWrap={"wrap"} gap={5}>
-          <SignMessage />
-          <TransferNative />
-        </Flex>
+            <Divider mb={5} />
+
+            <Flex
+              w={"100%"}
+              display={"flex"}
+              justifyContent={"space-around"}
+              flexWrap={"wrap"}
+              gap={5}
+            >
+              <SignMessage />
+              <TransferNative />
+            </Flex>
+          </>
+        )}
       </Flex>
     </Box>
   );

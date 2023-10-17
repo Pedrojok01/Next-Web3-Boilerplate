@@ -10,17 +10,11 @@ import {
   NumberInputStepper,
   VStack,
 } from "@chakra-ui/react";
-import { useAccount, useBalance } from "wagmi";
 
 import { AddressInput } from "@/components/AddressInput";
 import { useTransferNative } from "@/hooks";
 
 const TransferNative: FC = () => {
-  const { address } = useAccount();
-  const { data } = useBalance({
-    address,
-    watch: true,
-  });
   const { transferNative, isLoading } = useTransferNative();
 
   const [amount, setAmount] = useState<number>(0);
@@ -41,7 +35,7 @@ const TransferNative: FC = () => {
       <AddressInput setReceiver={setReceiver} />
 
       <HStack>
-        <NumberInput value={amount} min={0} max={data?.decimals ?? 0} onChange={handleAmountChange}>
+        <NumberInput value={amount} min={0} onChange={handleAmountChange} step={0.0001}>
           <NumberInputField />
           <NumberInputStepper>
             <NumberIncrementStepper />
