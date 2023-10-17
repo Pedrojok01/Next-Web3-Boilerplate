@@ -6,12 +6,12 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import logo from "public/img/logo_transparent.png";
 
-import { useWindowWidthAndHeight } from "@/hooks/useWindowWidthAndHeight";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 import { DarkModeButton } from "../DarkModeButton";
 
 const Header: FC = () => {
-  const { isMobile } = useWindowWidthAndHeight();
+  const { isTablet } = useWindowSize();
 
   return (
     <HStack
@@ -24,7 +24,7 @@ const Header: FC = () => {
     >
       <HStack>
         <Image src={logo.src} alt="logo" width={45} height={45} />
-        {!isMobile && (
+        {!isTablet && (
           <Heading as="h1" fontSize={"1.5rem"}>
             Next-Web3-Boilerplate
           </Heading>

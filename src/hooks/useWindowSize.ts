@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useWindowWidthAndHeight = () => {
+export const useWindowSize = () => {
   const windowInnerSize = [window.innerWidth, window.innerHeight];
   const [windowSize, setWidowSize] = useState<number[]>(windowInnerSize);
 
@@ -12,9 +12,9 @@ export const useWindowWidthAndHeight = () => {
     return () => window.removeEventListener("resize", changeWindowSize);
   }, []);
 
-  const isMobileOnly = windowSize[0] <= 549;
-  const isMobile = windowSize[0] <= 768;
-  const isTablet = windowSize[0] <= 1050;
+  const isMobile = windowSize[0] <= 549;
+  const isTablet = windowSize[0] <= 768;
+  const isSmallScreen = windowSize[0] <= 1050;
 
-  return { windowSize, isMobileOnly, isMobile, isTablet };
+  return { windowSize, isMobile, isTablet, isSmallScreen };
 };
