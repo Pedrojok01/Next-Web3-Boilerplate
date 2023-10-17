@@ -1,43 +1,68 @@
-// import { FC, MouseEvent, ReactElement, SetStateAction, useState } from "react";
+import { type FC, type ChangeEvent, type MouseEvent, useEffect, useState } from "react";
 
-// import { Button, Input } from "antd";
+import { Button, Input, VStack } from "@chakra-ui/react";
 
-// import { useWriteContract } from "hooks";
+import { useSignMessageHook, useNotify } from "@/hooks";
 
-// const styles = {
-//   buttonSign: {
-//     margin: "15px auto"
-//   }
-// } as const;
+const SignMessage: FC = () => {
+  const { signature, recoveredAddress, error, isLoading, signMessage } = useSignMessageHook();
+  const [messageAuth, setMessageAuth] = useState<string>("");
+  const notify = useNotify();
 
-// const SignMessage: FC = (): ReactElement => {
-//   const { loading, signMessage } = useWriteContract();
-//   const [messageAuth, setMessageAuth] = useState<string>("");
+  const handleMessageChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setMessageAuth(e.target.value);
+  };
 
-//   const handleMessageChange = (e: { target: { value: SetStateAction<string> } }) => {
-//     setMessageAuth(e.target.value);
-//   };
+  const handleSignMessage = (e: MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault();
+    signMessage({ message: messageAuth });
+  };
 
-//   function handleSignMessage(event: MouseEvent): void {
-//     event.preventDefault();
+  useEffect(() => {
+    if (signature && recoveredAddress) {
+      const notification = (
+        <>
+          <b>Signature:</b> {signature}
+          <br></br>
+          <br></br>
+          <b>Recovered Address:</b> {recoveredAddress}
+        </>
+      );
 
-//     signMessage(messageAuth);
-//   }
+      notify({
+        title: "Message successfully signed!",
+        message: notification,
+        status: "success",
+      });
+    }
 
-//   return (
-//     <div style={{ width: "40%", minWidth: "250px" }}>
-//       <Input
-//         allowClear
-//         value={messageAuth}
-//         onChange={handleMessageChange}
-//         type="textarea"
-//         placeholder="Input message to sign"
-//       />
-//       <Button type="primary" shape="round" style={styles.buttonSign} onClick={handleSignMessage} loading={loading}>
-//         Sign Message
-//       </Button>
-//     </div>
-//   );
-// };
+    if (error) {
+      notify({
+        title: "An error occured:",
+        message: error.message,
+        status: "error",
+      });
+    }
+  }, [signature, recoveredAddress, error, notify]);
 
-// export default SignMessage;
+  return (
+    <VStack w={"45%"} minWidth={"270px"} gap={2}>
+      <Input
+        value={messageAuth}
+        onChange={handleMessageChange}
+        type="textarea"
+        placeholder="Input message to sign"
+      />
+      <Button
+        variant="ghost"
+        onClick={handleSignMessage}
+        isLoading={isLoading}
+        className="custom-button"
+      >
+        Sign Message
+      </Button>
+    </VStack>
+  );
+};
+
+export default SignMessage;

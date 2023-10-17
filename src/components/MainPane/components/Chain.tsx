@@ -8,7 +8,7 @@ const Chain: FC = () => {
 
   return (
     <Box>
-      <Text fontSize={"1.1rem"}>
+      <Text>
         Chain:{" "}
         <span style={{ fontWeight: "800" }}>
           {chain?.name} ({chain?.id})

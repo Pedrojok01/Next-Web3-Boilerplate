@@ -21,7 +21,7 @@ const Status: FC = () => {
 
   return (
     <Box>
-      <Text fontSize={"1.1rem"}>
+      <Text>
         Account status: <span style={{ fontWeight: "800" }}>{status}</span>
       </Text>
     </Box>

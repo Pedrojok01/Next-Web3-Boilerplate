@@ -25,7 +25,7 @@ const Header: FC = () => {
       <HStack>
         <Image src={logo.src} alt="logo" width={45} height={45} />
         {!isTablet && (
-          <Heading as="h1" fontSize={"1.5rem"}>
+          <Heading as="h1" fontSize={"1.5rem"} className="text-shadow">
             Next-Web3-Boilerplate
           </Heading>
         )}

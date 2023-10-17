@@ -8,7 +8,7 @@ const BlockNumber: FC = () => {
 
   return (
     <Box>
-      <Text fontSize={"1.1rem"}>
+      <Text>
         Block Number: <span style={{ fontWeight: "800" }}>{data?.toString()}</span>
       </Text>
     </Box>

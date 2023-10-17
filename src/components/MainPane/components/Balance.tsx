@@ -11,7 +11,7 @@ const Balance: FC = () => {
   });
 
   return (
-    <Box fontSize={"1.1rem"}>
+    <Box>
       <Text>
         Balance:
         <span style={{ fontWeight: "800" }}>

@@ -15,7 +15,7 @@ const Address: FC = () => {
 
   return (
     <Box>
-      <Text fontSize={"1.1rem"}>
+      <Text>
         Address: <span style={{ fontWeight: "800" }}>{ensName ?? displayedAddress}</span>
       </Text>
     </Box>
