@@ -16,7 +16,6 @@ import { useTransferNative } from "@/hooks";
 
 const TransferNative: FC = () => {
   const { transferNative, isLoading } = useTransferNative();
-
   const [amount, setAmount] = useState<string>("0");
   const [receiver, setReceiver] = useState<string | undefined>(undefined);
 

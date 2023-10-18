@@ -20,18 +20,16 @@ const SignMessage: FC = () => {
 
   useEffect(() => {
     if (signature && recoveredAddress) {
-      const notification = (
-        <>
-          <b>Signature:</b> {signature}
-          <br></br>
-          <br></br>
-          <b>Recovered Address:</b> {recoveredAddress}
-        </>
-      );
-
       notify({
         title: "Message successfully signed!",
-        message: notification,
+        message: (
+          <>
+            <b>Signature:</b> {signature}
+            <br />
+            <br />
+            <b>Recovered Address:</b> {recoveredAddress}
+          </>
+        ),
         status: "success",
       });
     }

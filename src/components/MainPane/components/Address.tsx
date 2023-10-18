@@ -1,25 +1,19 @@
 import { type FC } from "react";
 
-import { Box, Text } from "@chakra-ui/react";
 import { useAccount, useEnsName } from "wagmi";
 
+import { InfoText } from "@/components";
 import { useWindowSize } from "@/hooks";
 import { getEllipsisTxt } from "@/utils/formatters";
 
-const Address: FC = () => {
+const Address: FC = (): JSX.Element => {
   const { address } = useAccount();
   const { data: ensName } = useEnsName({ address });
   const { isTablet } = useWindowSize();
 
   const displayedAddress = isTablet && address ? getEllipsisTxt(address, 4) : address;
 
-  return (
-    <Box>
-      <Text>
-        Address: <span style={{ fontWeight: "800" }}>{ensName ?? displayedAddress}</span>
-      </Text>
-    </Box>
-  );
+  return <InfoText label="Address" value={ensName ?? displayedAddress} />;
 };
 
 export default Address;

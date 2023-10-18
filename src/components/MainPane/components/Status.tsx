@@ -1,9 +1,10 @@
 import { type FC } from "react";
 
-import { Box, Text } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 
-const Status: FC = () => {
+import { InfoText } from "@/components";
+
+const Status: FC = (): JSX.Element => {
   const { isConnecting, isConnected } = useAccount();
 
   const statusMapping = {
@@ -19,13 +20,7 @@ const Status: FC = () => {
     status = statusMapping.isConnected;
   }
 
-  return (
-    <Box>
-      <Text>
-        Account status: <span style={{ fontWeight: "800" }}>{status}</span>
-      </Text>
-    </Box>
-  );
+  return <InfoText label="Account status" value={status} />;
 };
 
 export default Status;
