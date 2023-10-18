@@ -18,14 +18,6 @@
     "lint": "next lint --fix",
     "prepare": "husky install"
   },
-  "keywords": [
-    "nextjs",
-    "wagmi",
-    "viem",
-    "web3",
-    "boilerplate",
-    "chakra-ui"
-  ],
   "dependencies": {
     "@chakra-ui/icons": "2.1.1",
     "@chakra-ui/next-js": "2.1.5",
@@ -56,5 +48,19 @@
     "husky": "8.0.3",
     "prettier": "3.0.3",
     "typescript": "5.2.2"
-  }
+  },
+  "keywords": [
+    "nextjs",
+    "wagmi",
+    "viem",
+    "web3",
+    "boilerplate",
+    "chakra-ui",
+    "rainbowkit",
+    "ethereum-dapp",
+    "ethereum-boilerplate",
+    "ethereum-dapp",
+    "web3-boilerplate",
+    "web3-dapp"
+  ]
 }
