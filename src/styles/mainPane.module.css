@@ -1,5 +1,6 @@
 .container {
   width: 80%;
+  height: auto;
   max-width: 900px;
   text-align: center;
   margin: auto;
@@ -16,13 +17,6 @@
   font-size: 17px;
   gap: 1rem;
   justify-content: center;
-}
-
-.action {
-  display: inline-flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
 }
 
 @media (width < 768px) {

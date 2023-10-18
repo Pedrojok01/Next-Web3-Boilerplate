@@ -14,6 +14,7 @@ import {
   base,
   baseGoerli,
 } from "wagmi/chains";
+import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 
 const alchemyApiKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
@@ -29,11 +30,11 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
       ? [mainnet, optimism, polygon, arbitrum, zkSync, base]
       : [sepolia, optimismGoerli, polygonMumbai, arbitrumGoerli, zkSyncTestnet, baseGoerli]),
   ],
-  [publicProvider()],
+  [alchemyProvider({ apiKey: alchemyApiKey }), publicProvider()],
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "My wagmi + RainbowKit App",
+  appName: "Next-Web3-Boilerplate",
   chains,
   projectId: walletConnectProjectId,
 });

@@ -51,7 +51,7 @@ const SignMessage: FC = () => {
         value={messageAuth}
         onChange={handleMessageChange}
         type="textarea"
-        placeholder="Input message to sign"
+        placeholder="Enter message to sign"
       />
       <Button
         variant="ghost"

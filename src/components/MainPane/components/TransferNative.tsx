@@ -11,22 +11,22 @@ import {
   VStack,
 } from "@chakra-ui/react";
 
-import { AddressInput } from "@/components/AddressInput";
+import { AddressInput } from "@/components";
 import { useTransferNative } from "@/hooks";
 
 const TransferNative: FC = () => {
   const { transferNative, isLoading } = useTransferNative();
 
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<string>("0");
   const [receiver, setReceiver] = useState<string | undefined>(undefined);
 
-  const handleAmountChange = (_valueAsString: string, valueAsNumber: number): void => {
-    setAmount(valueAsNumber);
+  const handleAmountChange = (valueAsString: string): void => {
+    setAmount(valueAsString);
   };
 
   const handleTransfer = (): void => {
-    if (amount > 0 && receiver) {
-      transferNative(receiver, amount);
+    if (parseFloat(amount) > 0 && receiver) {
+      transferNative(receiver, parseFloat(amount));
     }
   };
 
@@ -35,7 +35,13 @@ const TransferNative: FC = () => {
       <AddressInput setReceiver={setReceiver} />
 
       <HStack>
-        <NumberInput value={amount} min={0} onChange={handleAmountChange} step={0.0001}>
+        <NumberInput
+          value={amount}
+          min={0}
+          onChange={handleAmountChange}
+          step={0.0001}
+          precision={8}
+        >
           <NumberInputField />
           <NumberInputStepper>
             <NumberIncrementStepper />
