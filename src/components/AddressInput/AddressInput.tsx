@@ -2,13 +2,13 @@ import React, { useState, useCallback, type FC, type ChangeEvent } from "react";
 
 import { Box, Input, InputGroup, InputLeftAddon, Spinner } from "@chakra-ui/react";
 import Image from "next/image";
+import warningImage from "public/img/warning.svg";
 import { isAddress, zeroAddress } from "viem";
 import { useEnsResolver } from "wagmi";
 
 import { useDebounce, useNotify } from "@/hooks";
 
 import Jazzicons from "./Jazzicons";
-import warningImage from "../../../public/img/warning.svg";
 
 type AddressInputProps = {
   setReceiver: (receiver: string) => void;

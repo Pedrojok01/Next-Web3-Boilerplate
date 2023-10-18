@@ -13,11 +13,7 @@ export function Providers({ children }: { children: ReactNode }) {
 
   useEffect(() => setMounted(true), []);
 
-  const themeConfig = {
-    initialColorMode: "dark",
-    useSystemColorMode: false,
-  };
-  const theme = extendTheme(themeConfig);
+  const theme = extendTheme({ initialColorMode: "dark", useSystemColorMode: false });
 
   return (
     <WagmiConfig config={config}>

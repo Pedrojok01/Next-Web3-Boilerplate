@@ -8,7 +8,7 @@ import logo from "public/img/logo_transparent.png";
 
 import { useWindowSize } from "@/hooks/useWindowSize";
 
-import { DarkModeButton } from "..";
+import { DarkModeButton } from "../DarkModeButton";
 
 const Header: FC = () => {
   const { isTablet } = useWindowSize();

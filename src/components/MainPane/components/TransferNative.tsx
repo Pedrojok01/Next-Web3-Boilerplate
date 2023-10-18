@@ -39,7 +39,7 @@ const TransferNative: FC = () => {
           value={amount}
           min={0}
           onChange={handleAmountChange}
-          step={0.0001}
+          step={0.00000001}
           precision={8}
         >
           <NumberInputField />

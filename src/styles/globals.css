@@ -1,3 +1,10 @@
+:root {
+  --button-border: 1px solid rgba(152, 161, 192, 0.24);
+  --button-box-shadow: 3px 4px 4px rgba(0, 0, 0, 0.4);
+  --button-box-shadow-hover: 0px 0px 8px 8px rgba(30, 136, 229, 0.2);
+  --transition-ease: all 0.3s ease;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -26,21 +33,12 @@ a {
 }
 
 .custom-button {
-  border: 1px solid rgba(152, 161, 192, 0.24);
+  border: var(--button-border);
   border-radius: 20px;
-  box-shadow: 3px 4px 4px rgba(0, 0, 0, 0.4);
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
-  transition: all 0.3s ease;
+  box-shadow: var(--button-box-shadow);
+  transition: var(--transition-ease);
 }
 
 .custom-button:hover {
-  box-shadow: 0px 0px 8px 8px rgba(30, 136, 229, 0.2);
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
-  transition: all 0.3s ease;
+  box-shadow: var(--button-box-shadow-hover);
 }
