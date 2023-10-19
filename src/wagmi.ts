@@ -1,4 +1,5 @@
-import { getDefaultWallets } from "@rainbow-me/rainbowkit";
+import { getDefaultWallets, connectorsForWallets } from "@rainbow-me/rainbowkit";
+import { argentWallet, ledgerWallet } from "@rainbow-me/rainbowkit/wallets";
 import { configureChains, createConfig } from "wagmi";
 import {
   mainnet,
@@ -24,7 +25,7 @@ if (!alchemyApiKey || !walletConnectProjectId) {
   throw new Error("Some ENV variables are not defined");
 }
 
-const { chains, publicClient } = configureChains(
+const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
     ...(process.env.NODE_ENV === "production"
       ? [mainnet, optimism, polygon, arbitrum, zkSync, base]
@@ -33,16 +34,28 @@ const { chains, publicClient } = configureChains(
   [alchemyProvider({ apiKey: alchemyApiKey }), publicProvider()],
 );
 
-const { connectors } = getDefaultWallets({
+const { wallets } = getDefaultWallets({
   appName: "Next-Web3-Boilerplate",
   projectId: walletConnectProjectId,
   chains,
 });
 
+const connectors = connectorsForWallets([
+  ...wallets,
+  {
+    groupName: "Other",
+    wallets: [
+      argentWallet({ projectId: walletConnectProjectId, chains }),
+      ledgerWallet({ projectId: walletConnectProjectId, chains }),
+    ],
+  },
+]);
+
 export const config = createConfig({
   autoConnect: true,
   connectors,
   publicClient,
+  webSocketPublicClient,
 });
 
 export { chains };
