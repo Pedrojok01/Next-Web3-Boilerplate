@@ -24,7 +24,7 @@ if (!alchemyApiKey || !walletConnectProjectId) {
   throw new Error("Some ENV variables are not defined");
 }
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
+const { chains, publicClient } = configureChains(
   [
     ...(process.env.NODE_ENV === "production"
       ? [mainnet, optimism, polygon, arbitrum, zkSync, base]
@@ -35,15 +35,14 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
 
 const { connectors } = getDefaultWallets({
   appName: "Next-Web3-Boilerplate",
-  chains,
   projectId: walletConnectProjectId,
+  chains,
 });
 
 export const config = createConfig({
   autoConnect: true,
   connectors,
   publicClient,
-  webSocketPublicClient,
 });
 
 export { chains };
