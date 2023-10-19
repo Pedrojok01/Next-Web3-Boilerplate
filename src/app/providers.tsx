@@ -19,7 +19,9 @@ export function Providers({ children }: { children: ReactNode }) {
     <WagmiConfig config={config}>
       <CacheProvider>
         <ChakraProvider resetCSS theme={theme}>
-          <RainbowKitProvider chains={chains}>{mounted && children}</RainbowKitProvider>
+          <RainbowKitProvider coolMode chains={chains}>
+            {mounted && children}
+          </RainbowKitProvider>
         </ChakraProvider>
       </CacheProvider>
     </WagmiConfig>

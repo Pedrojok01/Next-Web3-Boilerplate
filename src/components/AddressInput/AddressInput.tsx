@@ -33,18 +33,14 @@ const AddressInput: FC<AddressInputProps> = ({ receiver, setReceiver }) => {
   const handleInput = useCallback(
     (e: ChangeEvent<HTMLInputElement>): void => {
       const value = e.target.value;
+      setReceiver(value);
 
-      if (isValidEthAddress(value) || !value.length) {
-        setReceiver(value);
-        return;
-      }
-
+      // If we have a resolved address from the ENS and it's valid, update the state
       if (resolvedAddress && resolvedAddress !== zeroAddress) {
         setReceiver(resolvedAddress);
-        return;
       }
-
-      if (debouncedReceiver && isError) {
+      // If the ENS resolver returns an error, notify the user
+      else if (debouncedReceiver && isError) {
         notifyError({
           title: "Error:",
           message: error?.message ?? "Invalid address or ENS name.",
