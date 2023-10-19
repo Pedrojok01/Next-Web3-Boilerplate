@@ -15,11 +15,15 @@ export function Providers({ children }: { children: ReactNode }) {
 
   const theme = extendTheme({ initialColorMode: "dark", useSystemColorMode: false });
 
+  const appInfo = {
+    appName: "Next-Web3-Boilerplate",
+  };
+
   return (
     <WagmiConfig config={config}>
       <CacheProvider>
         <ChakraProvider resetCSS theme={theme}>
-          <RainbowKitProvider coolMode chains={chains}>
+          <RainbowKitProvider coolMode chains={chains} appInfo={appInfo}>
             {mounted && children}
           </RainbowKitProvider>
         </ChakraProvider>

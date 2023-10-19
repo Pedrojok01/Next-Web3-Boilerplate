@@ -4,6 +4,7 @@
   "description": "Nextjs web3 boilerplate built on Viem, Wagmi, rainbowkit and Chakra UI",
   "author": "Pedrojok01 <pedrojok@pm.me>",
   "license": "MIT",
+  "private": true,
   "homepage": "https://next-web3-boilerlate.com",
   "bugs": "https://github.com/Pedrojok01/Next-Web3-Boilerplate/issues",
   "repository": {
