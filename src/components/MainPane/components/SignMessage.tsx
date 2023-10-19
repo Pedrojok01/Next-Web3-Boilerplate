@@ -7,7 +7,7 @@ import { useSignMessageHook, useNotify } from "@/hooks";
 const SignMessage: FC = () => {
   const { signature, recoveredAddress, error, isLoading, signMessage } = useSignMessageHook();
   const [messageAuth, setMessageAuth] = useState<string>("");
-  const notify = useNotify();
+  const { notifyError, notifySuccess } = useNotify();
 
   const handleMessageChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setMessageAuth(e.target.value);
@@ -20,7 +20,7 @@ const SignMessage: FC = () => {
 
   useEffect(() => {
     if (signature && recoveredAddress) {
-      notify({
+      notifySuccess({
         title: "Message successfully signed!",
         message: (
           <>
@@ -30,18 +30,16 @@ const SignMessage: FC = () => {
             <b>Recovered Address:</b> {recoveredAddress}
           </>
         ),
-        status: "success",
       });
     }
 
     if (error) {
-      notify({
+      notifyError({
         title: "An error occured:",
         message: error.message,
-        status: "error",
       });
     }
-  }, [signature, recoveredAddress, error, notify]);
+  }, [signature, recoveredAddress, error, notifyError, notifySuccess]);
 
   return (
     <VStack w={"45%"} minWidth={"270px"} gap={2}>

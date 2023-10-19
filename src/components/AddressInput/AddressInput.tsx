@@ -1,4 +1,4 @@
-import React, { useState, useCallback, type FC, type ChangeEvent } from "react";
+import React, { useCallback, type FC, type ChangeEvent } from "react";
 
 import { Box, Input, InputGroup, InputLeftAddon, Spinner } from "@chakra-ui/react";
 import Image from "next/image";
@@ -10,58 +10,60 @@ import { useDebounce, useNotify } from "@/hooks";
 
 import Jazzicons from "./Jazzicons";
 
-type AddressInputProps = {
+interface AddressInputProps {
+  receiver: string;
   setReceiver: (receiver: string) => void;
-};
+}
 
-const AddressInput: FC<AddressInputProps> = ({ setReceiver }) => {
-  const [inputValue, setInputValue] = useState("");
+const AddressInput: FC<AddressInputProps> = ({ receiver, setReceiver }) => {
   const {
     data: resolvedAddress,
     isLoading: isResolvingInProgress,
     isError,
     error,
   } = useEnsResolver({
-    name: inputValue,
+    name: receiver,
   });
 
-  const debouncedReceiver = useDebounce(inputValue, 2000);
-  const notify = useNotify();
+  const debouncedReceiver = useDebounce(receiver, 2000);
+  const { notifyError } = useNotify();
 
   const isValidEthAddress = (value: string) => value.startsWith("0x") && value.length === 42;
 
   const handleInput = useCallback(
     (e: ChangeEvent<HTMLInputElement>): void => {
       const value = e.target.value;
-      setInputValue(value);
 
-      if (isValidEthAddress(value)) {
+      if (isValidEthAddress(value) || !value.length) {
         setReceiver(value);
-      } else if (resolvedAddress && resolvedAddress !== zeroAddress) {
+        return;
+      }
+
+      if (resolvedAddress && resolvedAddress !== zeroAddress) {
         setReceiver(resolvedAddress);
-      } else if (debouncedReceiver && debouncedReceiver.length > 0 && isError) {
-        notify({
+        return;
+      }
+
+      if (debouncedReceiver && isError) {
+        notifyError({
           title: "Error:",
           message: error?.message ?? "Invalid address or ENS name.",
-          status: "error",
         });
-      } else if (!value.length) {
-        setReceiver("");
       }
     },
-    [resolvedAddress, debouncedReceiver, isError, error?.message, notify, setReceiver],
+    [resolvedAddress, debouncedReceiver, isError, error?.message, notifyError, setReceiver],
   );
 
   const getAddonContent = (): JSX.Element | null => {
     if (isResolvingInProgress) return <Spinner />;
-    const validAddress = isValidEthAddress(inputValue)
-      ? inputValue
+    const validAddress = isValidEthAddress(receiver)
+      ? receiver
       : isAddress(resolvedAddress as string) && resolvedAddress !== zeroAddress
       ? resolvedAddress
       : undefined;
 
     if (validAddress) return <Jazzicons seed={validAddress.toLowerCase()} size={30} />;
-    if (!resolvedAddress && inputValue && !isResolvingInProgress)
+    if (!resolvedAddress && receiver && !isResolvingInProgress)
       return (
         <Image
           alt="warning icon"
@@ -81,7 +83,7 @@ const AddressInput: FC<AddressInputProps> = ({ setReceiver }) => {
           {getAddonContent()}
         </InputLeftAddon>
         <Input
-          value={inputValue}
+          value={receiver}
           onChange={handleInput}
           placeholder="Enter Ethereum name or address"
           name="ethereum"

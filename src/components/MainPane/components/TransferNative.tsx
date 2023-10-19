@@ -1,4 +1,4 @@
-import { type FC, useState } from "react";
+import { type FC, useState, useEffect } from "react";
 
 import {
   Button,
@@ -10,28 +10,65 @@ import {
   NumberInputStepper,
   VStack,
 } from "@chakra-ui/react";
+import { parseEther } from "viem";
+import { useSendTransaction, useWaitForTransaction } from "wagmi";
 
 import { AddressInput } from "@/components";
-import { useTransferNative } from "@/hooks";
+import { useNotify } from "@/hooks";
 
 const TransferNative: FC = () => {
-  const { transferNative, isLoading } = useTransferNative();
+  const { data, error, isLoading, isError, sendTransaction } = useSendTransaction();
+  const { data: receipt, isLoading: isPending } = useWaitForTransaction({ hash: data?.hash });
+  const { notifyError, notifySuccess } = useNotify();
   const [amount, setAmount] = useState<string>("0");
-  const [receiver, setReceiver] = useState<string | undefined>(undefined);
+  const [receiver, setReceiver] = useState<string>("");
 
   const handleAmountChange = (valueAsString: string): void => {
     setAmount(valueAsString);
   };
 
-  const handleTransfer = (): void => {
-    if (parseFloat(amount) > 0 && receiver) {
-      transferNative(receiver, parseFloat(amount));
+  const handleTransfer = () => {
+    if (!receiver) {
+      return notifyError({
+        title: "Error:",
+        message: "The receiver address is not set!",
+      });
     }
+
+    if (parseFloat(amount) <= 0) {
+      return notifyError({
+        title: "Error:",
+        message: "The amount to send must be greater than 0.",
+      });
+    }
+
+    sendTransaction({
+      to: receiver,
+      value: parseEther(amount),
+    });
   };
+
+  useEffect(() => {
+    if (receipt) {
+      notifySuccess({
+        title: "Transfer successfully sent!",
+        message: `Hash: ${receipt.transactionHash}`,
+      });
+      setAmount("0");
+      setReceiver("");
+    }
+
+    if (isError && error) {
+      notifyError({
+        title: "An error occured:",
+        message: error.message,
+      });
+    }
+  }, [receipt, isError, error, notifyError, notifySuccess]);
 
   return (
     <VStack w={"45%"} minWidth={"270px"} gap={2}>
-      <AddressInput setReceiver={setReceiver} />
+      <AddressInput receiver={receiver} setReceiver={setReceiver} />
 
       <HStack>
         <NumberInput
@@ -51,7 +88,7 @@ const TransferNative: FC = () => {
         <Button
           variant="ghost"
           onClick={handleTransfer}
-          isLoading={isLoading}
+          isLoading={isLoading || isPending}
           className="custom-button"
         >
           Transfer
