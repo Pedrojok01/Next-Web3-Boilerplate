@@ -9,7 +9,8 @@
 [![Forks](https://img.shields.io/github/forks/Pedrojok01/Next-Web3-Boilerplate)](https://github.com/Pedrojok01/Next-Web3-Boilerplate/issues)
 [![Issues](https://img.shields.io/github/issues/Pedrojok01/Next-Web3-Boilerplate)](https://github.com/Pedrojok01/Next-Web3-Boilerplate/issues)
 [![MIT License](https://img.shields.io/github/license/Pedrojok01/Next-Web3-Boilerplate)](https://github.com/Pedrojok01/Next-Web3-Boilerplate/blob/main/License)
-[![LinkedIn](https://img.shields.io/badge/-LinkedIn-blue)](https://www.linkedin.com/in/pierre-e/)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/pierre-e/)
+![Vercel](https://img.shields.io/github/deployments/Pedrojok01/Next-Web3-Boilerplate/production?label=Vercel&logo=Vercel&logoColor=white)
 
 <br></br>
 
