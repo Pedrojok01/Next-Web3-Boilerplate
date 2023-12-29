@@ -18,6 +18,21 @@
 
 </div>
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Description](#description)
+- [Built With](#built-with)
+- [Installation](#installation)
+  - [Make sure you have the following ready:](#make-sure-you-have-the-following-ready)
+  - [Once your config is ready, create a new repo, open your favorite code editor, and clone the repo with the following cmd:](#once-your-config-is-ready-create-a-new-repo-open-your-favorite-code-editor-and-clone-the-repo-with-the-following-cmd)
+  - [Install all package dependancies by running:](#install-all-package-dependancies-by-running)
+  - [Add your API keys in the .env file:](#add-your-api-keys-in-the-env-file)
+  - [To start the Next-Web3-Boilerplate:](#to-start-the-next-web3-boilerplate)
+- [Features:](#features)
+- [⭐️ ... and don't forget to leave a star if you like it! ⭐️](#️--and-dont-forget-to-leave-a-star-if-you-like-it-️)
+
+
 ## Description
 
 Simple and minimalist Web3 boilerplate to boost your Dapp development. Built using the latest tech outhere: [Next.js](https://nextjs.org/), [Viem](https://viem.sh/), [Wagmi](https://wagmi.sh/), [RainbowKit](https://www.rainbowkit.com/), [ChakraUI](https://chakra-ui.com/) and [Typescript](https://www.typescriptlang.org/). Eslint, Prettier and Husky already configured. The perfect starting point for your next web3 project.
@@ -106,7 +121,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 <div align="center">
 <h2> Enjoy!!!</h2>
 
-### ⭐️ ... and don't forget to leave a star if you like it! ⭐️
+<br>
+
+## ⭐️ ... and don't forget to leave a star if you like it! ⭐️
 
 </div>
 
