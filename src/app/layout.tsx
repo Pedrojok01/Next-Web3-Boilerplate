@@ -1,10 +1,15 @@
-import type { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 
 import "@/styles/globals.css";
 import type { Metadata } from "next";
+// eslint-disable-next-line import/order
 import { Open_Sans } from "next/font/google";
 
 import "@rainbow-me/rainbowkit/styles.css";
+import { cookies } from "next/headers";
+
+import { TRPCReactProvider } from "@/trpc/react";
+
 import { Providers } from "./providers";
 
 const open_sans = Open_Sans({ subsets: ["latin"] });
@@ -26,9 +31,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={open_sans.className}>
-        <Providers>{children}</Providers>
-      </body>
+    <body className={open_sans.className}>
+    <TRPCReactProvider cookies={cookies().toString()}>
+      <Providers>{children}</Providers>
+    </TRPCReactProvider>
+    </body>
     </html>
   );
 }
