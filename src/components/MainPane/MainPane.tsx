@@ -2,6 +2,7 @@
 import { type FC } from "react";
 
 import { Box, Flex, Heading, useColorMode } from "@chakra-ui/react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 
 import { Prize } from "@/components/MainPane/components/Prize";
@@ -23,8 +24,8 @@ const MainPane: FC = () => {
       </Heading>
       <Prize />
 
-      <Flex className={styles.content}>
-        {isConnected && (
+      <Flex className={styles.content} alignItems="center">
+        {isConnected ? (
           <>
             <Flex
               w={"100%"}
@@ -36,6 +37,8 @@ const MainPane: FC = () => {
               <BuyTicket />
             </Flex>
           </>
+        ) : (
+          <ConnectButton />
         )}
       </Flex>
     </Box>

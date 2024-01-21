@@ -10,6 +10,7 @@ export const useWindowSize = () => {
     const changeWindowSize = () => {
       setWindowSize({ width: window?.innerWidth, height: window?.innerHeight });
     };
+    setWindowSize({ width: window?.innerWidth, height: window?.innerHeight });
     window?.addEventListener("resize", changeWindowSize);
     return () => window?.removeEventListener("resize", changeWindowSize);
   }, []);
