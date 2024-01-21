@@ -2,20 +2,44 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { kvStore } from "@/server/lib/Persistence";
 
 export const adminRouter = createTRPCRouter({
-  hello: publicProcedure
-    .query(async ({}) => {
-      return { res: "Hello" };
+  /**
+   * 池子列表
+   */
+  poolList: publicProcedure
+    .input(z.object({ txHash: z.string() }))
+    .query(async ({ input }) => {
+      const result = await kvStore.get("Tickets", input.txHash);
+      return { res: result };
     }),
-
-  init: publicProcedure
-    .input(z.object({ secretHash: z.string() }))
+  /**
+   * 开奖
+   */
+  runLottery: publicProcedure
+    .input(z.object({ txHash: z.string(), tickets: z.array(z.string()) }))
     .mutation(async ({ input }) => {
       try {
-        return NextResponse.json({ input: input.secretHash }, { status: 200 });
+        const r = await kvStore.save("Tickets", input.txHash, { ticket: input.tickets });
+        return { r: r };
       } catch (error: unknown) {
-        console.error("Error init telegram bot");
+        console.error("Error init");
+        console.log(error);
+        return NextResponse.json({ message: error }, { status: 500 });
+      }
+    }),
+  /**
+   * 初始化池
+   */
+  initPool: publicProcedure
+    .input(z.object({ txHash: z.string(), tickets: z.array(z.string()) }))
+    .mutation(async ({ input }) => {
+      try {
+        const r = await kvStore.save("Tickets", input.txHash, { ticket: input.tickets });
+        return { r: r };
+      } catch (error: unknown) {
+        console.error("Error init");
         console.log(error);
         return NextResponse.json({ message: error }, { status: 500 });
       }
