@@ -4,6 +4,7 @@ import { type FC } from "react";
 import { Box, Divider, Flex, Heading, useColorMode } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 
+import { TicketTable } from "@/components/MainPane/components/TicketTable";
 import styles from "@/styles/mainPane.module.css";
 
 import {
@@ -26,33 +27,11 @@ const TicketList: FC = () => {
       border={colorMode === "light" ? "none" : "1px solid rgba(152, 161, 192, 0.24)"}
     >
       <Heading as="h2" fontSize={"2rem"} mb={10} className="text-shadow">
-        Display Info
+        Your Tickets
       </Heading>
 
       <Flex className={styles.content}>
-        <Status />
-
-        {isConnected && (
-          <>
-            <Address />
-            <Chain />
-            <Balance />
-            <BlockNumber />
-
-            <Divider mb={5} />
-
-            <Flex
-              w={"100%"}
-              display={"flex"}
-              justifyContent={"space-around"}
-              flexWrap={"wrap"}
-              gap={5}
-            >
-              <SignMessage />
-              <TransferNative />
-            </Flex>
-          </>
-        )}
+        <TicketTable />
       </Flex>
     </Box>
   );

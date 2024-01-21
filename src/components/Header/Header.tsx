@@ -34,7 +34,6 @@ const Header: FC = () => {
   const { isTablet } = useWindowSize();
   const path = usePathname();
   const router = useRouter();
-  console.log(path);
 
   return (
     <HStack
