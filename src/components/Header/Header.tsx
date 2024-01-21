@@ -1,6 +1,7 @@
 "use client";
 import { type FC } from "react";
 
+import { EmailIcon } from "@chakra-ui/icons";
 import { Button, HStack, Heading } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
@@ -11,18 +12,21 @@ import { useWindowSize } from "@/hooks/useWindowSize";
 
 import { DarkModeButton } from "../DarkModeButton";
 
-const routes = [
+export const routes = [
   {
     title: "Lottery",
     path: "/",
+    icon: <EmailIcon />,
   },
   {
     title: "Ticket",
     path: "/ticket",
+    icon: <EmailIcon />,
   },
   {
     title: "Referral",
     path: "/referral",
+    icon: <EmailIcon />,
   },
 ];
 
