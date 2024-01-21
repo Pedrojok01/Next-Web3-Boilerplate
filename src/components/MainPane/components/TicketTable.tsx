@@ -32,7 +32,6 @@ export const TicketTable: React.FC = () => {
   return (
     <TableContainer>
       <Table variant="simple">
-        <TableCaption>Imperial to metric conversion factors</TableCaption>
         <Thead>
           <Tr>
             <Th>#</Th>

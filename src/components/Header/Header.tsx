@@ -5,7 +5,7 @@ import { EmailIcon } from "@chakra-ui/icons";
 import { Button, HStack, Heading } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import logo from "public/img/logo_transparent.png";
 
 import { useWindowSize } from "@/hooks/useWindowSize";
@@ -32,7 +32,6 @@ export const routes = [
 
 const Header: FC = () => {
   const { isTablet } = useWindowSize();
-  const path = usePathname();
   const router = useRouter();
 
   return (
