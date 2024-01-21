@@ -1,24 +1,12 @@
 // components/MainPane.tsx
 import { type FC } from "react";
 
-import { Box, Divider, Flex, Heading, useColorMode } from "@chakra-ui/react";
-import { useAccount } from "wagmi";
+import { Box, Flex, Heading, useColorMode } from "@chakra-ui/react";
 
 import { TicketTable } from "@/components/MainPane/components/TicketTable";
 import styles from "@/styles/mainPane.module.css";
 
-import {
-  Status,
-  Address,
-  Chain,
-  Balance,
-  BlockNumber,
-  TransferNative,
-  SignMessage,
-} from "./components";
-
 const TicketList: FC = () => {
-  const { isConnected } = useAccount();
   const { colorMode } = useColorMode();
 
   return (

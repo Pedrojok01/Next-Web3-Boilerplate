@@ -1,7 +1,6 @@
 import { connectorsForWallets, getDefaultWallets } from "@rainbow-me/rainbowkit";
 import { argentWallet, ledgerWallet } from "@rainbow-me/rainbowkit/wallets";
 import { configureChains, createConfig, type Chain } from "wagmi";
-import { arbitrum, base, mainnet, optimism, polygon, sepolia, zkSync } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 

@@ -1,8 +1,7 @@
 "use client";
 import { type FC } from "react";
 
-import { EmailIcon } from "@chakra-ui/icons";
-import { Box, Button, VStack, Text, HStack } from "@chakra-ui/react";
+import { Box, HStack, Text, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 

@@ -1,20 +1,4 @@
-import {
-  Box,
-  Heading,
-  Table,
-  TableCaption,
-  TableContainer,
-  Tbody,
-  Td,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
-import Countdown, { zeroPad } from "react-countdown";
-const unixTimeEndOfDay = Math.floor(
-  new Date(new Date().toUTCString().substring(0, 25)).setHours(23, 59, 59, 999),
-);
+import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 
 const mockData = [
   {
@@ -40,11 +24,6 @@ export const TicketTable: React.FC = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {/* <Tr>
-            <Td>inches</Td>
-            <Td>millimetres (mm)</Td>
-            <Td isNumeric>25.4</Td>
-          </Tr> */}
           {mockData.map((data) => {
             return (
               <Tr key={data.ticketHash}>
