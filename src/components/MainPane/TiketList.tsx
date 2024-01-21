@@ -1,15 +1,22 @@
 // components/MainPane.tsx
 import { type FC } from "react";
 
-import { Box, Flex, Heading, useColorMode } from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, useColorMode } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 
-import { Prize } from "@/components/MainPane/components/Prize";
 import styles from "@/styles/mainPane.module.css";
 
-import { BuyTicket } from "./components";
+import {
+  Status,
+  Address,
+  Chain,
+  Balance,
+  BlockNumber,
+  TransferNative,
+  SignMessage,
+} from "./components";
 
-const MainPane: FC = () => {
+const TicketList: FC = () => {
   const { isConnected } = useAccount();
   const { colorMode } = useColorMode();
 
@@ -18,14 +25,22 @@ const MainPane: FC = () => {
       className={styles.container}
       border={colorMode === "light" ? "none" : "1px solid rgba(152, 161, 192, 0.24)"}
     >
-      <Heading as="h2" fontSize={"2rem"} mb={10}>
-        Daily Lotto
+      <Heading as="h2" fontSize={"2rem"} mb={10} className="text-shadow">
+        Display Info
       </Heading>
-      <Prize />
 
       <Flex className={styles.content}>
+        <Status />
+
         {isConnected && (
           <>
+            <Address />
+            <Chain />
+            <Balance />
+            <BlockNumber />
+
+            <Divider mb={5} />
+
             <Flex
               w={"100%"}
               display={"flex"}
@@ -33,7 +48,8 @@ const MainPane: FC = () => {
               flexWrap={"wrap"}
               gap={5}
             >
-              <BuyTicket />
+              <SignMessage />
+              <TransferNative />
             </Flex>
           </>
         )}
@@ -42,4 +58,4 @@ const MainPane: FC = () => {
   );
 };
 
-export default MainPane;
+export default TicketList;
