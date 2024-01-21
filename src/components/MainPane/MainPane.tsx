@@ -24,7 +24,7 @@ const MainPane: FC = () => {
       </Heading>
       <Prize />
 
-      <Flex className={styles.content} alignItems="center">
+      <Flex className={styles.content}>
         {isConnected ? (
           <>
             <Flex

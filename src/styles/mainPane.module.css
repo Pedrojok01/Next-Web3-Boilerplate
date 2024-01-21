@@ -17,6 +17,7 @@
   font-size: 17px;
   gap: 1rem;
   justify-content: center;
+  align-items: center;
 }
 
 @media (width < 768px) {

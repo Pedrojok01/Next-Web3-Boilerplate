@@ -2,12 +2,15 @@
 import { type FC } from "react";
 
 import { Box, Flex, Heading, useColorMode } from "@chakra-ui/react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 
 import { TicketTable } from "@/components/MainPane/components/TicketTable";
 import styles from "@/styles/mainPane.module.css";
 
 const TicketList: FC = () => {
   const { colorMode } = useColorMode();
+  const { isConnected } = useAccount();
 
   return (
     <Box
@@ -18,9 +21,7 @@ const TicketList: FC = () => {
         Your Tickets
       </Heading>
 
-      <Flex className={styles.content}>
-        <TicketTable />
-      </Flex>
+      <Flex className={styles.content}>{isConnected ? <TicketTable /> : <ConnectButton />}</Flex>
     </Box>
   );
 };
