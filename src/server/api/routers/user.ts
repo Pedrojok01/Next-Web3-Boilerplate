@@ -6,12 +6,14 @@ import type { ResponseTPRC } from "@/server/lib/types";
 
 export const userRouter = createTRPCRouter({
   saveTickets: publicProcedure
-    .input(z.object({
-      address: z.string(),
-      txHash: z.string(),
-      poolHash: z.string(),
-      txTime: z.number(),
-    }))
+    .input(
+      z.object({
+        address: z.string(),
+        txHash: z.string(),
+        poolHash: z.string(),
+        txTime: z.number(),
+      }),
+    )
     .mutation(async ({ input }): Promise<ResponseTPRC> => {
       try {
         const tickets = [
@@ -30,10 +32,12 @@ export const userRouter = createTRPCRouter({
       }
     }),
   ticketsList: publicProcedure
-    .input(z.object({
-      address: z.string(),
-      page: z.optional(z.object({ start: z.number(), size: z.number() })),
-    }))
+    .input(
+      z.object({
+        address: z.string(),
+        page: z.optional(z.object({ start: z.number(), size: z.number() })),
+      }),
+    )
     .query(async ({ input }): Promise<ResponseTPRC> => {
       try {
         const r = await kvStore.list(input.address);
@@ -44,7 +48,12 @@ export const userRouter = createTRPCRouter({
       }
     }),
   txList: publicProcedure
-    .input(z.object({ address: z.string(), page: z.object({ start: z.number(), size: z.number() }).nullable() }))
+    .input(
+      z.object({
+        address: z.string(),
+        page: z.object({ start: z.number(), size: z.number() }).nullable(),
+      }),
+    )
     .query(async ({ input }): Promise<ResponseTPRC> => {
       try {
         const r = await kvStore.listKeys(input.address);

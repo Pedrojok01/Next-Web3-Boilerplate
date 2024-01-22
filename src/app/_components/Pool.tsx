@@ -6,8 +6,10 @@ import {
   Divider,
   Heading,
   Table,
-  TableCaption, TableContainer,
-  Tbody, Td,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
   Th,
   Thead,
   Tr,
@@ -27,12 +29,15 @@ function Pool() {
   });
 
   const { data } = api.pool.poolList.useQuery();
-  const records = data?.result as Record<string, {
-    poolHash: string
-    name: string,
-    difficulty: Difficulty,
-    period: number
-  }>;
+  const records = data?.result as Record<
+    string,
+    {
+      poolHash: string;
+      name: string;
+      difficulty: Difficulty;
+      period: number;
+    }
+  >;
   console.log(records);
 
   return (
@@ -53,27 +58,30 @@ function Pool() {
             </Tr>
           </Thead>
           <Tbody>
-            {
-              Object.keys(records ?? {}).map((key, index) => {
-                return (<Tr key={`pool-${key}`}>
+            {Object.keys(records ?? {}).map((key, index) => {
+              return (
+                <Tr key={`pool-${key}`}>
                   <Td isNumeric>{index}</Td>
                   <Td>{records[key].name}</Td>
                   <Td>{records[key].difficulty}</Td>
                   <Td>{records[key].period}</Td>
                   <Td>{key}</Td>
-                </Tr>);
-              })
-            }
+                </Tr>
+              );
+            })}
           </Tbody>
         </Table>
       </TableContainer>
       <Divider mb={5} />
-      <Button mb={5}
-              variant="ghost"
-              onClick={() => initPool.mutate()}
-              isLoading={initPool.isLoading}
-              className="custom-button"
-      >Init Pool</Button>
+      <Button
+        mb={5}
+        variant="ghost"
+        onClick={() => initPool.mutate()}
+        isLoading={initPool.isLoading}
+        className="custom-button"
+      >
+        Init Pool
+      </Button>
       <Divider mb={5} />
     </Box>
   );

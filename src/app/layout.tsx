@@ -31,11 +31,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-    <body className={open_sans.className}>
-    <TRPCReactProvider cookies={cookies().toString()}>
-      <Providers>{children}</Providers>
-    </TRPCReactProvider>
-    </body>
+      <body className={open_sans.className}>
+        <TRPCReactProvider cookies={cookies().toString()}>
+          <Providers>{children}</Providers>
+        </TRPCReactProvider>
+      </body>
     </html>
   );
 }

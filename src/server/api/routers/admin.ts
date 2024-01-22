@@ -8,12 +8,10 @@ export const adminRouter = createTRPCRouter({
   /**
    * 池子列表
    */
-  poolList: publicProcedure
-    .input(z.object({ txHash: z.string() }))
-    .query(async ({ input }) => {
-      const result = await kvStore.get("Tickets", input.txHash);
-      return { res: result };
-    }),
+  poolList: publicProcedure.input(z.object({ txHash: z.string() })).query(async ({ input }) => {
+    const result = await kvStore.get("Tickets", input.txHash);
+    return { res: result };
+  }),
   /**
    * 开奖
    */

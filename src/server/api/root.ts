@@ -1,8 +1,8 @@
 import { adminRouter } from "@/server/api/routers/admin";
+import { lotteryRouter } from "@/server/api/routers/lottery";
 import { poolRouter } from "@/server/api/routers/pool";
 import { userRouter } from "@/server/api/routers/user";
 import { createTRPCRouter } from "@/server/api/trpc";
-import { lotteryRouter } from "@/server/api/routers/lottery";
 
 /**
  * This is the primary router for your server.

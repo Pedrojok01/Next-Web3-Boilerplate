@@ -4,6 +4,8 @@ import { type FC } from "react";
 import { Box, Divider, Flex, Heading, useColorMode } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 
+import Lottery from "@/app/_components/Lottery";
+import Pool from "@/app/_components/Pool";
 import Ticket from "@/app/_components/Ticket";
 import styles from "@/styles/mainPane.module.css";
 
@@ -16,8 +18,6 @@ import {
   TransferNative,
   SignMessage,
 } from "./components";
-import Pool from "@/app/_components/Pool";
-import Lottery from "@/app/_components/Lottery";
 
 const MainPane: FC = () => {
   const { isConnected } = useAccount();

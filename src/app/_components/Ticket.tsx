@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 
 import {
-  Box, Button, Divider, Table,
+  Box,
+  Button,
+  Divider,
+  Table,
   Thead,
   Tbody,
   Select,
@@ -9,7 +12,9 @@ import {
   Th,
   Td,
   TableCaption,
-  TableContainer, Heading, Flex,
+  TableContainer,
+  Heading,
+  Flex,
 } from "@chakra-ui/react";
 import { nanoid } from "nanoid";
 import { useAccount } from "wagmi";
@@ -37,24 +42,26 @@ function Ticket() {
   const records = data?.result as Record<string, { data: Array<string> }>;
 
   const { data: poolData } = api.pool.poolList.useQuery();
-  const poolRecords = poolData?.result as Record<string, {
-    poolHash: string
-    name: string,
-    difficulty: Difficulty,
-    period: number
-  }>;
+  const poolRecords = poolData?.result as Record<
+    string,
+    {
+      poolHash: string;
+      name: string;
+      difficulty: Difficulty;
+      period: number;
+    }
+  >;
 
   const submitted = () => {
     if (!address || !poolHash) {
       return;
     }
     saveOrUpdate.mutate({
-        address,
-        poolHash,
-        txHash: nanoid(5),
-        txTime: new Date().getTime(),
-      },
-    );
+      address,
+      poolHash,
+      txHash: nanoid(5),
+      txTime: new Date().getTime(),
+    });
   };
 
   return (
@@ -73,34 +80,40 @@ function Ticket() {
             </Tr>
           </Thead>
           <Tbody>
-            {
-              Object.keys(records ?? {}).map((key, index) => {
-                return (<Tr key={`ticket-${key}`}>
+            {Object.keys(records ?? {}).map((key, index) => {
+              return (
+                <Tr key={`ticket-${key}`}>
                   <Td isNumeric>{index}</Td>
                   <Td>{key}</Td>
                   <Td>{JSON.stringify(records[key].data)}</Td>
-                </Tr>);
-              })
-            }
+                </Tr>
+              );
+            })}
           </Tbody>
         </Table>
       </TableContainer>
       <Divider mb={5} />
       <Flex>
         <Select placeholder="Select One Pool" onChange={(_) => setPoolHash(_.target.value)}>
-          {
-            Object.keys(poolRecords ?? {}).map((key) => {
-              return (<option key={`op-${key}`} value={key}>{poolRecords[key].name}</option>);
-            })
-          }
-        </Select>{isConnected &&
-        <Button mb={5}
-                variant="ghost"
-                onClick={submitted}
-                isLoading={saveOrUpdate.isLoading}
-                className="custom-button"
-        >Buy Ticket</Button>
-      }
+          {Object.keys(poolRecords ?? {}).map((key) => {
+            return (
+              <option key={`op-${key}`} value={key}>
+                {poolRecords[key].name}
+              </option>
+            );
+          })}
+        </Select>
+        {isConnected && (
+          <Button
+            mb={5}
+            variant="ghost"
+            onClick={submitted}
+            isLoading={saveOrUpdate.isLoading}
+            className="custom-button"
+          >
+            Buy Ticket
+          </Button>
+        )}
       </Flex>
       <Divider mb={5} />
     </Box>

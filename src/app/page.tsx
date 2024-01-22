@@ -11,7 +11,6 @@ export default function Home() {
         <MainPane />
       </Box>
       <Footer />
-
     </Flex>
   );
 }
