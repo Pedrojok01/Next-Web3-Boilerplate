@@ -51,8 +51,7 @@ class KvPersistence implements Persistence {
   }
 
   async listKeys(namespace: string): Promise<string[]> {
-    const data = await this.client.hkeys(namespace);
-    return data;
+    return await this.client.hkeys(namespace);
   }
 
   async get(namespace: string, key: string): Promise<object> {
@@ -75,7 +74,7 @@ class KvPersistence implements Persistence {
   }
 
   async clean(namespace: string): Promise<boolean> {
-    const data = await this.client.del(namespace as any);
+    const data = await this.client.del(namespace as never);
     return data > 0;
   }
 }

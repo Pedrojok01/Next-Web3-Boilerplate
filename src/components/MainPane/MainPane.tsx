@@ -4,19 +4,18 @@ import { type FC } from "react";
 import { Box, Divider, Flex, Heading, useColorMode } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 
-import Lottery from "@/app/_components/Lottery";
-import Pool from "@/app/_components/Pool";
+import PoolList from "@/app/_components/PoolList";
 import Ticket from "@/app/_components/Ticket";
 import styles from "@/styles/mainPane.module.css";
 
 import {
-  Status,
   Address,
-  Chain,
   Balance,
   BlockNumber,
-  TransferNative,
+  Chain,
   SignMessage,
+  Status,
+  TransferNative,
 } from "./components";
 
 const MainPane: FC = () => {
@@ -56,9 +55,8 @@ const MainPane: FC = () => {
             </Flex>
           </>
         )}
-        <Lottery />
+        <PoolList />
         <Ticket />
-        <Pool />
       </Flex>
     </Box>
   );

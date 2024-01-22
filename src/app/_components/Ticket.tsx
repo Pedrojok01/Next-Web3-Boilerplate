@@ -1,68 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 
 import {
   Box,
-  Button,
   Divider,
+  Heading,
   Table,
-  Thead,
-  Tbody,
-  Select,
-  Tr,
-  Th,
-  Td,
   TableCaption,
   TableContainer,
-  Heading,
-  Flex,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
-import { nanoid } from "nanoid";
 import { useAccount } from "wagmi";
 
-import { Difficulty } from "@/server/lib/types";
 import { api } from "@/trpc/react";
 
 function Ticket() {
-  const { isConnected, address } = useAccount();
-
-  const [poolHash, setPoolHash] = useState<string>();
-
-  console.log(poolHash);
-
-  const saveOrUpdate = api.user.saveTickets.useMutation({
-    onSuccess: (data) => {
-      console.log(data.result);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
+  const { address } = useAccount();
 
   const { data } = api.user.ticketsList.useQuery({ address: address ?? "alec-test-address" });
-  const records = data?.result as Record<string, { data: Array<string> }>;
-
-  const { data: poolData } = api.pool.poolList.useQuery();
-  const poolRecords = poolData?.result as Record<
-    string,
-    {
-      poolHash: string;
-      name: string;
-      difficulty: Difficulty;
-      period: number;
-    }
-  >;
-
-  const submitted = () => {
-    if (!address || !poolHash) {
-      return;
-    }
-    saveOrUpdate.mutate({
-      address,
-      poolHash,
-      txHash: nanoid(5),
-      txTime: new Date().getTime(),
-    });
-  };
+  const records = data?.result as Record<string, { poolHash: string, txTime: number, data: Array<string> }>;
 
   return (
     <Box>
@@ -77,6 +36,8 @@ function Ticket() {
               <Th isNumeric>Index</Th>
               <Th>TxHash</Th>
               <Th>Tickets</Th>
+              <Th>Pool</Th>
+              <Th>TxTime</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -86,35 +47,14 @@ function Ticket() {
                   <Td isNumeric>{index}</Td>
                   <Td>{key}</Td>
                   <Td>{JSON.stringify(records[key].data)}</Td>
+                  <Td>{records[key].poolHash}</Td>
+                  <Td>{records[key].txTime}</Td>
                 </Tr>
               );
             })}
           </Tbody>
         </Table>
       </TableContainer>
-      <Divider mb={5} />
-      <Flex>
-        <Select placeholder="Select One Pool" onChange={(_) => setPoolHash(_.target.value)}>
-          {Object.keys(poolRecords ?? {}).map((key) => {
-            return (
-              <option key={`op-${key}`} value={key}>
-                {poolRecords[key].name}
-              </option>
-            );
-          })}
-        </Select>
-        {isConnected && (
-          <Button
-            mb={5}
-            variant="ghost"
-            onClick={submitted}
-            isLoading={saveOrUpdate.isLoading}
-            className="custom-button"
-          >
-            Buy Ticket
-          </Button>
-        )}
-      </Flex>
       <Divider mb={5} />
     </Box>
   );
