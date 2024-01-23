@@ -13,53 +13,54 @@ type ResponseTPRC = {
 
 enum Difficulty {
   MATCH = "MATCH",
-  CLOSE = "CLOSE",
+  CLOSEST = "CLOSEST",
 }
 
+type PoolStateType = {
+  pool: PoolType;
+  currentPhase: PhaseResult | undefined;
+  lastPhase: PhaseResult | undefined;
+};
 /**
  * 抽奖的参数
  * 名称，难度系数，周期（多少个区块）
  */
-type LotteryPoolProps = {
+type PoolType = {
   poolCode: string;
   name: string;
   difficulty: Difficulty;
   period: string;
   price: number;
-  lastResult?: PhaseResult;
-  currentPhase?: string;
-  lastPhase?: string;
 };
 
-type PhaseResult = {
-  lotteryResult: string;
-  hitTx: Array<string>;
-  hitAddr: Array<string>;
-  hitTicket: string;
-};
-
-type TicketProps = {
+type TicketType = {
   poolCode: string;
   address: string;
   txHash: string;
   txTime: number;
   tickets: Array<string>;
-  currentPhase?: string;
+  currentPhase: string;
 };
 
-type LotteryPhaseProps = {
-  lotteryResult: string;
+type PhaseResult = {
+  poolCode: string;
+  currentPhase: string;
+  ticketCount: number;
+  lotteryResult: string | undefined;
   hitTx: string | undefined;
-  hitAddr: (string | undefined)[] | undefined;
+  hitAddr: string[] | undefined;
+  hitTicket: string | undefined;
 };
 
-enum Namespace {
+enum ConstantKey {
   //当前期
   LOTTERY_CURRENT_PHASE = "LOTTERY_CURRENT_PHASE",
-  //开奖期
-  LOTTERY_PROCESSING_PHASE = "LOTTERY_PROCESSING_PHASE",
+  //最近期
+  LOTTERY_LAST_PHASE = "LOTTERY_LAST_PHASE",
   //每期开奖结果
   LOTTERY_PHASE_RESULT = "LOTTERY_PHASE_RESULT",
+  //票证总数
+  LOTTERY_PHASE_TICKET_COUNT = "LOTTERY_PHASE_TICKET_COUNT",
   //所有池信息
   LOTTERY_POOLS = "LOTTERY_POOLS",
 }
@@ -71,14 +72,52 @@ class LotteryService {
     this.kv = kvStore.getClient();
   }
 
+  async poolState() {
+    const poolRecord = await this.kv.hgetall(ConstantKey.LOTTERY_POOLS);
+    const currentPhaseKeyRecord = await this.kv.hgetall(ConstantKey.LOTTERY_CURRENT_PHASE);
+    const lastPhaseKeyRecord = await this.kv.hgetall(ConstantKey.LOTTERY_LAST_PHASE);
+
+    const poolList = new Array<PoolStateType>();
+    for (const poolCode in poolRecord) {
+      const pool = { ...(poolRecord[poolCode] as PoolType) };
+      //####
+      const currentKey = currentPhaseKeyRecord && (currentPhaseKeyRecord[poolCode] as string);
+      const ticketCount =
+        currentKey &&
+        ((await this.kv.hget(currentKey, ConstantKey.LOTTERY_PHASE_TICKET_COUNT)) as number);
+      //###
+      const lastPhaseKey = lastPhaseKeyRecord && (lastPhaseKeyRecord[poolCode] as string);
+      const lastPhase =
+        lastPhaseKey && (await this.kv.hget(lastPhaseKey, ConstantKey.LOTTERY_PHASE_RESULT));
+      //##
+      const poolState: PoolStateType = {
+        pool,
+        lastPhase: lastPhase ? (lastPhase as PhaseResult) : undefined,
+        currentPhase: {
+          poolCode,
+          ticketCount: ticketCount as number,
+          currentPhase: currentKey ?? "No Start",
+          lotteryResult: undefined,
+          hitTicket: undefined,
+          hitAddr: undefined,
+          hitTx: undefined,
+        },
+      };
+      poolList.push(poolState);
+    }
+    return poolList;
+  }
+
   async phaseLottery(poolCode: string, lotteryResult: string) {
     await this.__startNewPhase(poolCode);
-    const lastPhase = await this.kv.hget(Namespace.LOTTERY_PROCESSING_PHASE, poolCode);
+    const currentPhase = await this.kv.hget(ConstantKey.LOTTERY_LAST_PHASE, poolCode);
 
     // 摇奖对比,获取池信息
-    const pool: LotteryPoolProps | null = await this.kv.hget(Namespace.LOTTERY_POOLS, poolCode);
+    const pool: PoolType | null = await this.kv.hget(ConstantKey.LOTTERY_POOLS, poolCode);
     //获取当前所有用户信息<txHash:
-    const tickets: Record<string, TicketProps> | null = await this.kv.hgetall(lastPhase as string);
+    const tickets: Record<string, TicketType> | null = await this.kv.hgetall(
+      currentPhase as string,
+    );
 
     //准备数据
     const ticketAndTxMap: Map<string, Array<string>> = new Map<string, Array<string>>();
@@ -100,17 +139,20 @@ class LotteryService {
     const hitTx = ticketAndTxMap.get(hitTicket);
     const hitAddr = hitTx?.map((tx) => txAndAddressMap.get(tx));
     //开奖号码
-    await this.kv.hsetnx(lastPhase as string, Namespace.LOTTERY_PHASE_RESULT, {
+    await this.kv.hsetnx(currentPhase as string, ConstantKey.LOTTERY_PHASE_RESULT, {
+      poolCode,
+      currentPhase,
+      ticketCount: ticketAndTxMap.size,
       lotteryResult,
       hitTx,
       hitAddr,
       hitTicket,
-    } as LotteryPhaseProps);
-    return lastPhase as string;
+    } as PhaseResult);
+    return currentPhase as string;
   }
 
-  async createTicket(props: TicketProps) {
-    let currentPhase = await this.kv.hget(Namespace.LOTTERY_CURRENT_PHASE, props.poolCode);
+  async createTicket(props: TicketType) {
+    let currentPhase = await this.kv.hget(ConstantKey.LOTTERY_CURRENT_PHASE, props.poolCode);
     if (!currentPhase) {
       currentPhase = await this.__startNewPhase(props.poolCode);
     }
@@ -118,8 +160,8 @@ class LotteryService {
     await this.kv.hsetnx(currentPhase as string, props.txHash, { ...props });
     //归入用户
     const result = await this.kv.hsetnx(`LOTTERY_ADDR_${props.address}`, props.txHash, {
-      currentPhase,
       ...props,
+      currentPhase,
     });
     return result == 1;
   }
@@ -127,10 +169,10 @@ class LotteryService {
   private async __startNewPhase(poolCode: string) {
     const newPhash = `LOTTERY_PHASE_${moment().format("YYYYMMDDHHmmss")}`;
     //当前池新的周期
-    const lastPhase = await this.kv.hget(Namespace.LOTTERY_CURRENT_PHASE, poolCode);
-    await this.kv.hset(Namespace.LOTTERY_CURRENT_PHASE, { [poolCode]: newPhash });
+    const lastPhase = await this.kv.hget(ConstantKey.LOTTERY_CURRENT_PHASE, poolCode);
+    await this.kv.hset(ConstantKey.LOTTERY_CURRENT_PHASE, { [poolCode]: newPhash });
     if (lastPhase) {
-      await this.kv.hset(Namespace.LOTTERY_PROCESSING_PHASE, { [poolCode]: lastPhase });
+      await this.kv.hset(ConstantKey.LOTTERY_LAST_PHASE, { [poolCode]: lastPhase });
     }
     return newPhash;
   }
@@ -160,5 +202,5 @@ class LotteryService {
 
 const lottery = new LotteryService();
 
-export { lottery, Difficulty, Namespace };
-export type { ResponseTPRC, LotteryPoolProps, TicketProps, LotteryPhaseProps, PhaseResult };
+export { lottery, Difficulty, ConstantKey };
+export type { ResponseTPRC, PoolType, TicketType, PhaseResult, PoolStateType };

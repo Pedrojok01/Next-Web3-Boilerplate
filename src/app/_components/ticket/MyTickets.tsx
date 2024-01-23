@@ -16,14 +16,14 @@ import {
 import moment from "moment";
 import { useAccount } from "wagmi";
 
-import type { TicketProps } from "@/server/lib/LotteryService";
+import type { TicketType } from "@/server/lib/LotteryService";
 import { api } from "@/trpc/react";
 
 function MyTickets() {
   const { address } = useAccount();
 
   const { data } = api.user.ticketsList.useQuery({ address: address ?? "alec-test-address" });
-  const records = data?.result as Record<string, TicketProps>;
+  const records = data?.result as Record<string, TicketType>;
   const tickets = Object.values(records ?? {});
   tickets?.sort((a, b) => a.txTime - b.txTime);
 
@@ -33,7 +33,7 @@ function MyTickets() {
         My Ticket List
       </Heading>
       <TableContainer>
-        <Table variant="striped" colorScheme="teal">
+        <Table variant="striped">
           <TableCaption>Imperial to metric conversion factors</TableCaption>
           <Thead>
             <Tr>

@@ -13,7 +13,7 @@ import {
   Tag,
 } from "@chakra-ui/react";
 
-import { type LotteryPoolProps } from "@/server/lib/LotteryService";
+import { type PoolType } from "@/server/lib/LotteryService";
 import { api } from "@/trpc/react";
 
 function Admin() {
@@ -27,7 +27,7 @@ function Admin() {
   });
 
   const { data } = api.pool.poolList.useQuery();
-  const records = data?.result as Array<LotteryPoolProps>;
+  const records = data?.result as Array<PoolType>;
   records?.sort((a, b) => a.name.localeCompare(b.name));
   const initPool = api.admin.initPool.useMutation({
     onSuccess: (data) => {
@@ -51,12 +51,8 @@ function Admin() {
               <CardBody>
                 <Tag>{entry.poolCode}</Tag>
                 <Tag>
-                  {" "}
                   {entry.difficulty}({entry.period})
                 </Tag>
-                <Box>
-                  <Tag bg={"green"}>##{entry.currentPhase?.slice(-14)}##</Tag>
-                </Box>
               </CardBody>
               <CardFooter>
                 <Button

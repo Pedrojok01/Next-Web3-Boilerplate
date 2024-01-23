@@ -1,47 +1,41 @@
 import React from "react";
 
-import { CheckCircleIcon, CloseIcon } from "@chakra-ui/icons";
 import {
   Box,
   Card,
   CardBody,
   CardFooter,
   Heading,
-  Icon,
   Image,
-  List,
-  ListItem,
   Stack,
   StackDivider,
   Tag,
   Text,
   Tooltip,
 } from "@chakra-ui/react";
-import { useAccount } from "wagmi";
 
-import PoolStat from "@/app/_components/pool/PoolStat";
+import PoolState from "@/app/_components/pool/PoolState";
 import CreateTicket from "@/app/_components/ticket/CreateTicket";
-import { type LotteryPoolProps } from "@/server/lib/LotteryService";
+import { type PoolStateType } from "@/server/lib/LotteryService";
 import { api } from "@/trpc/react";
 import { cronExpressionToDescription } from "@/utils/cronExpressionToDesc";
 
 function PoolList() {
-  const { address } = useAccount();
-  const { data } = api.pool.poolList.useQuery();
-  const records = data?.result as Array<LotteryPoolProps>;
-  // const records = [...poolList];
-  records?.sort((a, b) => b.name.localeCompare(a.name));
+  const { data } = api.pool.poolStateList.useQuery();
+  const records = data?.result as Array<PoolStateType>;
+  console.log(records);
+  records?.sort((a, b) => b.pool.name.localeCompare(a.pool.name));
 
   return (
     <Stack spacing="3">
-      <CreateTicket poolList={records} />
-      {records?.map((entry) => {
+      <CreateTicket poolStateList={records} />
+      {records?.map((poolState) => {
         return (
           <Card
             direction={{ base: "column", sm: "row" }}
             overflow="hidden"
             variant="outline"
-            key={entry.poolCode}
+            key={poolState.pool.poolCode}
           >
             <Image
               objectFit="cover"
@@ -52,58 +46,38 @@ function PoolList() {
             <CardBody>
               <Stack divider={<StackDivider />} spacing="4">
                 <Box>
-                  <PoolStat poolCode={entry.poolCode} />
-                </Box>
-                <Box>
                   <Heading size="xs" textTransform="uppercase">
-                    <Tag>
-                      {entry.name}【{entry.poolCode}】
-                    </Tag>{" "}
-                    <Tag bg="red.200">{entry.difficulty}</Tag>
+                    <Tag>{poolState.pool.name}</Tag>{" "}
+                    <Tag bg="red.200">{poolState.pool.difficulty}</Tag>
                   </Heading>
-                </Box>
-                <Box>
-                  <Tooltip label={cronExpressionToDescription(entry.period)} aria-label="A tooltip">
-                    <Tag fontSize={"sm"}>{entry.period}</Tag>
-                  </Tooltip>
-                </Box>
-                <Box>
-                  <Heading size="xs" textTransform="uppercase">
-                    Lottery Current Phase
-                  </Heading>
-                  <Text pt="2" fontSize="sm">
-                    <Tag bg={"blue.500"}> {entry.currentPhase?.slice(-14) ?? "###"}</Tag>
+                  <Text>
+                    <Tooltip
+                      label={cronExpressionToDescription(poolState.pool.period)}
+                      aria-label="A tooltip"
+                    >
+                      <Tag mt={1} fontSize={"sm"}>
+                        {poolState.pool.poolCode}【{poolState.pool.period}】
+                      </Tag>
+                    </Tooltip>
                   </Text>
                 </Box>
                 <Box>
-                  <Heading size="xs" textTransform="uppercase">
-                    Lottery Last Results
-                  </Heading>
-                  <List spacing={2} pt="2">
-                    <ListItem>
-                      {entry.lastResult?.lotteryResult && (
-                        <Tag>
-                          ({entry.lastPhase?.slice(-14) ?? "###"}) (
-                          {entry.lastResult?.lotteryResult})
-                        </Tag>
-                      )}
-                    </ListItem>
-                    <ListItem>
-                      {entry.lastResult?.hitAddr && (
-                        <Tag color="green.700">
-                          {entry.lastResult?.hitAddr ?? "#############"}#
-                          {entry.lastResult?.hitTicket ?? "###"}
-                        </Tag>
-                      )}
-                    </ListItem>
-                    <ListItem>
-                      {entry.lastResult?.hitAddr == address ? (
-                        <Icon as={CheckCircleIcon} w={8} h={8} color="green.500" />
-                      ) : (
-                        <Icon as={CloseIcon} w={8} h={8} color="red.500" />
-                      )}
-                    </ListItem>
-                  </List>
+                  {poolState.currentPhase && (
+                    <PoolState
+                      title="Current"
+                      pool={poolState.pool}
+                      phaseResult={poolState.currentPhase}
+                    />
+                  )}
+                </Box>
+                <Box>
+                  {poolState.lastPhase && (
+                    <PoolState
+                      title="Last"
+                      pool={poolState.pool}
+                      phaseResult={poolState.lastPhase}
+                    />
+                  )}
                 </Box>
               </Stack>
             </CardBody>

@@ -23,10 +23,13 @@ import { nanoid } from "nanoid";
 import { useSearchParams } from "next/navigation";
 import { useAccount } from "wagmi";
 
-import { type LotteryPoolProps } from "@/server/lib/LotteryService";
+import { type PoolStateType } from "@/server/lib/LotteryService";
 import { api } from "@/trpc/react";
 
-function CreateTicket(props: { poolList: Array<LotteryPoolProps>; [propNames: string]: unknown }) {
+function CreateTicket(props: {
+  poolStateList: Array<PoolStateType>;
+  [propNames: string]: unknown;
+}) {
   const searchParams = useSearchParams();
   const { isConnected, address } = useAccount();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -53,7 +56,6 @@ function CreateTicket(props: { poolList: Array<LotteryPoolProps>; [propNames: st
       txHash: nanoid(5),
       txTime: new Date().getTime(),
       referral: searchParams.get("referral") ?? undefined,
-      tickets: [Number(Math.floor(Math.random() * 10000000) + 1).toString(16)],
     });
   };
 
@@ -80,10 +82,10 @@ function CreateTicket(props: { poolList: Array<LotteryPoolProps>; [propNames: st
                   setBuyParam({ ...buyParam, poolCode: _.target.value });
                 }}
               >
-                {props?.poolList?.map((p) => {
+                {props?.poolStateList?.map((p) => {
                   return (
-                    <option key={p.poolCode} value={p.poolCode}>
-                      {p.name}
+                    <option key={p.pool.poolCode} value={p.pool.poolCode}>
+                      {p.pool.name}
                     </option>
                   );
                 })}
