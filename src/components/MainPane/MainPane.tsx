@@ -1,10 +1,11 @@
 // components/MainPane.tsx
 import { type FC } from "react";
 
-import { Box, Flex, Heading, useColorMode } from "@chakra-ui/react";
+import { Box, Heading, useColorMode } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 
+// import LotteryMain from "@/app/_components/LotteryMain";
 import { Prize } from "@/components/MainPane/components/Prize";
 import styles from "@/styles/mainPane.module.css";
 
@@ -24,25 +25,8 @@ const MainPane: FC = () => {
       </Heading>
       <Prize />
 
-      <Flex className={styles.content}>
-        {isConnected ? (
-          <>
-            {/* <LotteryMain /> */}
-
-            <Flex
-              w={"100%"}
-              display={"flex"}
-              justifyContent={"space-around"}
-              flexWrap={"wrap"}
-              gap={5}
-            >
-              <BuyTicket />
-            </Flex>
-          </>
-        ) : (
-          <ConnectButton />
-        )}
-      </Flex>
+      {isConnected ? <BuyTicket /> : <ConnectButton />}
+      {/* <LotteryMain /> */}
     </Box>
   );
 };

@@ -1,7 +1,7 @@
 // components/MainPane.tsx
 import { type FC } from "react";
 
-import { Box, Flex, Heading, useColorMode } from "@chakra-ui/react";
+import { Box, Heading, useColorMode } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 
@@ -21,7 +21,7 @@ const TicketList: FC = () => {
         Your Tickets
       </Heading>
 
-      <Flex className={styles.content}>{isConnected ? <TicketTable /> : <ConnectButton />}</Flex>
+      {isConnected ? <TicketTable /> : <ConnectButton />}
     </Box>
   );
 };

@@ -24,7 +24,7 @@ import type { PhaseResult, PoolType } from "@/server/lib/LotteryService";
 function PoolState(props: { title: string; pool: PoolType; phaseResult: PhaseResult | undefined }) {
   const { address } = useAccount();
   const { title, pool, phaseResult } = props;
-  console.log(props);
+
   return (
     <>
       <StatGroup>

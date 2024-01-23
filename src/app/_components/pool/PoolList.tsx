@@ -23,7 +23,7 @@ import { cronExpressionToDescription } from "@/utils/cronExpressionToDesc";
 function PoolList() {
   const { data } = api.pool.poolStateList.useQuery();
   const records = data?.result as Array<PoolStateType>;
-  console.log(records);
+
   records?.sort((a, b) => b.pool.name.localeCompare(a.pool.name));
 
   return (
