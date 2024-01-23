@@ -30,6 +30,7 @@ export const userRouter = createTRPCRouter({
           tickets,
           txTime: input.txTime,
           poolCode: input.poolCode,
+          currentPhase: "No start",
         });
         return { code: 200, message: "OK", result: r };
       } catch (error: unknown) {
