@@ -18,7 +18,7 @@ export const lotteryRouter = createTRPCRouter({
         return { code: 200, message: "ok", result: phase };
       } catch (error: unknown) {
         console.error("Error init");
-        console.log(error);
+        console.error(error);
         return { code: 500, message: "error" };
       }
     }),

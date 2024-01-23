@@ -49,7 +49,6 @@ export const poolRouter = createTRPCRouter({
       try {
         return { code: 200, message: "OK", result: input.poolCode };
       } catch (error: unknown) {
-        console.error("Error init");
         console.log(error);
         return { code: 500, message: "error" };
       }

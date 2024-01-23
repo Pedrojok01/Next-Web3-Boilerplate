@@ -42,8 +42,7 @@ export const adminRouter = createTRPCRouter({
       });
       return { code: 200, message: "OK", result: r1 };
     } catch (error: unknown) {
-      console.error("Error init");
-      console.log(error);
+      console.log("Admin tsx Error init", error);
       return { code: 500, message: "error" };
     }
   }),

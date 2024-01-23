@@ -29,7 +29,6 @@ function PoolList() {
   const { address } = useAccount();
   const { data } = api.pool.poolList.useQuery();
   const records = data?.result as Array<LotteryPoolProps>;
-  console.log(records);
   // const records = [...poolList];
   records?.sort((a, b) => b.name.localeCompare(a.name));
 

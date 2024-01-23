@@ -44,7 +44,6 @@ function CreateTicket(props: { poolList: Array<LotteryPoolProps>; [propNames: st
     },
   });
   const submitted = () => {
-    console.log(address, buyParam);
     if (!address || !buyParam.poolCode) {
       return;
     }
@@ -78,7 +77,6 @@ function CreateTicket(props: { poolList: Array<LotteryPoolProps>; [propNames: st
               <Select
                 value={buyParam.poolCode}
                 onChange={(_) => {
-                  console.log(_.target.value);
                   setBuyParam({ ...buyParam, poolCode: _.target.value });
                 }}
               >

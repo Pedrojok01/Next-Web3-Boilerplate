@@ -4,7 +4,7 @@ import { Stat, StatArrow, StatGroup, StatHelpText, StatLabel, StatNumber } from 
 
 function PoolStat(props: { poolCode: string }) {
   const { poolCode } = props;
-  console.log(poolCode);
+  console.log("TODO PoolStat", poolCode);
   return (
     <StatGroup>
       <Stat>

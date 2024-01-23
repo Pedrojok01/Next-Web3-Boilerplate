@@ -28,8 +28,6 @@ function Admin() {
 
   const { data } = api.pool.poolList.useQuery();
   const records = data?.result as Array<LotteryPoolProps>;
-  console.log(records);
-  // const records = [...poolList];
   records?.sort((a, b) => a.name.localeCompare(b.name));
   const initPool = api.admin.initPool.useMutation({
     onSuccess: (data) => {
