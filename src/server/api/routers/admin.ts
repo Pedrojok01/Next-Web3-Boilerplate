@@ -1,5 +1,3 @@
-import { nanoid } from "nanoid";
-
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { kvStore } from "@/server/lib/kv/Persistence";
 import {
@@ -20,24 +18,29 @@ export const adminRouter = createTRPCRouter({
         poolCode: "System-PowerBlast-0001",
         difficulty: Difficulty.MATCH,
         period: "*/30 * * * *",
+        price: 0.001,
       };
-      const buzz: LotteryPoolProps = {
-        name: "Buzz",
-        poolCode: nanoid(),
+      const lotto: LotteryPoolProps = {
+        name: "DailyLotto",
+        poolCode: "System-DailyLotto-0002",
+        difficulty: Difficulty.CLOSE,
+        period: "* * */1 * *",
+        price: 0.001,
+      };
+      const bang: LotteryPoolProps = {
+        name: "BigBang",
+        poolCode: "System-BigBang-0003",
         difficulty: Difficulty.CLOSE,
         period: "*/5 * * * *",
-      };
-      const jolt: LotteryPoolProps = {
-        name: "Jolt",
-        poolCode: nanoid(),
-        difficulty: Difficulty.CLOSE,
-        period: "*/5 * * * *",
+        price: 0.001,
       };
       await kvStore.clean("LOTTERY*");
-      const r1 = await kvStore.save(Namespace.LOTTERY_POOLS, power.poolCode, power);
-      const r2 = await kvStore.save(Namespace.LOTTERY_POOLS, buzz.poolCode, buzz);
-      const r3 = await kvStore.save(Namespace.LOTTERY_POOLS, jolt.poolCode, jolt);
-      return { code: 200, message: "OK", result: [r1, r2, r3] };
+      const r1 = await kvStore.save(Namespace.LOTTERY_POOLS, {
+        [power.poolCode]: power,
+        [lotto.poolCode]: lotto,
+        [bang.poolCode]: bang,
+      });
+      return { code: 200, message: "OK", result: r1 };
     } catch (error: unknown) {
       console.error("Error init");
       console.log(error);

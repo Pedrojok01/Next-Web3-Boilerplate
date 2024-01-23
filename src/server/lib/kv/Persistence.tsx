@@ -24,7 +24,7 @@ export type Persistence = {
    * @param key
    * @param val
    */
-  save: (namespace: unknown, key: string, val: { [propName: string]: unknown }) => Promise<boolean>;
+  save: (namespace: unknown, kv: { [propName: string]: unknown }) => Promise<boolean>;
   /**
    * get by key
    * @param namespace
@@ -70,8 +70,8 @@ class KvPersistence implements Persistence {
     return data ?? {};
   }
 
-  async save(namespace: unknown, key: string, val: { [p: string]: unknown }): Promise<boolean> {
-    const data = await this.client.hsetnx(namespace as string, key, val);
+  async save(namespace: unknown, kv: { [p: string]: unknown }): Promise<boolean> {
+    const data = await this.client.hset(namespace as string, kv);
     return data == 1;
   }
 

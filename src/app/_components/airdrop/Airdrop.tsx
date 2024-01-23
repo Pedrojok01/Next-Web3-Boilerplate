@@ -16,7 +16,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-function Referral() {
+function Airdrop() {
   return (
     <Card maxW="md">
       <CardHeader>
@@ -72,4 +72,4 @@ function Referral() {
   );
 }
 
-export default Referral;
+export default Airdrop;

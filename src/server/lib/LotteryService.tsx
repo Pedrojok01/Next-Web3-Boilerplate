@@ -25,6 +25,7 @@ type LotteryPoolProps = {
   name: string;
   difficulty: Difficulty;
   period: string;
+  price: number;
   lastResult?: PhaseResult;
   currentPhase?: string;
   lastPhase?: string;
