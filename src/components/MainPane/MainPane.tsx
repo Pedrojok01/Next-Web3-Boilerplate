@@ -4,8 +4,7 @@ import { type FC } from "react";
 import { Box, Divider, Flex, Heading, useColorMode } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 
-import PoolList from "@/app/_components/PoolList";
-import Ticket from "@/app/_components/Ticket";
+import LotteryMain from "@/app/_components/LotteryMain";
 import styles from "@/styles/mainPane.module.css";
 
 import {
@@ -36,6 +35,7 @@ const MainPane: FC = () => {
 
         {isConnected && (
           <>
+            <LotteryMain />
             <Address />
             <Chain />
             <Balance />
@@ -55,8 +55,6 @@ const MainPane: FC = () => {
             </Flex>
           </>
         )}
-        <PoolList />
-        <Ticket />
       </Flex>
     </Box>
   );

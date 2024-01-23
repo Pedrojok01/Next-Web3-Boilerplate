@@ -13,20 +13,24 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import moment from "moment";
 import { useAccount } from "wagmi";
 
+import type { TicketProps } from "@/server/lib/LotteryService";
 import { api } from "@/trpc/react";
 
-function Ticket() {
+function MyTickets() {
   const { address } = useAccount();
 
   const { data } = api.user.ticketsList.useQuery({ address: address ?? "alec-test-address" });
-  const records = data?.result as Record<string, { poolHash: string, txTime: number, data: Array<string> }>;
+  const records = data?.result as Record<string, TicketProps>;
+  const tickets = Object.values(records ?? {});
+  tickets?.sort((a, b) => a.txTime - b.txTime);
 
   return (
     <Box>
       <Heading as="h2" fontSize={"1.5rem"} mb={10} className="text-shadow">
-        Ticket List
+        My Ticket List
       </Heading>
       <TableContainer>
         <Table variant="striped" colorScheme="teal">
@@ -34,8 +38,9 @@ function Ticket() {
           <Thead>
             <Tr>
               <Th isNumeric>Index</Th>
-              <Th>TxHash</Th>
+              <Th>Phase</Th>
               <Th>Tickets</Th>
+              <Th>TxHash</Th>
               <Th>Pool</Th>
               <Th>TxTime</Th>
             </Tr>
@@ -45,10 +50,11 @@ function Ticket() {
               return (
                 <Tr key={`ticket-${key}`}>
                   <Td isNumeric>{index}</Td>
+                  <Td>{records[key].currentPhase?.slice(-14)}</Td>
+                  <Td>{JSON.stringify(records[key].tickets)}</Td>
                   <Td>{key}</Td>
-                  <Td>{JSON.stringify(records[key].data)}</Td>
-                  <Td>{records[key].poolHash}</Td>
-                  <Td>{records[key].txTime}</Td>
+                  <Td>{records[key].poolCode}</Td>
+                  <Td>{moment(records[key].txTime).format("YYYY-MM-DD HH:mm:ss")}</Td>
                 </Tr>
               );
             })}
@@ -60,4 +66,4 @@ function Ticket() {
   );
 }
 
-export default Ticket;
+export default MyTickets;

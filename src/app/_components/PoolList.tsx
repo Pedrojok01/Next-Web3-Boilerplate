@@ -1,79 +1,51 @@
 import React from "react";
 
+import { CheckCircleIcon, CloseIcon } from "@chakra-ui/icons";
 import {
+  Alert,
   Box,
-  Button,
   Card,
   CardBody,
   CardFooter,
-  Divider,
   Heading,
+  Icon,
   Image,
+  List,
+  ListItem,
   Stack,
   StackDivider,
+  Tag,
   Text,
 } from "@chakra-ui/react";
-import { nanoid } from "nanoid";
 import { useAccount } from "wagmi";
 
-import { Difficulty } from "@/server/lib/types";
+import CreateTicket from "@/app/_components/CreateTicket";
+import { type LotteryPoolProps } from "@/server/lib/LotteryService";
 import { api } from "@/trpc/react";
+import { cronExpressionToDescription } from "@/utils/cronExpressionToDesc";
 
 function PoolList() {
-  const { isConnected, address } = useAccount();
-  const saveOrUpdate = api.user.saveTickets.useMutation({
-    onSuccess: (data) => {
-      console.log(data.result);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-  const submitted = (poolHash: string) => {
-    if (!address || !poolHash) {
-      return;
-    }
-    saveOrUpdate.mutate({
-      address,
-      poolHash,
-      txHash: nanoid(5),
-      txTime: new Date().getTime(),
-    });
-  };
-
+  const { address } = useAccount();
   const { data } = api.pool.poolList.useQuery();
-  const records = data?.result as Record<
-    string,
-    {
-      poolHash: string;
-      name: string;
-      difficulty: Difficulty;
-      period: number;
-    }
-  >;
-
-  const initPool = api.pool.initPool.useMutation({
-    onSuccess: (data) => {
-      console.log(data.result);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
+  const records = data?.result as Array<LotteryPoolProps>;
+  console.log(records);
+  // const records = [...poolList];
+  records?.sort((a, b) => b.name.localeCompare(a.name));
 
   return (
-    <Stack spacing="4">
-      {Object.keys(records ?? {}).map((key) => {
+    <Stack spacing="3">
+      <CreateTicket poolList={records} />
+      {records?.map((entry) => {
         return (
           <Card
             direction={{ base: "column", sm: "row" }}
             overflow="hidden"
             variant="outline"
-            key={key}
+            key={entry.poolCode}
           >
             <Image
               objectFit="cover"
-              maxW={{ base: "100%", sm: "200px" }}
+              maxW={{ base: "100%", sm: "150px" }}
               src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
               alt="Caffe Latte"
             />
@@ -82,61 +54,60 @@ function PoolList() {
               <Stack divider={<StackDivider />} spacing="4">
                 <Box>
                   <Heading size="xs" textTransform="uppercase">
-                    {records[key].name}
+                    <Tag>
+                      {entry.name}【{entry.poolCode}】
+                    </Tag>{" "}
+                    <Tag bg="red.200">{entry.difficulty}</Tag>
+                  </Heading>
+
+                  <Alert fontSize={"sm"} status={"info"}>
+                    ({cronExpressionToDescription(entry.period)})
+                  </Alert>
+                </Box>
+                <Box>
+                  <Heading size="xs" textTransform="uppercase">
+                    Lottery Current Phase
                   </Heading>
                   <Text pt="2" fontSize="sm">
-                    {records[key].difficulty}({records[key].period})
+                    <Tag bg={"blue.500"}> {entry.currentPhase?.slice(-14) ?? "###"}</Tag>
                   </Text>
                 </Box>
                 <Box>
                   <Heading size="xs" textTransform="uppercase">
-                    Lottery results
+                    Lottery Last Results
                   </Heading>
-                  <Text pt="2" fontSize="sm">
-                    Check out the overview of your clients.
-                  </Text>
-                </Box>
-                <Box>
-                  <Heading size="xs" textTransform="uppercase">
-                    Lottery hits
-                  </Heading>
-                  <Text pt="2" fontSize="sm">
-                    See a detailed analysis of all your business clients.
-                  </Text>
+                  <List spacing={2} pt="2">
+                    <ListItem>
+                      {entry.lastResult?.lotteryResult && (
+                        <Tag>
+                          ({entry.lastPhase?.slice(-14) ?? "###"}) (
+                          {entry.lastResult?.lotteryResult})
+                        </Tag>
+                      )}
+                    </ListItem>
+                    <ListItem>
+                      {entry.lastResult?.hitAddr && (
+                        <Tag color="green.700">
+                          {entry.lastResult?.hitAddr ?? "#############"}#
+                          {entry.lastResult?.hitTicket ?? "###"}
+                        </Tag>
+                      )}
+                    </ListItem>
+                    <ListItem>
+                      {entry.lastResult?.hitAddr == address ? (
+                        <Icon as={CheckCircleIcon} w={8} h={8} color="green.500" />
+                      ) : (
+                        <Icon as={CloseIcon} w={8} h={8} color="red.500" />
+                      )}
+                    </ListItem>
+                  </List>
                 </Box>
               </Stack>
             </CardBody>
-            <CardFooter>
-              {isConnected ? (<Stack>
-                  <Button onClick={() => submitted(key)} variant="solid" colorScheme="blue">
-                    Buy Ticket
-                  </Button>
-                  <Button onClick={() => submitted(key)} variant="solid" colorScheme="red">
-                    Lottery
-                  </Button>
-                  <Button onClick={() => submitted(key)} variant="solid" colorScheme="green">
-                    Check Ticket
-                  </Button></Stack>
-              ) : (
-                <Button variant="solid" colorScheme="blue">
-                  Connect Wallet
-                </Button>
-              )}
-            </CardFooter>
+            <CardFooter></CardFooter>
           </Card>
         );
       })}
-      <Divider mb={5} />
-      <Button
-        mb={5}
-        variant="ghost"
-        onClick={() => initPool.mutate()}
-        isLoading={initPool.isLoading}
-        className="custom-button"
-      >
-        Init Pool
-      </Button>
-      <Divider mb={5} />
     </Stack>
   );
 }

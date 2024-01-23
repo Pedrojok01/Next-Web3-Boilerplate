@@ -1,19 +1,25 @@
-import { NextResponse } from "next/server";
+import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { lottery, type ResponseTPRC } from "@/server/lib/LotteryService";
 
 export const lotteryRouter = createTRPCRouter({
   /**
    * 开奖
    */
-  runLottery: publicProcedure.mutation(async () => {
-    try {
-      //const r = await kvStore.save("Tickets", input.txHash, { ticket: input.tickets });
-      return {};
-    } catch (error: unknown) {
-      console.error("Error init");
-      console.log(error);
-      return NextResponse.json({ message: error }, { status: 500 });
-    }
-  }),
+  phaseLottery: publicProcedure
+    .input(z.object({ poolCode: z.string(), lotteryResult: z.optional(z.string()) }))
+    .mutation(async ({ input }): Promise<ResponseTPRC> => {
+      try {
+        const phase = await lottery.phaseLottery(
+          input.poolCode,
+          input.lotteryResult ?? lottery.randomHex(),
+        );
+        return { code: 200, message: "ok", result: phase };
+      } catch (error: unknown) {
+        console.error("Error init");
+        console.log(error);
+        return { code: 500, message: "error" };
+      }
+    }),
 });

@@ -1,45 +1,47 @@
-import { NextResponse } from "next/server";
-import { z } from "zod";
+import { nanoid } from "nanoid";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { kvStore } from "@/server/lib/Persistence";
+import { kvStore } from "@/server/lib/kv/Persistence";
+import {
+  Difficulty,
+  type LotteryPoolProps,
+  Namespace,
+  type ResponseTPRC,
+} from "@/server/lib/LotteryService";
 
 export const adminRouter = createTRPCRouter({
   /**
-   * 池子列表
-   */
-  poolList: publicProcedure.input(z.object({ txHash: z.string() })).query(async ({ input }) => {
-    const result = await kvStore.get("Tickets", input.txHash);
-    return { res: result };
-  }),
-  /**
-   * 开奖
-   */
-  runLottery: publicProcedure
-    .input(z.object({ txHash: z.string(), tickets: z.array(z.string()) }))
-    .mutation(async ({ input }) => {
-      try {
-        const r = await kvStore.save("Tickets", input.txHash, { ticket: input.tickets });
-        return { r: r };
-      } catch (error: unknown) {
-        console.error("Error init");
-        console.log(error);
-        return NextResponse.json({ message: error }, { status: 500 });
-      }
-    }),
-  /**
    * 初始化池
    */
-  initPool: publicProcedure
-    .input(z.object({ txHash: z.string(), tickets: z.array(z.string()) }))
-    .mutation(async ({ input }) => {
-      try {
-        const r = await kvStore.save("Tickets", input.txHash, { ticket: input.tickets });
-        return { r: r };
-      } catch (error: unknown) {
-        console.error("Error init");
-        console.log(error);
-        return NextResponse.json({ message: error }, { status: 500 });
-      }
-    }),
+  initPool: publicProcedure.mutation(async (): Promise<ResponseTPRC> => {
+    try {
+      const power: LotteryPoolProps = {
+        name: "PowerBlast",
+        poolCode: "System-PowerBlast-0001",
+        difficulty: Difficulty.MATCH,
+        period: "*/30 * * * *",
+      };
+      const buzz: LotteryPoolProps = {
+        name: "Buzz",
+        poolCode: nanoid(),
+        difficulty: Difficulty.CLOSE,
+        period: "*/5 * * * *",
+      };
+      const jolt: LotteryPoolProps = {
+        name: "Jolt",
+        poolCode: nanoid(),
+        difficulty: Difficulty.CLOSE,
+        period: "*/5 * * * *",
+      };
+      await kvStore.clean("LOTTERY*");
+      const r1 = await kvStore.save(Namespace.LOTTERY_POOLS, power.poolCode, power);
+      const r2 = await kvStore.save(Namespace.LOTTERY_POOLS, buzz.poolCode, buzz);
+      const r3 = await kvStore.save(Namespace.LOTTERY_POOLS, jolt.poolCode, jolt);
+      return { code: 200, message: "OK", result: [r1, r2, r3] };
+    } catch (error: unknown) {
+      console.error("Error init");
+      console.log(error);
+      return { code: 500, message: "error" };
+    }
+  }),
 });
