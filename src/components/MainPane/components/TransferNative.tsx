@@ -85,12 +85,7 @@ const TransferNative: FC = () => {
           </NumberInputStepper>
         </NumberInput>
 
-        <Button
-          variant="ghost"
-          onClick={handleTransfer}
-          isLoading={isLoading || isPending}
-          className="custom-button"
-        >
+        <Button onClick={handleTransfer} isLoading={isLoading || isPending}>
           Transfer
         </Button>
       </HStack>

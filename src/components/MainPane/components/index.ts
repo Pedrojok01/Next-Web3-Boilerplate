@@ -5,3 +5,4 @@ export { default as Balance } from "./Balance";
 export { default as BlockNumber } from "./BlockNumber";
 export { default as SignMessage } from "./SignMessage";
 export { default as TransferNative } from "./TransferNative";
+export { default as BuyTicket } from "./BuyTicket";
