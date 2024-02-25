@@ -1,6 +1,17 @@
-import { getDefaultWallets, connectorsForWallets } from "@rainbow-me/rainbowkit";
-import { argentWallet, ledgerWallet } from "@rainbow-me/rainbowkit/wallets";
-import { configureChains, createConfig } from "wagmi";
+"use client";
+import { connectorsForWallets } from "@rainbow-me/rainbowkit";
+import {
+  argentWallet,
+  coinbaseWallet,
+  ledgerWallet,
+  metaMaskWallet,
+  rabbyWallet,
+  rainbowWallet,
+  safeWallet,
+  walletConnectWallet,
+} from "@rainbow-me/rainbowkit/wallets";
+import type { Transport } from "viem";
+import { createConfig, http } from "wagmi";
 import {
   mainnet,
   sepolia,
@@ -11,51 +22,87 @@ import {
   arbitrum,
   arbitrumGoerli,
   zkSync,
-  zkSyncTestnet,
+  zkSyncSepoliaTestnet,
+  linea,
+  lineaTestnet,
   base,
   baseGoerli,
+  bsc,
+  bscTestnet,
 } from "wagmi/chains";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { publicProvider } from "wagmi/providers/public";
 
-const alchemyApiKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
+import linea_logo from "../public/img/linea_logo.png";
+import lineaTesnet_logo from "../public/img/lineaTesnet_logo.png";
+import zksync_logo from "../public/img/zksync_logo.svg";
+
 const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
-if (!alchemyApiKey || !walletConnectProjectId) {
-  throw new Error("Some ENV variables are not defined");
+if (!walletConnectProjectId) {
+  throw new Error("WalletConnect project ID is not defined");
 }
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
+const connectors = connectorsForWallets(
   [
-    ...(process.env.NODE_ENV === "production"
-      ? [mainnet, optimism, polygon, arbitrum, zkSync, base]
-      : [sepolia, optimismGoerli, polygonMumbai, arbitrumGoerli, zkSyncTestnet, baseGoerli]),
+    {
+      groupName: "Other",
+      wallets: [
+        metaMaskWallet,
+        rainbowWallet,
+        walletConnectWallet,
+        ledgerWallet,
+        rabbyWallet,
+        coinbaseWallet,
+        argentWallet,
+        safeWallet,
+      ],
+    },
   ],
-  [alchemyProvider({ apiKey: alchemyApiKey }), publicProvider()],
+  { appName: "Next-Web3-Boilerplate", projectId: walletConnectProjectId },
 );
 
-const { wallets } = getDefaultWallets({
-  appName: "Next-Web3-Boilerplate",
-  projectId: walletConnectProjectId,
-  chains,
-});
+// Fix missing icons
+const customZkSyncSepoliaTestnet = { ...zkSyncSepoliaTestnet, iconUrl: zksync_logo.src };
+const customLinea = { ...linea, iconUrl: linea_logo.src };
+const customLineaTestnet = { ...lineaTestnet, iconUrl: lineaTesnet_logo.src };
 
-const connectors = connectorsForWallets([
-  ...wallets,
-  {
-    groupName: "Other",
-    wallets: [
-      argentWallet({ projectId: walletConnectProjectId, chains }),
-      ledgerWallet({ projectId: walletConnectProjectId, chains }),
-    ],
-  },
-]);
-
-export const config = createConfig({
-  autoConnect: true,
+const transports: Record<number, Transport> = {
+  [mainnet.id]: http(),
+  [sepolia.id]: http(),
+  [polygon.id]: http(),
+  [polygonMumbai.id]: http(),
+  [optimism.id]: http(),
+  [optimismGoerli.id]: http(),
+  [arbitrum.id]: http(),
+  [arbitrumGoerli.id]: http(),
+  [zkSync.id]: http(),
+  [zkSyncSepoliaTestnet.id]: http(),
+  [linea.id]: http(),
+  [lineaTestnet.id]: http(),
+  [base.id]: http(),
+  [baseGoerli.id]: http(),
+  [bsc.id]: http(),
+  [bscTestnet.id]: http(),
+};
+export const wagmiConfig = createConfig({
+  chains: [
+    mainnet,
+    sepolia,
+    polygon,
+    polygonMumbai,
+    optimism,
+    optimismGoerli,
+    arbitrum,
+    arbitrumGoerli,
+    customLinea,
+    customLineaTestnet,
+    zkSync,
+    customZkSyncSepoliaTestnet,
+    base,
+    baseGoerli,
+    bsc,
+    bscTestnet,
+  ],
   connectors,
-  publicClient,
-  webSocketPublicClient,
+  transports,
+  ssr: true,
 });
-
-export { chains };

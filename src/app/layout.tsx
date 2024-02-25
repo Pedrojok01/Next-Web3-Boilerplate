@@ -17,8 +17,6 @@ export const metadata: Metadata = {
     name: "Pedrojok01",
     url: "https://github.com/Pedrojok01/Next-Web3-Boilerplate",
   },
-  themeColor: "dark",
-  viewport: "width=device-width, initial-scale=1",
   icons: "favicon.ico",
   manifest: "site.webmanifest",
 };

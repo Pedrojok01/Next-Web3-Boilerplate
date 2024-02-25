@@ -5,7 +5,7 @@ import { Button, Input, VStack } from "@chakra-ui/react";
 import { useSignMessageHook, useNotify } from "@/hooks";
 
 const SignMessage: FC = () => {
-  const { signature, recoveredAddress, error, isLoading, signMessage } = useSignMessageHook();
+  const { signature, recoveredAddress, error, isPending, signMessage } = useSignMessageHook();
   const [messageAuth, setMessageAuth] = useState<string>("");
   const { notifyError, notifySuccess } = useNotify();
 
@@ -52,7 +52,7 @@ const SignMessage: FC = () => {
       <Button
         variant="ghost"
         onClick={handleSignMessage}
-        isLoading={isLoading}
+        isLoading={isPending}
         className="custom-button"
       >
         Sign Message

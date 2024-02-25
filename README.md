@@ -21,6 +21,7 @@
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [Update:](#update)
 - [Description](#description)
 - [Built With](#built-with)
 - [Installation](#installation)
@@ -31,6 +32,16 @@
   - [To start the Next-Web3-Boilerplate:](#to-start-the-next-web3-boilerplate)
 - [Features:](#features)
 - [⭐️ ... and don't forget to leave a star if you like it! ⭐️](#️--and-dont-forget-to-leave-a-star-if-you-like-it-️)
+
+
+## Update:
+
+2024-02:
+
+- Switched to Next.js v14;
+- Switched to Viem & Wagmi v2;
+- Add support for  `Linea`, `lineaTestnet`, `Bsc` & `bscTestnet` networks;
+- Bump all dependencies to latest versions;
 
 
 ## Description
@@ -85,10 +96,7 @@ Remove the `.example` from the `.env.example` file name at the root of the proje
 
 ```js
 NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID = "Project ID needed for WalletConnect v2 here";
-NEXT_PUBLIC_ALCHEMY_API_KEY = "Your Alchemy API key here";
 ```
-
-You can also use any other node provider instead or in addition to [Alchemy](https://www.alchemy.com/).
 
 ### To start the Next-Web3-Boilerplate:
 
@@ -131,9 +139,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[nextjs]: https://img.shields.io/badge/Next.js_v13.5-000000?style=for-the-badge&logo=next.js&logoColor=FFFFFF
+[nextjs]: https://img.shields.io/badge/Next.js_v14.1-000000?style=for-the-badge&logo=next.js&logoColor=FFFFFF
 [nextjs-url]: https://nextjs.org/
-[typescript]: https://img.shields.io/badge/typescript_v5.2.2-375BD2?style=for-the-badge&logo=typescript&logoColor=61DAFB
+[typescript]: https://img.shields.io/badge/typescript_v5.3.3-375BD2?style=for-the-badge&logo=typescript&logoColor=61DAFB
 [typescript-url]: https://www.typescriptlang.org/
 [chakraui]: https://img.shields.io/badge/ChakraUI-purple?style=for-the-badge&logo=ChakraUI&logoColor=319795
 [chakraui-url]: https://chakra-ui.com/

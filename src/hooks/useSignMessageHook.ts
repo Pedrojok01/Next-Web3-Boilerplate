@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { recoverMessageAddress } from "viem";
-import { type Address, useSignMessage } from "wagmi";
+import { recoverMessageAddress, type Address } from "viem";
+import { useSignMessage } from "wagmi";
 
 export function useSignMessageHook() {
   const [recoveredAddress, setRecoveredAddress] = useState<Address>();
-  const { data: signature, variables, error, isLoading, signMessage } = useSignMessage();
+  const { data: signature, variables, error, isPending, signMessage } = useSignMessage();
 
   const recoverAddress = useCallback(async () => {
     if (variables?.message && signature) {
@@ -21,5 +21,5 @@ export function useSignMessageHook() {
     recoverAddress();
   }, [recoverAddress]);
 
-  return { signature, recoveredAddress, error, isLoading, signMessage };
+  return { signature, recoveredAddress, error, isPending, signMessage };
 }

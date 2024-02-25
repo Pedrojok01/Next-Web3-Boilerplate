@@ -2,13 +2,13 @@ import React, { useCallback, type FC, type ChangeEvent } from "react";
 
 import { Box, Input, InputGroup, InputLeftAddon, Spinner } from "@chakra-ui/react";
 import Image from "next/image";
-import warningImage from "public/img/warning.svg";
 import { isAddress, zeroAddress } from "viem";
 import { useEnsResolver } from "wagmi";
 
 import { useDebounce, useNotify } from "@/hooks";
 
 import Jazzicons from "./Jazzicons";
+import warningImage from "../../../public/img/warning.svg";
 
 interface AddressInputProps {
   receiver: string;
@@ -55,8 +55,8 @@ const AddressInput: FC<AddressInputProps> = ({ receiver, setReceiver }) => {
     const validAddress = isValidEthAddress(receiver)
       ? receiver
       : isAddress(resolvedAddress as string) && resolvedAddress !== zeroAddress
-      ? resolvedAddress
-      : undefined;
+        ? resolvedAddress
+        : undefined;
 
     if (validAddress) return <Jazzicons seed={validAddress.toLowerCase()} size={30} />;
     if (!resolvedAddress && receiver && !isResolvingInProgress)

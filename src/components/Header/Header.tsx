@@ -4,10 +4,10 @@ import { type FC } from "react";
 import { HStack, Heading } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
-import logo from "public/img/logo_transparent.png";
 
 import { useWindowSize } from "@/hooks/useWindowSize";
 
+import logo from "../../../public/img/logo_transparent.png";
 import { DarkModeButton } from "../DarkModeButton";
 
 const Header: FC = () => {

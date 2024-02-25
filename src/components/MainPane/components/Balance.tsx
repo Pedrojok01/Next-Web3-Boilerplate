@@ -6,10 +6,7 @@ import { InfoText } from "@/components";
 
 const Balance: FC = (): JSX.Element => {
   const { address } = useAccount();
-  const { data } = useBalance({
-    address,
-    watch: true,
-  });
+  const { data } = useBalance({ address });
 
   const displayBalance = data?.formatted ? `Ξ ${data?.formatted}` : "0";
 

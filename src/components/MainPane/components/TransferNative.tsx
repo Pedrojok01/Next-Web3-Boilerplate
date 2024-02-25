@@ -10,15 +10,15 @@ import {
   NumberInputStepper,
   VStack,
 } from "@chakra-ui/react";
-import { parseEther } from "viem";
-import { useSendTransaction, useWaitForTransaction } from "wagmi";
+import { isAddress, parseEther } from "viem";
+import { useSendTransaction, useWaitForTransactionReceipt } from "wagmi";
 
 import { AddressInput } from "@/components";
 import { useNotify } from "@/hooks";
 
 const TransferNative: FC = () => {
-  const { data, error, isLoading, isError, sendTransaction } = useSendTransaction();
-  const { data: receipt, isLoading: isPending } = useWaitForTransaction({ hash: data?.hash });
+  const { data, error, isPending, isError, sendTransaction } = useSendTransaction();
+  const { data: receipt, isLoading } = useWaitForTransactionReceipt({ hash: data });
   const { notifyError, notifySuccess } = useNotify();
   const [amount, setAmount] = useState<string>("0");
   const [receiver, setReceiver] = useState<string>("");
@@ -28,7 +28,7 @@ const TransferNative: FC = () => {
   };
 
   const handleTransfer = () => {
-    if (!receiver) {
+    if (receiver.length === 0 || !isAddress(receiver)) {
       return notifyError({
         title: "Error:",
         message: "The receiver address is not set!",
