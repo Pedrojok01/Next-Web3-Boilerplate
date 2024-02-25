@@ -38,13 +38,15 @@ import zksync_logo from "../public/img/zksync_logo.svg";
 const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
 if (!walletConnectProjectId) {
-  throw new Error("WalletConnect project ID is not defined");
+  throw new Error(
+    "WalletConnect project ID is not defined. Please check your environment variables.",
+  );
 }
 
 const connectors = connectorsForWallets(
   [
     {
-      groupName: "Other",
+      groupName: "Recommended",
       wallets: [
         metaMaskWallet,
         rainbowWallet,
