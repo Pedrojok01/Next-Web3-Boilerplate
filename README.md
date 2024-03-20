@@ -27,7 +27,7 @@
 - [Installation](#installation)
   - [Make sure you have the following ready:](#make-sure-you-have-the-following-ready)
   - [Once your config is ready, create a new repo, open your favorite code editor, and clone the repo with the following cmd:](#once-your-config-is-ready-create-a-new-repo-open-your-favorite-code-editor-and-clone-the-repo-with-the-following-cmd)
-  - [Install all package dependancies by running:](#install-all-package-dependancies-by-running)
+  - [Install all package dependencies by running:](#install-all-package-dependencies-by-running)
   - [Add your API keys in the .env file:](#add-your-api-keys-in-the-env-file)
   - [To start the Next-Web3-Boilerplate:](#to-start-the-next-web3-boilerplate)
 - [Features:](#features)
@@ -41,7 +41,7 @@
 - Switched to Next.js v14;
 - Switched to Viem & Wagmi v2;
 - Add support for  `Linea`, `lineaTestnet`, `Bsc` & `bscTestnet` networks;
-- Bump all dependencies to latest versions;
+- Bump all dependencies to the latest versions;
 
 
 ## Description
@@ -65,8 +65,8 @@ Try it yourself: [https://next-web3-boilerplate.com/](https://next-web3-boilerpl
 
 ### Make sure you have the following ready:
 
-- [node.js](https://nodejs.org/) installed (developped on LTS v18)
-- [typescript](https://www.typescriptlang.org/) installed (developped on v5.2.2)
+- [node.js](https://nodejs.org/) installed (developed on LTS v18)
+- [typescript](https://www.typescriptlang.org/) installed (developed on v5.3.3)
 - [bun](https://bun.sh/) or [pnpm](https://pnpm.io/) or [yarn](https://yarnpkg.com/) or [npm](https://www.npmjs.com/) installed
 - [MetaMask](https://metamask.io/) (or any web3 compatible wallet) installed in your browser
 
@@ -76,7 +76,7 @@ Try it yourself: [https://next-web3-boilerplate.com/](https://next-web3-boilerpl
 git clone https://github.com/Pedrojok01/Next-Web3-Boilerplate.git .
 ```
 
-### Install all package dependancies by running:
+### Install all package dependencies by running:
 
 ```bash
 bun install
@@ -88,11 +88,10 @@ yarn install
 npm install
 ```
 
-<b>IMPORTANT: Double check your package.json to make sure you've installed the exact same version for all @web3-react packages. Since the version 8+ is still in beta, it may not be automatically installed.</b>
 
 ### Add your API keys in the .env file:
 
-Remove the `.example` from the `.env.example` file name at the root of the project and add you API keys inside. The WalletConnect project ID is now required since the v2 update. The can create one easily on the [WalletConnect dashboard](https://cloud.walletconnect.com/).
+Remove the `.example` from the `.env.example` file name at the root of the project and add your API keys inside. The WalletConnect project ID is now required since the v2 update. You can create one easily on the [WalletConnect dashboard](https://cloud.walletconnect.com/).
 
 ```js
 NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID = "Project ID needed for WalletConnect v2 here";
