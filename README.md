@@ -33,20 +33,18 @@
 - [Features:](#features)
 - [⭐️ ... and don't forget to leave a star if you like it! ⭐️](#️--and-dont-forget-to-leave-a-star-if-you-like-it-️)
 
-
 ## Update:
 
 2024-02:
 
 - Switched to Next.js v14;
 - Switched to Viem & Wagmi v2;
-- Add support for  `Linea`, `lineaTestnet`, `Bsc` & `bscTestnet` networks;
+- Add support for `Linea`, `lineaTestnet`, `Bsc` & `bscTestnet` networks;
 - Bump all dependencies to the latest versions;
-
 
 ## Description
 
-Simple and minimalist Web3 boilerplate to boost your Dapp development. Built using the latest tech outhere: [Next.js](https://nextjs.org/), [Viem](https://viem.sh/), [Wagmi](https://wagmi.sh/), [RainbowKit](https://www.rainbowkit.com/), [ChakraUI](https://chakra-ui.com/) and [Typescript](https://www.typescriptlang.org/). Eslint, Prettier and Husky already configured. The perfect starting point for your next web3 project.
+Simple and minimalist Web3 boilerplate to boost your Dapp development. Built using the latest tech out there: [Next.js](https://nextjs.org/), [Viem](https://viem.sh/), [Wagmi](https://wagmi.sh/), [RainbowKit](https://www.rainbowkit.com/), [ChakraUI](https://chakra-ui.com/), and [Typescript](https://www.typescriptlang.org/). Eslint, Prettier, and Husky are already configured. The perfect starting point for your next web3 project.
 
 Try it yourself: [https://next-web3-boilerplate.com/](https://next-web3-boilerplate.com/)
 
@@ -87,7 +85,6 @@ yarn install
 # or
 npm install
 ```
-
 
 ### Add your API keys in the .env file:
 
@@ -138,9 +135,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[nextjs]: https://img.shields.io/badge/Next.js_v14.1-000000?style=for-the-badge&logo=next.js&logoColor=FFFFFF
+[nextjs]: https://img.shields.io/badge/Next.js_v14.2-000000?style=for-the-badge&logo=next.js&logoColor=FFFFFF
 [nextjs-url]: https://nextjs.org/
-[typescript]: https://img.shields.io/badge/typescript_v5.3.3-375BD2?style=for-the-badge&logo=typescript&logoColor=61DAFB
+[typescript]: https://img.shields.io/badge/typescript_v5.4.5-375BD2?style=for-the-badge&logo=typescript&logoColor=61DAFB
 [typescript-url]: https://www.typescriptlang.org/
 [chakraui]: https://img.shields.io/badge/ChakraUI-purple?style=for-the-badge&logo=ChakraUI&logoColor=319795
 [chakraui-url]: https://chakra-ui.com/

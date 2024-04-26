@@ -12,7 +12,7 @@ const Footer: FC = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        Please, leave a ⭐️ on this boilerplate if you like it!
+        Don&apos;t forget to leave a ⭐️ on this boilerplate if you like it!
       </Link>
     </Box>
   );
