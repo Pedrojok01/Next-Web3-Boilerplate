@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   manifest: "site.webmanifest",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
       <body className={open_sans.className}>

@@ -9,7 +9,7 @@ import { WagmiProvider } from "wagmi";
 
 import { wagmiConfig } from "@/wagmi";
 
-export function Providers({ children }: { children: ReactNode }) {
+export function Providers({ children }: Readonly<{ children: ReactNode }>) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
