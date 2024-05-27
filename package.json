@@ -26,16 +26,13 @@
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.5",
     "@rainbow-me/rainbowkit": "2.0.5",
-    "@tanstack/react-query": "5.32.0",
     "@vercel/analytics": "1.2.2",
     "framer-motion": "11.1.7",
     "next": "14.2.3",
     "react": "18.3.0",
     "react-dom": "18.3.0",
     "react-jazzicon": "1.0.4",
-    "sharp": "0.33.3",
-    "viem": "2.9.27",
-    "wagmi": "2.5.22"
+    "sharp": "0.33.3"
   },
   "devDependencies": {
     "@types/node": "20.12.7",

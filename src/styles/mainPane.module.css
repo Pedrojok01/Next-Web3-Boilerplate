@@ -19,6 +19,12 @@
   justify-content: center;
 }
 
+.centerHStack {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+
 @media (width < 768px) {
   .container {
     width: 100%;

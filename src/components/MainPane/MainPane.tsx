@@ -1,20 +1,14 @@
 // components/MainPane.tsx
 import { type FC } from "react";
 
-import { Box, Divider, Flex, Heading, useColorMode } from "@chakra-ui/react";
+import { Box, Divider, Flex, HStack, Heading, Spacer, useColorMode } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 
 import styles from "@/styles/mainPane.module.css";
 
-import {
-  Status,
-  Address,
-  Chain,
-  Balance,
-  BlockNumber,
-  TransferNative,
-  SignMessage,
-} from "./components";
+import { Status, Address, Chain, ERC1919Balance, TransferNative, SignMessage } from "./components";
+import ContractStatus from "./components/ContractStatus";
+import { InfoText } from "../InfoText";
 
 const MainPane: FC = () => {
   const { isConnected } = useAccount();
@@ -25,19 +19,27 @@ const MainPane: FC = () => {
       className={styles.container}
       border={colorMode === "light" ? "none" : "1px solid rgba(152, 161, 192, 0.24)"}
     >
-      <Heading as="h2" fontSize={"2rem"} mb={10} className="text-shadow">
-        Display Info
-      </Heading>
+      <HStack className="centerHStack">
+        <Spacer />
+        <Heading as="h2" fontSize={"2rem"} mb={10} className="text-shadow">
+          Display Info
+        </Heading>
+        <Spacer />
+        <Status />
+        <Chain />
+        <Spacer />
+      </HStack>
 
       <Flex className={styles.content}>
-        <Status />
-
         {isConnected && (
           <>
             <Address />
-            <Chain />
-            <Balance />
-            <BlockNumber />
+            <InfoText
+              label="MTT3 Contract Address"
+              value="0x28915D1DF4d6d5dF90F0B4B3d626600b106953Bf"
+            />
+            <ContractStatus />
+            <ERC1919Balance />
 
             <Divider mb={5} />
 

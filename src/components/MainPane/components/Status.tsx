@@ -8,9 +8,9 @@ const Status: FC = (): JSX.Element => {
   const { isConnecting, isConnected } = useAccount();
 
   const statusMapping = {
-    isConnecting: "🟡 Connecting",
-    isConnected: "🟢 Connected",
-    default: "⚪️ Disconnected",
+    isConnecting: "🟡 Connecting Wallet",
+    isConnected: "🟢 Wallet Connected",
+    default: "⚪️ Wallet Disconnected",
   };
 
   let status = statusMapping.default;
