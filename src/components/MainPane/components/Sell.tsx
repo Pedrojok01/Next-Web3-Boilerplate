@@ -6,34 +6,35 @@ import { simulateContract, writeContract, waitForTransactionReceipt } from "@wag
 import { useNotify } from "@/hooks";
 
 import { abi } from "../../../contracts/abi";
+import useComponentReload from "../../../hooks/useComponentReload";
 import { wagmiConfig } from "../../../wagmi";
 
-interface BuyProps {
+interface SellProps {
   refreshData: () => void;
 }
 
-const Buy: FC<BuyProps> = ({ refreshData }): JSX.Element => {
-  const [value, setValue] = useState<number>(0.0001);
+const Sell: FC<SellProps> = ({ refreshData }): JSX.Element => {
+  const [value, setValue] = useState<number>(100);
   const { notifyError, notifySuccess } = useNotify();
+  const componentReload = useComponentReload();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setValue(Number(e.target.value));
   };
 
-  const handleBuy = (e: MouseEvent<HTMLButtonElement>): void => {
+  const handleSell = (e: MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
-    buyToken();
+    SellToken();
   };
 
-  const buyToken = async () => {
+  const SellToken = async () => {
     const finalValue = BigInt(value * 1e18);
 
     const { request } = await simulateContract(wagmiConfig, {
       abi,
       address: "0x28915D1DF4d6d5dF90F0B4B3d626600b106953Bf",
-      functionName: "mintTokens",
-      args: [],
-      value: finalValue,
+      functionName: "redeemTokens",
+      args: [finalValue],
     });
 
     const hash = await writeContract(wagmiConfig, request);
@@ -41,16 +42,17 @@ const Buy: FC<BuyProps> = ({ refreshData }): JSX.Element => {
 
     if (receipt.status === "success") {
       notifySuccess({
-        title: "Successfully bought tokens!",
+        title: "Successfully Sold tokens!",
         message: (
           <>
-            <b>ETH amount:</b> {value}
+            <b>MTT3 amount:</b> {value}
             <br />
           </>
         ),
       });
       // Call the parent's refreshData function
       refreshData();
+      componentReload();
     } else {
       console.log("Transaction failed: ", hash);
       notifyError({
@@ -62,20 +64,20 @@ const Buy: FC<BuyProps> = ({ refreshData }): JSX.Element => {
 
   return (
     <VStack w={"45%"} minWidth={"270px"} gap={2}>
-      <FormLabel htmlFor="buy">Buy MTT3 with ETH</FormLabel>
+      <FormLabel htmlFor="sell">Sell MTT3 to get ETH back</FormLabel>
       <Input
         value={value.toString()}
         onChange={handleInputChange}
         type="number"
         step={0.00001}
         min={0.00001}
-        placeholder="Enter a value in ETH"
+        placeholder="Enter The number of Tokens to Sell"
       />
-      <Button variant="ghost" className="custom-button1" onClick={handleBuy}>
-        Buy
+      <Button variant="ghost" className="custom-button2" onClick={handleSell}>
+        Sell
       </Button>
     </VStack>
   );
 };
 
-export default Buy;
+export default Sell;

@@ -1,20 +1,24 @@
 // components/MainPane.tsx
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 
 import { Box, Divider, Flex, HStack, Heading, Spacer, useColorMode } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 
 import styles from "@/styles/mainPane.module.css";
 
-import { Status, Address, Chain, ERC1919Balance, TransferNative } from "./components";
-import Buy from "./components/Buy";
+import { Status, Address, Chain, ERC1919Balance, Buy, Sell } from "./components";
 import ContractStatus from "./components/ContractStatus";
 import { InfoText } from "../InfoText";
 
 const MainPane: FC = () => {
   const { isConnected } = useAccount();
   const { colorMode } = useColorMode();
-  const [, setState] = useState("");
+  const [state, setState] = useState(false);
+
+  // make an alert when state changes
+  useEffect(() => {
+    alert("State changed!");
+  }, [state]);
 
   return (
     <Box
@@ -52,8 +56,8 @@ const MainPane: FC = () => {
               flexWrap={"wrap"}
               gap={5}
             >
-              <Buy refreshData={() => setState("")} />
-              <TransferNative />
+              <Buy refreshData={() => setState(!state)} />
+              <Sell refreshData={() => setState(!state)} />
             </Flex>
           </>
         )}
