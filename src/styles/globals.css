@@ -34,13 +34,27 @@ a {
   text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
 }
 
-.custom-button {
+.custom-button1 {
   border: var(--button-border);
   border-radius: 20px;
   box-shadow: var(--button-box-shadow);
   transition: var(--transition-ease);
+  background-color: rgb(109, 176, 8);
 }
 
-.custom-button:hover {
+.custom-button1:hover {
+  box-shadow: var(--button-box-shadow-hover);
+}
+
+
+.custom-button2 {
+  border: var(--button-border);
+  border-radius: 20px;
+  box-shadow: var(--button-box-shadow);
+  transition: var(--transition-ease);
+  background-color: red;
+}
+
+.custom-button2:hover {
   box-shadow: var(--button-box-shadow-hover);
 }

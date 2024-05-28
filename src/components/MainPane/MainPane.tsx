@@ -1,18 +1,20 @@
 // components/MainPane.tsx
-import { type FC } from "react";
+import { useState, type FC } from "react";
 
 import { Box, Divider, Flex, HStack, Heading, Spacer, useColorMode } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 
 import styles from "@/styles/mainPane.module.css";
 
-import { Status, Address, Chain, ERC1919Balance, TransferNative, SignMessage } from "./components";
+import { Status, Address, Chain, ERC1919Balance, TransferNative } from "./components";
+import Buy from "./components/Buy";
 import ContractStatus from "./components/ContractStatus";
 import { InfoText } from "../InfoText";
 
 const MainPane: FC = () => {
   const { isConnected } = useAccount();
   const { colorMode } = useColorMode();
+  const [, setState] = useState("");
 
   return (
     <Box
@@ -50,7 +52,7 @@ const MainPane: FC = () => {
               flexWrap={"wrap"}
               gap={5}
             >
-              <SignMessage />
+              <Buy refreshData={() => setState("")} />
               <TransferNative />
             </Flex>
           </>

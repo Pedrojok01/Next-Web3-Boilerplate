@@ -53,9 +53,9 @@ const SignMessage: FC = () => {
         variant="ghost"
         onClick={handleSignMessage}
         isLoading={isPending}
-        className="custom-button"
+        className="custom-button1"
       >
-        Sign Message
+        Buy
       </Button>
     </VStack>
   );

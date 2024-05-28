@@ -89,7 +89,7 @@ const TransferNative: FC = () => {
           variant="ghost"
           onClick={handleTransfer}
           isLoading={isLoading || isPending}
-          className="custom-button"
+          className="custom-button2"
         >
           Transfer
         </Button>

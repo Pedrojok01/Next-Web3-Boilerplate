@@ -1,0 +1,3 @@
+- refresh the state after a tx is successfull
+- add the Sell Button
+- modify the input to be able to choose how many token to get instead of the ETH amount only (or estimation at least)
