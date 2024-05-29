@@ -4,27 +4,28 @@ import { HStack } from "@chakra-ui/react";
 import { useReadContract } from "wagmi";
 
 import { InfoText } from "@/components";
+import { SMART_CONTRACT_ADDRESS } from "@/utils/constants";
 
 import MTT3 from "../../../contracts/ERC1919.json";
 
 const ContractStatus: FC = (): JSX.Element => {
   const { data: currentSupply } = useReadContract({
     abi: MTT3,
-    address: "0x28915D1DF4d6d5dF90F0B4B3d626600b106953Bf",
+    address: SMART_CONTRACT_ADDRESS,
     functionName: "currentSupply",
     args: [],
   });
 
   const { data: currentPrice } = useReadContract({
     abi: MTT3,
-    address: "0x28915D1DF4d6d5dF90F0B4B3d626600b106953Bf",
+    address: SMART_CONTRACT_ADDRESS,
     functionName: "currentPrice",
     args: [],
   });
 
   const { data: currentLevel } = useReadContract({
     abi: MTT3,
-    address: "0x28915D1DF4d6d5dF90F0B4B3d626600b106953Bf",
+    address: SMART_CONTRACT_ADDRESS,
     functionName: "currentLevel",
     args: [],
   });

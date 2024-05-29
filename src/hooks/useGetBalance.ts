@@ -1,5 +1,7 @@
 import { useAccount, useReadContract } from "wagmi";
 
+import { SMART_CONTRACT_ADDRESS } from "@/utils/constants";
+
 import MTT3 from "../contracts/ERC1919.json";
 
 export const useGetBalance = () => {
@@ -7,7 +9,7 @@ export const useGetBalance = () => {
   console.log(address);
   const { data: balance, refetch } = useReadContract({
     abi: MTT3,
-    address: "0x28915D1DF4d6d5dF90F0B4B3d626600b106953Bf",
+    address: SMART_CONTRACT_ADDRESS,
     functionName: "balanceOf",
     args: [address],
   });

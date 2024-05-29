@@ -4,6 +4,7 @@ import { Button, Input, VStack, FormLabel } from "@chakra-ui/react";
 import { simulateContract, writeContract, waitForTransactionReceipt } from "@wagmi/core";
 
 import { useNotify } from "@/hooks";
+import { SMART_CONTRACT_ADDRESS } from "@/utils/constants";
 
 import { abi } from "../../../contracts/abi";
 import { wagmiConfig } from "../../../wagmi";
@@ -30,7 +31,7 @@ const Buy: FC<BuyProps> = ({ refreshData }): JSX.Element => {
 
     const { request } = await simulateContract(wagmiConfig, {
       abi,
-      address: "0x28915D1DF4d6d5dF90F0B4B3d626600b106953Bf",
+      address: SMART_CONTRACT_ADDRESS,
       functionName: "mintTokens",
       args: [],
       value: finalValue,

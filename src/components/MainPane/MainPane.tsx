@@ -6,6 +6,7 @@ import { useAccount } from "wagmi";
 
 import { useGetBalance } from "@/hooks";
 import styles from "@/styles/mainPane.module.css";
+import { SMART_CONTRACT_ADDRESS } from "@/utils/constants";
 
 import { Status, Address, Chain, ERC1919Balance, Buy, Sell } from "./components";
 import ContractStatus from "./components/ContractStatus";
@@ -36,10 +37,7 @@ const MainPane: FC = () => {
         {isConnected && (
           <>
             <Address />
-            <InfoText
-              label="MTT3 Contract Address"
-              value="0x28915D1DF4d6d5dF90F0B4B3d626600b106953Bf"
-            />
+            <InfoText label="MTT3 Contract Address" value={SMART_CONTRACT_ADDRESS} />
 
             <ContractStatus />
             <ERC1919Balance />

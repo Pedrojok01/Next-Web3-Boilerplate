@@ -4,6 +4,8 @@ import { createContext, useState, useContext } from "react";
 
 import { useAccount, useReadContract } from "wagmi";
 
+import { SMART_CONTRACT_ADDRESS } from "@/utils/constants";
+
 import MTT3 from "../contracts/ERC1919.json";
 
 const AppContext = createContext("0");
@@ -14,7 +16,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const { address } = useAccount();
   const { data: ERC1919balance } = useReadContract({
     abi: MTT3,
-    address: "0x28915D1DF4d6d5dF90F0B4B3d626600b106953Bf",
+    address: SMART_CONTRACT_ADDRESS,
     functionName: "balanceOf",
     args: [address],
   });
