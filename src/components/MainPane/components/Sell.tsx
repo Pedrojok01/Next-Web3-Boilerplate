@@ -6,7 +6,6 @@ import { simulateContract, writeContract, waitForTransactionReceipt } from "@wag
 import { useNotify } from "@/hooks";
 
 import { abi } from "../../../contracts/abi";
-import useComponentReload from "../../../hooks/useComponentReload";
 import { wagmiConfig } from "../../../wagmi";
 
 interface SellProps {
@@ -16,7 +15,6 @@ interface SellProps {
 const Sell: FC<SellProps> = ({ refreshData }): JSX.Element => {
   const [value, setValue] = useState<number>(100);
   const { notifyError, notifySuccess } = useNotify();
-  const componentReload = useComponentReload();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setValue(Number(e.target.value));
@@ -52,7 +50,6 @@ const Sell: FC<SellProps> = ({ refreshData }): JSX.Element => {
       });
       // Call the parent's refreshData function
       refreshData();
-      componentReload();
     } else {
       console.log("Transaction failed: ", hash);
       notifyError({

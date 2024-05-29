@@ -1,5 +1,5 @@
 // components/MainPane.tsx
-import { useEffect, useState, type FC } from "react";
+import { useContext, useState, type FC } from "react";
 
 import { Box, Divider, Flex, HStack, Heading, Spacer, useColorMode } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
@@ -8,17 +8,17 @@ import styles from "@/styles/mainPane.module.css";
 
 import { Status, Address, Chain, ERC1919Balance, Buy, Sell } from "./components";
 import ContractStatus from "./components/ContractStatus";
+import { Context } from "./web3/context";
 import { InfoText } from "../InfoText";
 
 const MainPane: FC = () => {
   const { isConnected } = useAccount();
   const { colorMode } = useColorMode();
   const [state, setState] = useState(false);
-
+  const { b, setB } = useContext(Context);
+  const contextValue = { b, setB };
+  // ERC1919BalanceTest();
   // make an alert when state changes
-  useEffect(() => {
-    alert("State changed!");
-  }, [state]);
 
   return (
     <Box
@@ -44,8 +44,11 @@ const MainPane: FC = () => {
               label="MTT3 Contract Address"
               value="0x28915D1DF4d6d5dF90F0B4B3d626600b106953Bf"
             />
-            <ContractStatus />
-            <ERC1919Balance />
+            <Context.Provider value={contextValue}>
+              <ContractStatus />
+              <ERC1919Balance />
+              {/* <InfoText label="MTT3 Balance" value={contextValue.b} /> */}
+            </Context.Provider>
 
             <Divider mb={5} />
 
