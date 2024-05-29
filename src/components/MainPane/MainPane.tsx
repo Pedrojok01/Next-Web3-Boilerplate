@@ -4,6 +4,7 @@ import { useContext, useState, type FC } from "react";
 import { Box, Divider, Flex, HStack, Heading, Spacer, useColorMode } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 
+import { useGetBalance } from "@/hooks";
 import styles from "@/styles/mainPane.module.css";
 
 import { Status, Address, Chain, ERC1919Balance, Buy, Sell } from "./components";
@@ -14,11 +15,10 @@ import { InfoText } from "../InfoText";
 const MainPane: FC = () => {
   const { isConnected } = useAccount();
   const { colorMode } = useColorMode();
-  const [state, setState] = useState(false);
+  const [, setRefresh] = useState(0);
   const { b, setB } = useContext(Context);
   const contextValue = { b, setB };
-  // ERC1919BalanceTest();
-  // make an alert when state changes
+  const { refetch: refetchBalance } = useGetBalance();
 
   return (
     <Box
@@ -59,8 +59,8 @@ const MainPane: FC = () => {
               flexWrap={"wrap"}
               gap={5}
             >
-              <Buy refreshData={() => setState(!state)} />
-              <Sell refreshData={() => setState(!state)} />
+              <Buy refreshData={() => setRefresh((prev) => prev + 1)} />
+              <Sell refreshData={() => refetchBalance()} />
             </Flex>
           </>
         )}
