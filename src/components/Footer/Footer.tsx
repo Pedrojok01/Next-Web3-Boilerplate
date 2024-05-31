@@ -2,9 +2,10 @@
 
 import type { FC } from "react";
 
-import { Box, Text, Link } from "@chakra-ui/react";
+import { Box, Text, Link, useColorMode } from "@chakra-ui/react";
 
 const Footer: FC = () => {
+  const { colorMode } = useColorMode();
   return (
     <Box
       as="footer"
@@ -13,13 +14,14 @@ const Footer: FC = () => {
       bottom={0}
       zIndex={10}
       textAlign="center"
-      backgroundColor="gray.800"
-      color="white"
+      backgroundColor={colorMode === "light" ? "whiteAlpha.400" : "blackAlpha.50"}
+      className="customFooter"
+      color={colorMode === "light" ? "black" : "white"}
       borderRadius={10}
       margin={10}
     >
       <Text fontSize="sm" mb="0.5rem">
-        © 2024 Your Dapp Name. All rights reserved.
+        © 2024 AirOnPolygon. All rights reserved.
       </Text>
       <Text fontSize="sm" mb="0.5rem">
         Powered by{" "}
@@ -34,7 +36,7 @@ const Footer: FC = () => {
       </Text>
       <Text fontSize="sm">
         Connect with us:{" "}
-        <Link href="https://twitter.com/yourdapp" isExternal color="blue.500">
+        <Link href="https://twitter.com/AirOnPolygon" isExternal color="blue.500">
           @yourdapp
         </Link>
       </Text>

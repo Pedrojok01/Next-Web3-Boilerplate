@@ -18,7 +18,17 @@ const Buy: FC<BuyProps> = ({ refreshData }): JSX.Element => {
   const { notifyError, notifySuccess } = useNotify();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setValue(Number(e.target.value));
+    try {
+      if (Number(e.target.value) < 0.00001) {
+        setValue(Number(0.00001));
+      } else {
+        setValue(Number(e.target.value));
+        // console.log("ok");
+      }
+    } catch (error) {
+      console.error("Error parsing input: ", error);
+      setValue(Number(0.00001));
+    }
   };
 
   const handleBuy = (e: MouseEvent<HTMLButtonElement>): void => {
@@ -28,6 +38,7 @@ const Buy: FC<BuyProps> = ({ refreshData }): JSX.Element => {
 
   const buyToken = async () => {
     const finalValue = BigInt(value * 1e18);
+    // console.log("finalValue: ", finalValue);
 
     const { request } = await simulateContract(wagmiConfig, {
       abi,
@@ -65,7 +76,6 @@ const Buy: FC<BuyProps> = ({ refreshData }): JSX.Element => {
     <VStack w={"45%"} minWidth={"270px"} gap={2}>
       <FormLabel htmlFor="buy">Buy MTT3 with ETH</FormLabel>
       <Input
-        value={value.toString()}
         onChange={handleInputChange}
         type="number"
         step={0.00001}

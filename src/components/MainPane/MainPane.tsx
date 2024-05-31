@@ -22,10 +22,10 @@ const MainPane: FC = () => {
       className={styles.container}
       border={colorMode === "light" ? "none" : "1px solid rgba(152, 161, 192, 0.24)"}
     >
-      <HStack className="centerHStack">
+      <HStack className="centerHStack" margin={10}>
         <Spacer />
-        <Heading as="h2" fontSize={"2rem"} mb={10} className="text-shadow">
-          Display Info
+        <Heading as="h2" fontSize={"2rem"} className="text-shadow">
+          Air Data
         </Heading>
         <Spacer />
         <Status />

@@ -18,7 +18,17 @@ const Sell: FC<SellProps> = ({ refreshData }): JSX.Element => {
   const { notifyError, notifySuccess } = useNotify();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setValue(Number(e.target.value));
+    try {
+      if (Number(e.target.value) < 100) {
+        setValue(Number(100));
+      } else {
+        setValue(Number(e.target.value));
+        // console.log("ok");
+      }
+    } catch (error) {
+      console.error("Error parsing input: ", error);
+      setValue(Number(100));
+    }
   };
 
   const handleSell = (e: MouseEvent<HTMLButtonElement>): void => {
@@ -64,7 +74,6 @@ const Sell: FC<SellProps> = ({ refreshData }): JSX.Element => {
     <VStack w={"45%"} minWidth={"270px"} gap={2}>
       <FormLabel htmlFor="sell">Sell MTT3 to get ETH back</FormLabel>
       <Input
-        value={value.toString()}
         onChange={handleInputChange}
         type="number"
         step={0.00001}
