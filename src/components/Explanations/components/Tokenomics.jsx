@@ -50,7 +50,7 @@ const Tokenomics = () => {
         Transaction Fee Structure for $AIR
       </Heading>
       <Text>
-        Whether purchasing $AIR (by sending ETH to the contract) or selling $AIR (by sending $AIR to the contract), transactions are subject to a 5% fee.
+        Whether purchasing $AIR (by sending ETH to the contract) or selling $AIR (by sending $AIR to the contract), transactions are subject to a 1% fee.
       </Text>
       
     </Box>)};export default Tokenomics;

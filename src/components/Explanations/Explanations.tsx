@@ -1,23 +1,23 @@
 import React from "react";
 
-import { Heading } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 
 import InitialThesis from "./components/initialThesis";
-import LegalDisclaimer from "./components/legalDisclaimer";
+// import LegalDisclaimer from "./components/legalDisclaimer";
 import TokenDesign from "./components/TokenDesign";
 import Tokenomics from "./components/Tokenomics";
 
 const ExplanationsPage: React.FC = () => {
   return (
-    <div>
+    <Box px={20}>
       <Heading as="h2" fontSize={"2rem"} className="text-shadow">
         Explanations
       </Heading>
       <InitialThesis />
-      <LegalDisclaimer />
+      {/* <LegalDisclaimer /> */}
       <TokenDesign />
       <Tokenomics />
-    </div>
+    </Box>
   );
 };
 

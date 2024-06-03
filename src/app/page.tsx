@@ -1,11 +1,15 @@
 "use client";
+import { useState } from "react";
+
 import { Box, Button, Flex } from "@chakra-ui/react";
 
 import { Footer, Header, MainPane } from "@/components";
 import ExplanationsPage from "@/components/Explanations/Explanations";
 
 export default function Home() {
-  const showExplanations = false;
+  // setstate for showexplanations
+  const [showExplanations, setShowExplanations] = useState(false);
+
   return (
     // Declare the variable showExplanations
 
@@ -16,11 +20,11 @@ export default function Home() {
         <MainPane />
       </Box>
 
-      {showExplanations && <ExplanationsPage />}
-
-      <Button onClick={() => !showExplanations} mt={4}>
-        {showExplanations ? "Hide Explanation" : "Show Explanation"}
+      <Button onClick={() => setShowExplanations(!showExplanations)} mt={4} mx={80}>
+        {showExplanations ? "Hide Explanations" : "What is this ?"}
       </Button>
+
+      {showExplanations === true && <ExplanationsPage />}
 
       <Footer />
     </Flex>
