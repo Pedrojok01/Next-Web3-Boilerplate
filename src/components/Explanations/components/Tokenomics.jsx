@@ -19,13 +19,13 @@ const Tokenomics = () => {
           Level 1: 1,000,000 tokens
         </ListItem>
         <ListItem>
-          Level 2: 800,000 tokens
+          Level 2: 900,000 tokens
         </ListItem>
         <ListItem>
-          Level 3: 640,000 tokens
+          Level 3: 810 000 tokens
         </ListItem>
         <ListItem>
-          Level 4: 512,000 tokens
+          Level 4: 729 000 tokens
         </ListItem>
       </UnorderedList>
 

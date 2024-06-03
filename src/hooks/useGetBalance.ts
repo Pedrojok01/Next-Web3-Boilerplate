@@ -6,7 +6,7 @@ import MTT3 from "../contracts/ERC1919.json";
 
 export const useGetBalance = () => {
   const { address } = useAccount();
-  console.log(address);
+  // console.log(address);
   const { data: balance, refetch } = useReadContract({
     abi: MTT3,
     address: SMART_CONTRACT_ADDRESS,
