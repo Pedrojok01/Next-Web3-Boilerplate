@@ -1,5 +1,5 @@
 {
-  "name": "next-web3-boilerplate",
+  "name": "erc20-token-alternative",
   "version": "1.0.2",
   "description": "Nextjs web3 boilerplate built on Viem, Wagmi, rainbowkit and Chakra UI",
   "author": "thomasfevre",

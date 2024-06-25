@@ -26,7 +26,7 @@ const MainPane: FC = () => {
       <HStack className="centerHStack" margin={10}>
         <Spacer />
         <Heading as="h2" fontSize={"2rem"} className="text-shadow">
-          Air Data
+          Blockchain Data
         </Heading>
         <Spacer />
         <Status />

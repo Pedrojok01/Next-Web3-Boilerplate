@@ -7,7 +7,7 @@ import Image from "next/image";
 
 import { useWindowSize } from "@/hooks/useWindowSize";
 
-import logo from "../../../public/img/logo_transparent.png";
+import logo from "../../../public/img/ERC-20.png";
 import { DarkModeButton } from "../DarkModeButton";
 
 const Header: FC = () => {
@@ -26,7 +26,7 @@ const Header: FC = () => {
         <Image src={logo.src} alt="logo" width={45} height={45} />
         {!isTablet && (
           <Heading as="h1" fontSize={"1.5rem"} className="text-shadow">
-            AirOnPolygon
+            MTT3 : An ERC-20 Token Alternative
           </Heading>
         )}
       </HStack>
