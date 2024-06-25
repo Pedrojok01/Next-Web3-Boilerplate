@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, useColorMode } from "@chakra-ui/react";
 
 import { Footer, Header, MainPane } from "@/components";
 import ExplanationsPage from "@/components/Explanations/Explanations";
@@ -9,6 +9,7 @@ import ExplanationsPage from "@/components/Explanations/Explanations";
 export default function Home() {
   // setstate for showexplanations
   const [showExplanations, setShowExplanations] = useState(false);
+  const { colorMode } = useColorMode();
 
   return (
     // Declare the variable showExplanations
@@ -20,7 +21,15 @@ export default function Home() {
         <MainPane />
       </Box>
 
-      <Button onClick={() => setShowExplanations(!showExplanations)} mt={4} mx={80}>
+      <Button
+        onClick={() => setShowExplanations(!showExplanations)}
+        mt={4}
+        width={["100%", "auto"]}
+        alignSelf="center"
+        bgColor={colorMode == "light" ? "whiteAlpha.400" : "blackAlpha.50"}
+        color={colorMode === "light" ? "black" : "white"}
+        fontSize="larger"
+      >
         {showExplanations ? "Hide Explanations" : "What is this ?"}
       </Button>
 

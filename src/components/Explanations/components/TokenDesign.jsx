@@ -1,8 +1,9 @@
-import { Box, Text, Heading, ListItem, UnorderedList } from "@chakra-ui/react";
+import { Box, Text, Heading, ListItem, UnorderedList, useColorMode } from "@chakra-ui/react";
 
 const TokenDesign = () => {
+  const { colorMode } = useColorMode();
   return (
-    <Box p={5} bg="gray.50" borderRadius="md">
+    <Box p={5} my={10} bg={colorMode === "light" ? "whiteAlpha.400" : "blackAlpha.50"} borderRadius="md" boxShadow="md">
       <Heading as="h2" size="xl" mb={5}>
         ERC-1919: Fair & Safe By Design
       </Heading>

@@ -1,8 +1,10 @@
-import { Box, Text, Heading, UnorderedList, ListItem } from "@chakra-ui/react";
+import { Box, Text, Heading, UnorderedList, ListItem, useColorMode } from "@chakra-ui/react";
 
 const Tokenomics = () => {
+  const { colorMode } = useColorMode();
   return (
-    <Box p={5} bg="white" borderRadius="md" boxShadow="md">
+   
+    <Box p={5} my={10} bg={colorMode === "light" ? "whiteAlpha.400" : "blackAlpha.50"} borderRadius="md" boxShadow="md">
       <Heading as="h2" size="xl" mb={5}>
         AIR — Tokenomics & Parameters
       </Heading>

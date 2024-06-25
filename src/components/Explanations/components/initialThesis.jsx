@@ -1,8 +1,9 @@
-import { Box, Text, Heading } from "@chakra-ui/react";
+import { Box, Text, Heading, useColorMode } from "@chakra-ui/react";
 
 const InitialThesis = () => {
+  const { colorMode } = useColorMode();
   return (
-    <Box p={5} bg="white" borderRadius="md" boxShadow="md">
+    <Box p={5} my={10} bg={colorMode === "light" ? "whiteAlpha.400" : "blackAlpha.50"} borderRadius="md" boxShadow="md">
       <Heading as="h2" size="xl" mb={5}>
         Initial Thesis
       </Heading>
