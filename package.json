@@ -15,7 +15,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "prettier": "prettier --write \"**/*.{ts,tsx,js}\"",
+    "prettier": "prettier --write \"**/*.{ts,tsx,js,mjs,css,json}\"",
     "lint": "next lint --fix",
     "prepare": "husky install"
   },
@@ -47,6 +47,7 @@
     "eslint-config-next": "15.2.3",
     "eslint-config-prettier": "10.1.1",
     "eslint-import-resolver-typescript": "4.2.2",
+    "eslint-plugin-css": "0.11.0",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-prettier": "5.2.3",
     "husky": "9.1.7",

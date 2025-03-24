@@ -1,4 +1,4 @@
-import { useCallback, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import { toaster } from "@/components/Toaster/Toaster";
 
@@ -22,14 +22,14 @@ export const useNotify = () => {
     });
   };
 
-  const notifyError = useCallback(({ title, message, duration = 8000, action }: NotifyProps) => {
+  const notifyError = ({ title, message, duration = 8000, action }: NotifyProps) => {
     toaster.error({
       title,
       description: message,
       duration,
       action,
     });
-  }, []);
+  };
 
   return {
     notifySuccess,

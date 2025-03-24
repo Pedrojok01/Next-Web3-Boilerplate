@@ -5,7 +5,7 @@ import { useSignMessage } from "wagmi";
 
 export function useSignMessageHook() {
   const [recoveredAddress, setRecoveredAddress] = useState<Address>();
-  const { data: signature, variables, error, isPending, signMessage } = useSignMessage();
+  const { data: signature, variables, error, isPending, signMessage, reset } = useSignMessage();
 
   const recoverAddress = useCallback(async () => {
     if (variables?.message && signature) {
@@ -27,5 +27,17 @@ export function useSignMessageHook() {
     }
   }, [signature, variables?.message, recoverAddress]);
 
-  return { signature, recoveredAddress, error, isPending, signMessage };
+  const resetError = useCallback(() => {
+    reset();
+  }, [reset]);
+
+  return {
+    signature,
+    recoveredAddress,
+    error,
+    isPending,
+    setRecoveredAddress,
+    signMessage,
+    resetError,
+  };
 }
