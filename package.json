@@ -17,7 +17,7 @@
     "start": "next start",
     "prettier": "prettier --write \"**/*.{ts,tsx,js,mjs,css,json}\"",
     "lint": "next lint --fix",
-    "prepare": "husky install"
+    "prepare": "husky || true"
   },
   "dependencies": {
     "@chakra-ui/react": "3.13.0",

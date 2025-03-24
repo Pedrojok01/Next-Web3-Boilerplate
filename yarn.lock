@@ -3587,7 +3587,7 @@ eslint-module-utils@^2.7.4:
   dependencies:
     debug "^3.2.7"
 
-eslint-plugin-css@^0.11.0:
+eslint-plugin-css@0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-css/-/eslint-plugin-css-0.11.0.tgz#1691f299255ea4dd9cdcd9067d5a282f5e9140c8"
   integrity sha512-83T6HUtCa5et2VLCZlpLhDdyegGRJ6UuibVVaexK/hJcaslfszzFhKbNEckqwens0iLvCDANW0cX0TZgl/9+YA==
