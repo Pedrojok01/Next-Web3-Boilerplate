@@ -1,20 +1,38 @@
-import { type ReactNode, useCallback } from "react";
+import { useCallback, type ReactNode } from "react";
 
 import { toaster } from "@/components/Toaster/Toaster";
 
 interface NotifyProps {
-  title: string;
+  title?: string;
   message: ReactNode;
+  duration?: number;
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
 }
 
 export const useNotify = () => {
-  const notifySuccess = useCallback(({ title, message }: NotifyProps) => {
-    toaster.success({ title, description: message, duration: 10000, meta: { closable: true } });
+  const notifySuccess = ({ title, message, duration = 8000, action }: NotifyProps) => {
+    toaster.success({
+      title,
+      description: message,
+      duration,
+      action,
+    });
+  };
+
+  const notifyError = useCallback(({ title, message, duration = 8000, action }: NotifyProps) => {
+    toaster.error({
+      title,
+      description: message,
+      duration,
+      action,
+    });
   }, []);
 
-  const notifyError = useCallback(({ title, message }: NotifyProps) => {
-    toaster.error({ title, description: message, duration: 10000, meta: { closable: true } });
-  }, []);
-
-  return { notifySuccess, notifyError };
+  return {
+    notifySuccess,
+    notifyError,
+  };
 };

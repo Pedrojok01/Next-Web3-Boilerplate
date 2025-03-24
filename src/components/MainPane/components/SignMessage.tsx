@@ -22,21 +22,14 @@ const SignMessage: FC = () => {
     if (signature && recoveredAddress) {
       notifySuccess({
         title: "Message successfully signed!",
-        message: (
-          <>
-            <b>Signature:</b> {signature}
-            <br />
-            <br />
-            <b>Recovered Address:</b> {recoveredAddress}
-          </>
-        ),
+        message: `Signature: ${signature}\n\nRecovered Address: ${recoveredAddress}`,
       });
     }
 
     if (error) {
       notifyError({
-        title: "An error occured:",
-        message: error.message,
+        title: "An error occurred",
+        message: error.message || "Unknown error",
       });
     }
   }, [signature, recoveredAddress, error, notifyError, notifySuccess]);

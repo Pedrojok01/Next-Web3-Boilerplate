@@ -1,4 +1,3 @@
-"use client";
 import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import {
   argentWallet,
@@ -21,8 +20,6 @@ import {
   optimismGoerli,
   arbitrum,
   arbitrumGoerli,
-  zkSync,
-  zkSyncSepoliaTestnet,
   linea,
   lineaTestnet,
   base,
@@ -33,7 +30,6 @@ import {
 
 import linea_logo from "../public/img/linea_logo.png";
 import lineaTesnet_logo from "../public/img/lineaTesnet_logo.png";
-import zksync_logo from "../public/img/zksync_logo.svg";
 
 const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
@@ -63,7 +59,6 @@ const connectors = connectorsForWallets(
 );
 
 // Fix missing icons
-const customZkSyncSepoliaTestnet = { ...zkSyncSepoliaTestnet, iconUrl: zksync_logo.src };
 const customLinea = { ...linea, iconUrl: linea_logo.src };
 const customLineaTestnet = { ...lineaTestnet, iconUrl: lineaTesnet_logo.src };
 
@@ -76,8 +71,6 @@ const transports: Record<number, Transport> = {
   [optimismGoerli.id]: http(),
   [arbitrum.id]: http(),
   [arbitrumGoerli.id]: http(),
-  [zkSync.id]: http(),
-  [zkSyncSepoliaTestnet.id]: http(),
   [linea.id]: http(),
   [lineaTestnet.id]: http(),
   [base.id]: http(),
@@ -85,6 +78,7 @@ const transports: Record<number, Transport> = {
   [bsc.id]: http(),
   [bscTestnet.id]: http(),
 };
+
 export const wagmiConfig = createConfig({
   chains: [
     mainnet,
@@ -97,8 +91,6 @@ export const wagmiConfig = createConfig({
     arbitrumGoerli,
     customLinea,
     customLineaTestnet,
-    zkSync,
-    customZkSyncSepoliaTestnet,
     base,
     baseGoerli,
     bsc,
