@@ -4,7 +4,7 @@ import { useAccount } from "wagmi";
 
 import { InfoText } from "@/components";
 
-const Chain: FC = (): JSX.Element => {
+const Chain: FC = () => {
   const { chain } = useAccount();
 
   const chainInfo = `${chain?.name} (${chain?.id})`;

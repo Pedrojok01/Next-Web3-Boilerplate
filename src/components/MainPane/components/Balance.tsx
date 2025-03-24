@@ -4,7 +4,7 @@ import { useAccount, useBalance } from "wagmi";
 
 import { InfoText } from "@/components";
 
-const Balance: FC = (): JSX.Element => {
+const Balance: FC = () => {
   const { address } = useAccount();
   const { data } = useBalance({ address });
 

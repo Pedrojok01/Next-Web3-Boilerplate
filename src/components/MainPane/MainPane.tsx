@@ -1,4 +1,5 @@
-// components/MainPane.tsx
+"use client";
+
 import { type FC } from "react";
 
 import { Box, Separator, Flex, Heading } from "@chakra-ui/react";

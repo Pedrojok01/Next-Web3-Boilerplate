@@ -6,7 +6,7 @@ import { InfoText } from "@/components";
 import { useWindowSize } from "@/hooks";
 import { getEllipsisTxt } from "@/utils/formatters";
 
-const Address: FC = (): JSX.Element => {
+const Address: FC = () => {
   const { address } = useAccount();
   const { data: ensName } = useEnsName({ address });
   const { isTablet } = useWindowSize();

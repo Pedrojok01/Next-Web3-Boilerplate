@@ -4,7 +4,7 @@ import { useAccount } from "wagmi";
 
 import { InfoText } from "@/components";
 
-const Status: FC = (): JSX.Element => {
+const Status: FC = () => {
   const { isConnecting, isConnected } = useAccount();
 
   const statusMapping = {

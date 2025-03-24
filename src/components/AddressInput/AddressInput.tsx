@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useCallback, type FC, type ChangeEvent, type ReactNode } from "react";
 
 import { Box, Input, InputGroup, Spinner } from "@chakra-ui/react";
