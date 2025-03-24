@@ -48,12 +48,21 @@ const SignMessage: FC = () => {
         onChange={handleMessageChange}
         type="textarea"
         placeholder="Enter message to sign"
+        css={{
+          border: "1px solid rgba(152, 161, 192, 0.24)",
+          borderRadius: "12px",
+          boxShadow: "3px 4px 4px rgba(0, 0, 0, 0.4)",
+          height: "40px",
+          padding: "0 16px",
+        }}
       />
       <Button
         variant="ghost"
         onClick={handleSignMessage}
-        isLoading={isPending}
+        loading={isPending}
         className="custom-button"
+        h="40px"
+        w="40%"
       >
         Sign Message
       </Button>

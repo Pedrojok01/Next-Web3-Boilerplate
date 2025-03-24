@@ -1,7 +1,8 @@
 // components/MainPane.tsx
 import { type FC } from "react";
 
-import { Box, Divider, Flex, Heading, useColorMode } from "@chakra-ui/react";
+import { Box, Separator, Flex, Heading } from "@chakra-ui/react";
+import { useTheme } from "next-themes";
 import { useAccount } from "wagmi";
 
 import styles from "@/styles/mainPane.module.css";
@@ -18,12 +19,13 @@ import {
 
 const MainPane: FC = () => {
   const { isConnected } = useAccount();
-  const { colorMode } = useColorMode();
+  const { theme } = useTheme();
+  const isDarkMode = theme === "dark";
 
   return (
     <Box
       className={styles.container}
-      border={colorMode === "light" ? "none" : "1px solid rgba(152, 161, 192, 0.24)"}
+      border={isDarkMode ? "1px solid rgba(152, 161, 192, 0.24)" : "none"}
     >
       <Heading as="h2" fontSize={"2rem"} mb={10} className="text-shadow">
         Display Info
@@ -39,7 +41,7 @@ const MainPane: FC = () => {
             <Balance />
             <BlockNumber />
 
-            <Divider mb={5} />
+            <Separator mb={5} />
 
             <Flex
               w={"100%"}

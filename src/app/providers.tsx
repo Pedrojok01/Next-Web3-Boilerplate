@@ -1,38 +1,44 @@
 "use client";
 import { type ReactNode, useState, useEffect } from "react";
 
-import { CacheProvider } from "@chakra-ui/next-js";
-import { extendTheme, ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "next-themes";
 import { WagmiProvider } from "wagmi";
 
+import { Toaster } from "@/components/Toaster";
 import { wagmiConfig } from "@/wagmi";
+export interface ProviderProps {
+  children: ReactNode;
+  value?: typeof defaultSystem;
+}
 
-export function Providers({ children }: Readonly<{ children: ReactNode }>) {
+export function Providers({ children, value = defaultSystem }: Readonly<ProviderProps>) {
+  const [queryClient] = useState(() => new QueryClient());
   const [mounted, setMounted] = useState(false);
+
+  const appInfo = { appName: "Next-Web3-Boilerplate" };
 
   useEffect(() => setMounted(true), []);
 
-  const queryClient = new QueryClient();
-
-  const theme = extendTheme({ initialColorMode: "dark", useSystemColorMode: false });
-
-  const appInfo = {
-    appName: "Next-Web3-Boilerplate",
-  };
+  // Prevent hydration issues by only rendering once mounted
+  if (!mounted) {
+    return null;
+  }
 
   return (
-    <WagmiProvider config={wagmiConfig}>
-      <QueryClientProvider client={queryClient}>
-        <CacheProvider>
-          <ChakraProvider resetCSS theme={theme}>
+    <ChakraProvider value={value}>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+        <WagmiProvider config={wagmiConfig}>
+          <QueryClientProvider client={queryClient}>
             <RainbowKitProvider coolMode appInfo={appInfo}>
-              {mounted && children}
+              {children}
             </RainbowKitProvider>
-          </ChakraProvider>
-        </CacheProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+            <Toaster />
+          </QueryClientProvider>
+        </WagmiProvider>
+      </ThemeProvider>
+    </ChakraProvider>
   );
 }

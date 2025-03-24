@@ -34,7 +34,7 @@ a {
 
 .custom-button {
   border: var(--button-border);
-  border-radius: 20px;
+  border-radius: 12px;
   box-shadow: var(--button-box-shadow);
   transition: var(--transition-ease);
 }

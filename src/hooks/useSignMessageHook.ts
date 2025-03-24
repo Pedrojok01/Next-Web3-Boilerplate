@@ -9,17 +9,23 @@ export function useSignMessageHook() {
 
   const recoverAddress = useCallback(async () => {
     if (variables?.message && signature) {
-      const recoveredAddress = await recoverMessageAddress({
-        message: variables?.message,
-        signature,
-      });
-      setRecoveredAddress(recoveredAddress);
+      try {
+        const recoveredAddress = await recoverMessageAddress({
+          message: variables?.message,
+          signature,
+        });
+        setRecoveredAddress(recoveredAddress);
+      } catch (err) {
+        console.error("Error recovering address:", err);
+      }
     }
   }, [signature, variables?.message]);
 
   useEffect(() => {
-    recoverAddress();
-  }, [recoverAddress]);
+    if (signature && variables?.message) {
+      recoverAddress();
+    }
+  }, [signature, variables?.message, recoverAddress]);
 
   return { signature, recoveredAddress, error, isPending, signMessage };
 }

@@ -1,15 +1,6 @@
 import { type FC, useState, useEffect } from "react";
 
-import {
-  Button,
-  HStack,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, HStack, NumberInput, VStack } from "@chakra-ui/react";
 import { isAddress, parseEther } from "viem";
 import { useSendTransaction, useWaitForTransactionReceipt } from "wagmi";
 
@@ -23,16 +14,13 @@ const TransferNative: FC = () => {
   const [amount, setAmount] = useState<string>("0");
   const [receiver, setReceiver] = useState<string>("");
 
-  const handleAmountChange = (valueAsString: string): void => {
-    setAmount(valueAsString);
+  const handleAmountChange = (value: { value: string }): void => {
+    setAmount(value.value);
   };
 
   const handleTransfer = () => {
     if (receiver.length === 0 || !isAddress(receiver)) {
-      return notifyError({
-        title: "Error:",
-        message: "The receiver address is not set!",
-      });
+      return notifyError({ title: "Error:", message: "The receiver address is not set!" });
     }
 
     if (parseFloat(amount) <= 0) {
@@ -42,10 +30,7 @@ const TransferNative: FC = () => {
       });
     }
 
-    sendTransaction({
-      to: receiver,
-      value: parseEther(amount),
-    });
+    sendTransaction({ to: receiver, value: parseEther(amount) });
   };
 
   useEffect(() => {
@@ -59,10 +44,7 @@ const TransferNative: FC = () => {
     }
 
     if (isError && error) {
-      notifyError({
-        title: "An error occured:",
-        message: error.message,
-      });
+      notifyError({ title: "An error occured:", message: error.message });
     }
   }, [receipt, isError, error, notifyError, notifySuccess]);
 
@@ -71,25 +53,34 @@ const TransferNative: FC = () => {
       <AddressInput receiver={receiver} setReceiver={setReceiver} />
 
       <HStack>
-        <NumberInput
+        <NumberInput.Root
           value={amount}
-          min={0}
-          onChange={handleAmountChange}
+          onValueChange={handleAmountChange}
           step={0.00000001}
-          precision={8}
+          min={0}
+          formatOptions={{ minimumFractionDigits: 0, maximumFractionDigits: 8 }}
+          css={{
+            border: "1px solid rgba(152, 161, 192, 0.24)",
+            borderRadius: "12px",
+            boxShadow: "3px 4px 4px rgba(0, 0, 0, 0.4)",
+            overflow: "hidden",
+            flex: 1,
+          }}
         >
-          <NumberInputField />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
+          <NumberInput.Input css={{ border: "none" }} />
+          <NumberInput.Control>
+            <NumberInput.IncrementTrigger />
+            <NumberInput.DecrementTrigger />
+          </NumberInput.Control>
+        </NumberInput.Root>
 
         <Button
           variant="ghost"
           onClick={handleTransfer}
-          isLoading={isLoading || isPending}
+          loading={isLoading || isPending}
           className="custom-button"
+          h="40px"
+          minW="100px"
         >
           Transfer
         </Button>
