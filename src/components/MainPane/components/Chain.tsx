@@ -7,7 +7,7 @@ import { InfoText } from "@/components";
 const Chain: FC = () => {
   const { chain } = useAccount();
 
-  const chainInfo = `${chain?.name} (${chain?.id})`;
+  const chainInfo = chain ? `${chain.name} (${chain.id})` : "Not connected";
 
   return <InfoText label="Chain" value={chainInfo} />;
 };

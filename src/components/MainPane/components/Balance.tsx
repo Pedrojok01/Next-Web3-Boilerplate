@@ -6,9 +6,12 @@ import { InfoText } from "@/components";
 
 const Balance: FC = () => {
   const { address } = useAccount();
-  const { data } = useBalance({ address });
+  const { data, isLoading, isError } = useBalance({ address });
 
-  const displayBalance = data?.formatted ? `Ξ ${data?.formatted}` : "0";
+  let displayBalance = "0";
+  if (isLoading) displayBalance = "Loading...";
+  else if (isError) displayBalance = "Error fetching balance";
+  else if (data?.formatted) displayBalance = `Ξ ${data?.formatted}`;
 
   return <InfoText label="Balance" value={displayBalance} />;
 };

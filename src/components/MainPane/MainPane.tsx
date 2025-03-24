@@ -20,15 +20,15 @@ import {
 
 const MainPane: FC = () => {
   const { isConnected } = useAccount();
-  const { theme } = useTheme();
-  const isDarkMode = theme === "dark";
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
 
   return (
     <Box
       className={styles.container}
       border={isDarkMode ? "1px solid rgba(152, 161, 192, 0.24)" : "none"}
     >
-      <Heading as="h2" fontSize={"2rem"} mb={10} className="text-shadow">
+      <Heading as="h2" fontSize="2rem" mb={10} className="text-shadow">
         Display Info
       </Heading>
 
@@ -44,13 +44,7 @@ const MainPane: FC = () => {
 
             <Separator mb={5} />
 
-            <Flex
-              w={"100%"}
-              display={"flex"}
-              justifyContent={"space-around"}
-              flexWrap={"wrap"}
-              gap={5}
-            >
+            <Flex w="100%" display="flex" justifyContent="space-around" flexWrap="wrap" gap={5}>
               <SignMessage />
               <TransferNative />
             </Flex>

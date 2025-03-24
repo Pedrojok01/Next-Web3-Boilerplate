@@ -2,17 +2,24 @@ import { type ReactNode } from "react";
 
 import { toaster } from "@/components/Toaster/Toaster";
 
+interface NotifyAction {
+  label: string;
+  onClick: () => void;
+}
+
 interface NotifyProps {
   title?: string;
   message: ReactNode;
   duration?: number;
-  action?: {
-    label: string;
-    onClick: () => void;
-  };
+  action?: NotifyAction;
 }
 
-export const useNotify = () => {
+interface UseNotifyResult {
+  notifySuccess: (props: NotifyProps) => void;
+  notifyError: (props: NotifyProps) => void;
+}
+
+export const useNotify = (): UseNotifyResult => {
   const notifySuccess = ({ title, message, duration = 8000, action }: NotifyProps) => {
     toaster.success({
       title,

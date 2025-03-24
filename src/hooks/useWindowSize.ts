@@ -1,22 +1,50 @@
 import { useEffect, useState } from "react";
 
-export const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+interface WindowSize {
+  width: number;
+  height: number;
+  isMobile: boolean;
+  isTablet: boolean;
+  isSmallScreen: boolean;
+}
+
+const DEFAULT_SIZE = {
+  width: 0,
+  height: 0,
+  isMobile: false,
+  isTablet: false,
+  isSmallScreen: false,
+};
+
+export const useWindowSize = (): WindowSize => {
+  const [windowSize, setWindowSize] = useState<WindowSize>(DEFAULT_SIZE);
 
   useEffect(() => {
-    const changeWindowSize = () => {
-      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    // Only execute this code on the client
+    if (typeof window === "undefined") return;
+
+    const updateWindowSize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      setWindowSize({
+        width,
+        height,
+        isMobile: width <= 549,
+        isTablet: width <= 768,
+        isSmallScreen: width <= 1050,
+      });
     };
-    window.addEventListener("resize", changeWindowSize);
-    return () => window.removeEventListener("resize", changeWindowSize);
+
+    // Set initial size
+    updateWindowSize();
+
+    // Add event listener
+    window.addEventListener("resize", updateWindowSize);
+
+    // Clean up
+    return () => window.removeEventListener("resize", updateWindowSize);
   }, []);
 
-  const isMobile = windowSize.width <= 549;
-  const isTablet = windowSize.width <= 768;
-  const isSmallScreen = windowSize.width <= 1050;
-
-  return { ...windowSize, isMobile, isTablet, isSmallScreen };
+  return windowSize;
 };

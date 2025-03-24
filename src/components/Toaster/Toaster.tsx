@@ -1,5 +1,3 @@
-"use client";
-
 import { type FC } from "react";
 
 import {
@@ -20,6 +18,54 @@ export const toaster = createToaster({
   max: 3,
 });
 
+const renderSignatureDescription = (description: string) => {
+  const signaturePart =
+    description.split("Signature:")[1]?.split("Recovered Address:")[0]?.trim() || "";
+  const recoveredAddressPart = description.split("Recovered Address:")[1]?.trim() || "";
+
+  return (
+    <Box>
+      <Text fontWeight="medium">Signature:</Text>
+      <Text
+        fontSize="xs"
+        fontFamily="monospace"
+        p={1.5}
+        bg="blackAlpha.50"
+        borderRadius="sm"
+        overflow="auto"
+        my={1}
+      >
+        {signaturePart}
+      </Text>
+      <Text fontWeight="medium" mt={2}>
+        Recovered Address:
+      </Text>
+      <Text
+        fontSize="xs"
+        fontFamily="monospace"
+        p={1.5}
+        bg="blackAlpha.50"
+        borderRadius="sm"
+        overflow="auto"
+      >
+        {recoveredAddressPart}
+      </Text>
+    </Box>
+  );
+};
+
+const renderDescription = (description: React.ReactNode) => {
+  if (
+    typeof description === "string" &&
+    description.includes("Signature:") &&
+    description.includes("Recovered Address:")
+  ) {
+    return renderSignatureDescription(description);
+  }
+
+  return description;
+};
+
 const Toaster: FC = () => {
   return (
     <Portal>
@@ -31,42 +77,7 @@ const Toaster: FC = () => {
               {toast.title && <Toast.Title fontWeight="bold">{toast.title}</Toast.Title>}
               {toast.description && (
                 <Toast.Description whiteSpace="pre-line" wordBreak="break-word">
-                  {typeof toast.description === "string" &&
-                  toast.description.includes("Signature:") &&
-                  toast.description.includes("Recovered Address:") ? (
-                    <Box>
-                      <Text fontWeight="medium">Signature:</Text>
-                      <Text
-                        fontSize="xs"
-                        fontFamily="monospace"
-                        p={1.5}
-                        bg="blackAlpha.50"
-                        borderRadius="sm"
-                        overflow="auto"
-                        my={1}
-                      >
-                        {toast.description
-                          .split("Signature:")[1]
-                          ?.split("Recovered Address:")[0]
-                          ?.trim() || ""}
-                      </Text>
-                      <Text fontWeight="medium" mt={2}>
-                        Recovered Address:
-                      </Text>
-                      <Text
-                        fontSize="xs"
-                        fontFamily="monospace"
-                        p={1.5}
-                        bg="blackAlpha.50"
-                        borderRadius="sm"
-                        overflow="auto"
-                      >
-                        {toast.description.split("Recovered Address:")[1]?.trim() || ""}
-                      </Text>
-                    </Box>
-                  ) : (
-                    toast.description
-                  )}
+                  {renderDescription(toast.description)}
                 </Toast.Description>
               )}
             </Stack>

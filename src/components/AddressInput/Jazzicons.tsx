@@ -8,21 +8,20 @@ type JazziconsProps = {
   size?: number;
 };
 
-const Jazzicons: FC<JazziconsProps> = ({ seed, size }) => {
-  if (!seed)
+const Jazzicons: FC<JazziconsProps> = ({ seed, size = 16 }) => {
+  if (!seed) {
     return (
-      <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
-        <Skeleton height={10} width={9} borderRadius={"12px 0px 0px 12px"} />
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <Skeleton height={10} width={9} borderRadius="12px 0px 0px 12px" />
       </Box>
     );
+  }
 
-  if (size)
-    return (
-      <Box display={"flex"} justifyContent={"center"} alignItems={"center"} pl={2}>
-        <Jazzicon seed={jsNumberForAddress(seed)} diameter={size} />
-      </Box>
-    );
-  return <Jazzicon seed={jsNumberForAddress(seed)} />;
+  return (
+    <Box display="flex" justifyContent="center" alignItems="center" pl={2}>
+      <Jazzicon seed={jsNumberForAddress(seed)} diameter={size} />
+    </Box>
+  );
 };
 
 export default Jazzicons;

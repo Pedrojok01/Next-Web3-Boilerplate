@@ -15,14 +15,16 @@ export function useColorMode(): UseColorModeReturn {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
+  const safeColorMode: ColorMode = (resolvedTheme as ColorMode) || "dark";
+
   return {
-    colorMode: (resolvedTheme as ColorMode) || "dark",
-    setColorMode: setTheme,
+    colorMode: safeColorMode,
+    setColorMode: (colorMode: ColorMode) => setTheme(colorMode),
     toggleColorMode,
   };
 }
 
-export function useColorModeValue<T>(light: T, dark: T) {
+export function useColorModeValue<T>(light: T, dark: T): T {
   const { colorMode } = useColorMode();
   return colorMode === "dark" ? dark : light;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, type FC, type ChangeEvent, type ReactNode } from "react";
+import React, { useCallback, type FC, type ChangeEvent, type ReactNode, useEffect } from "react";
 
 import { Box, Input, InputGroup, Spinner } from "@chakra-ui/react";
 import Image from "next/image";
@@ -35,7 +35,7 @@ const AddressInput: FC<AddressInputProps> = ({ receiver, setReceiver }) => {
   );
 
   // Show error notifications when appropriate
-  React.useEffect(() => {
+  useEffect(() => {
     if (hasError && !isTyping && errorMessage) {
       notifyError({
         title: "Invalid Address:",
@@ -48,7 +48,7 @@ const AddressInput: FC<AddressInputProps> = ({ receiver, setReceiver }) => {
     // Case 1: Resolving in progress
     if (isResolvingInProgress) {
       return (
-        <Box display={"flex"} justifyContent={"center"} alignItems={"center"} pl={3}>
+        <Box display="flex" justifyContent="center" alignItems="center" pl={3}>
           <Spinner />
         </Box>
       );
@@ -70,7 +70,7 @@ const AddressInput: FC<AddressInputProps> = ({ receiver, setReceiver }) => {
 
     // Case 4: Invalid address - has input but no valid address
     return (
-      <Box display={"flex"} justifyContent={"center"} alignItems={"center"} pl={2}>
+      <Box display="flex" justifyContent="center" alignItems="center" pl={2}>
         <Image
           alt="warning icon"
           src={warningImage.src}
@@ -83,8 +83,8 @@ const AddressInput: FC<AddressInputProps> = ({ receiver, setReceiver }) => {
   };
 
   return (
-    <Box w={"100%"}>
-      <InputGroup startElement={getAddonContent()} w={"100%"}>
+    <Box w="100%">
+      <InputGroup startElement={getAddonContent()} w="100%">
         <Input
           value={receiver}
           onChange={handleInput}
@@ -92,12 +92,12 @@ const AddressInput: FC<AddressInputProps> = ({ receiver, setReceiver }) => {
           placeholder="Enter Ethereum name or address"
           name="ethereum"
           spellCheck={false}
-          css={{
-            border: "1px solid rgba(152, 161, 192, 0.24)",
-            borderRadius: "12px",
-            boxShadow: "3px 4px 4px rgba(0, 0, 0, 0.4)",
-            height: "40px",
-          }}
+          borderWidth="1px"
+          borderStyle="solid"
+          borderColor="rgba(152, 161, 192, 0.24)"
+          borderRadius="12px"
+          boxShadow="3px 4px 4px rgba(0, 0, 0, 0.4)"
+          height="40px"
         />
       </InputGroup>
     </Box>

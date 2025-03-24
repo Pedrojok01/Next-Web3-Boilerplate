@@ -18,7 +18,7 @@ const DarkModeButton: FC = () => {
       w="40px"
       h="40px"
       className="custom-button"
-      css={{ _icon: { width: "5", height: "5" } }}
+      _icon={{ w: 5, h: 5 }}
     >
       {colorMode === "dark" ? <LuMoon /> : <LuSun />}
     </IconButton>
