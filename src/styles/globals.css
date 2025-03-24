@@ -1,5 +1,6 @@
 :root {
   --button-border: 1px solid rgba(152, 161, 192, 0.24);
+  --text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
   --button-box-shadow: 3px 4px 4px rgba(0, 0, 0, 0.4);
   --button-box-shadow-hover: 0px 0px 8px 8px rgba(30, 136, 229, 0.2);
   --transition-ease: all 0.3s ease;
@@ -29,7 +30,7 @@ a {
 }
 
 .text-shadow {
-  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+  text-shadow: var(--text-shadow);
 }
 
 .custom-button {
@@ -41,4 +42,17 @@ a {
 
 .custom-button:hover {
   box-shadow: var(--button-box-shadow-hover);
+}
+
+.custom-input {
+  border: var(--button-border);
+  border-radius: 12px;
+  box-shadow: var(--button-box-shadow);
+  transition: var(--transition-ease);
+  height: 40px;
+}
+
+.custom-input:focus {
+  box-shadow: var(--button-box-shadow-hover);
+  outline: none;
 }

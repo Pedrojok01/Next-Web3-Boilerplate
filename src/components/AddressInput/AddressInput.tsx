@@ -92,12 +92,7 @@ const AddressInput: FC<AddressInputProps> = ({ receiver, setReceiver }) => {
           placeholder="Enter Ethereum name or address"
           name="ethereum"
           spellCheck={false}
-          borderWidth="1px"
-          borderStyle="solid"
-          borderColor="rgba(152, 161, 192, 0.24)"
-          borderRadius="12px"
-          boxShadow="3px 4px 4px rgba(0, 0, 0, 0.4)"
-          height="40px"
+          className="custom-input"
         />
       </InputGroup>
     </Box>

@@ -131,13 +131,9 @@ const TransferNative: FC = () => {
           step={0.00000001}
           min={0}
           formatOptions={{ minimumFractionDigits: 0, maximumFractionDigits: 8 }}
-          css={{
-            border: "1px solid rgba(152, 161, 192, 0.24)",
-            borderRadius: "12px",
-            boxShadow: "3px 4px 4px rgba(0, 0, 0, 0.4)",
-            overflow: "hidden",
-            flex: 1,
-          }}
+          className="custom-input"
+          flex={1}
+          overflow="hidden"
         >
           <NumberInput.Input
             css={{

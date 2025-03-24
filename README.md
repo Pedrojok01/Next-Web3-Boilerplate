@@ -22,6 +22,8 @@
 
 - [Table of Contents](#table-of-contents)
 - [Update:](#update)
+  - [2025-03](#2025-03)
+  - [2024-02:](#2024-02)
 - [Description](#description)
 - [Built With](#built-with)
 - [Installation](#installation)
@@ -35,7 +37,15 @@
 
 ## Update:
 
-2024-02:
+### 2025-03
+
+- Bump all dependencies to the latest versions;
+- Switched to react v19;
+- Switched to NextJS v15;
+- Switched to Eslint v9;
+- Switched to Chakra v3;
+
+### 2024-02:
 
 - Switched to Next.js v14;
 - Switched to Viem & Wagmi v2;
@@ -135,9 +145,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[nextjs]: https://img.shields.io/badge/Next.js_v14.2-000000?style=for-the-badge&logo=next.js&logoColor=FFFFFF
+[nextjs]: https://img.shields.io/badge/Next.js_v15.2.3-000000?style=for-the-badge&logo=next.js&logoColor=FFFFFF
 [nextjs-url]: https://nextjs.org/
-[typescript]: https://img.shields.io/badge/typescript_v5.4.5-375BD2?style=for-the-badge&logo=typescript&logoColor=61DAFB
+[typescript]: https://img.shields.io/badge/typescript_v5.8.2-375BD2?style=for-the-badge&logo=typescript&logoColor=61DAFB
 [typescript-url]: https://www.typescriptlang.org/
 [chakraui]: https://img.shields.io/badge/ChakraUI-purple?style=for-the-badge&logo=ChakraUI&logoColor=319795
 [chakraui-url]: https://chakra-ui.com/
