@@ -32,7 +32,8 @@ const Toaster: FC = () => {
               {toast.description && (
                 <Toast.Description whiteSpace="pre-line" wordBreak="break-word">
                   {typeof toast.description === "string" &&
-                  toast.description.includes("Signature:") ? (
+                  toast.description.includes("Signature:") &&
+                  toast.description.includes("Recovered Address:") ? (
                     <Box>
                       <Text fontWeight="medium">Signature:</Text>
                       <Text
@@ -46,8 +47,8 @@ const Toaster: FC = () => {
                       >
                         {toast.description
                           .split("Signature:")[1]
-                          .split("Recovered Address:")[0]
-                          .trim()}
+                          ?.split("Recovered Address:")[0]
+                          ?.trim() || ""}
                       </Text>
                       <Text fontWeight="medium" mt={2}>
                         Recovered Address:
@@ -60,7 +61,7 @@ const Toaster: FC = () => {
                         borderRadius="sm"
                         overflow="auto"
                       >
-                        {toast.description.split("Recovered Address:")[1].trim()}
+                        {toast.description.split("Recovered Address:")[1]?.trim() || ""}
                       </Text>
                     </Box>
                   ) : (
