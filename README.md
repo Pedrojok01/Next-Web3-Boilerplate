@@ -40,6 +40,7 @@
 ### 2025-03
 
 - Bump all dependencies to the latest versions;
+- Add multi-stage dockerfile in standalone (super small image size ~320MB)
 - Switched to react v19;
 - Switched to NextJS v15;
 - Switched to Eslint v9;
@@ -54,7 +55,7 @@
 
 ## Description
 
-Simple and minimalist Web3 boilerplate to boost your Dapp development. Built using the latest tech out there: [Next.js](https://nextjs.org/), [Viem](https://viem.sh/), [Wagmi](https://wagmi.sh/), [RainbowKit](https://www.rainbowkit.com/), [ChakraUI](https://chakra-ui.com/), and [Typescript](https://www.typescriptlang.org/). Eslint, Prettier, and Husky are already configured. The perfect starting point for your next web3 project.
+Simple and minimalist Web3 boilerplate to boost your Dapp development. Built using the latest tech out there: [Next.js](https://nextjs.org/), [Viem](https://viem.sh/), [Wagmi](https://wagmi.sh/), [RainbowKit](https://www.rainbowkit.com/), [ChakraUI](https://chakra-ui.com/), and [Typescript](https://www.typescriptlang.org/). Docker, Eslint, Prettier, and Husky are already configured. The perfect starting point for your next web3 project.
 
 Try it yourself: [https://next-web3-boilerplate.com/](https://next-web3-boilerplate.com/)
 
@@ -116,6 +117,13 @@ pnpm dev
 yarn dev
 # or
 npm run dev
+```
+
+Or run with Docker 🐳
+
+```bash
+docker build -t next-web3-boilerplate -f Dockerfile .
+docker run -p 3000:3000 next-web3-boilerplate
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

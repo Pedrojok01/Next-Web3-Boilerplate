@@ -8,6 +8,7 @@ const nextConfig = {
     return config;
   },
   experimental: { optimizePackageImports: ["@chakra-ui/react"] },
+  output: "standalone",
 };
 
 module.exports = nextConfig;
