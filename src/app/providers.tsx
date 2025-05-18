@@ -32,9 +32,7 @@ export function Providers({ children, value = defaultSystem }: Readonly<Provider
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
         <WagmiProvider config={wagmiConfig}>
           <QueryClientProvider client={queryClient}>
-            <RainbowKitProvider coolMode appInfo={appInfo}>
-              {children}
-            </RainbowKitProvider>
+            <RainbowKitProvider appInfo={appInfo}>{children}</RainbowKitProvider>
             <Toaster />
           </QueryClientProvider>
         </WagmiProvider>
