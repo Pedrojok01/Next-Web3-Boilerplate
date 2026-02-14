@@ -8,15 +8,13 @@ import { useAccount } from "wagmi";
 import { useColorModeValue } from "@/hooks";
 import styles from "@/styles/mainPane.module.css";
 
-import {
-  Status,
-  Address,
-  Chain,
-  Balance,
-  BlockNumber,
-  TransferNative,
-  SignMessage,
-} from "./components";
+import Address from "./Address";
+import Balance from "./Balance";
+import BlockNumber from "./BlockNumber";
+import Chain from "./Chain";
+import SignMessage from "./SignMessage";
+import Status from "./Status";
+import TransferNative from "./TransferNative";
 
 const MainPane: FC = () => {
   const { isConnected } = useAccount();

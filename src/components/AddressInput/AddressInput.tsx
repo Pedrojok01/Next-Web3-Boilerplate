@@ -5,9 +5,9 @@ import { useCallback, type FC, type ChangeEvent, type ReactNode, useEffect } fro
 import { Box, Input, InputGroup, Spinner } from "@chakra-ui/react";
 import Image from "next/image";
 
+import { Jazzicons } from "@/components/Jazzicons";
 import { useAddressInput, useNotify } from "@/hooks";
 
-import Jazzicons from "./Jazzicons";
 import warningImage from "../../../public/img/warning.svg";
 
 interface AddressInputProps {

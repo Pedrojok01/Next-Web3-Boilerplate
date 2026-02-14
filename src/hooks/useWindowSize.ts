@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { BREAKPOINTS, DEBOUNCE_MS } from "@/constants";
+
 interface WindowSize {
   width: number;
   height: number;
@@ -23,9 +25,9 @@ const getWindowSize = (): WindowSize => {
   return {
     width: w,
     height: h,
-    isMobile: w <= 549,
-    isTablet: w <= 768,
-    isSmallScreen: w <= 1050,
+    isMobile: w <= BREAKPOINTS.mobile,
+    isTablet: w <= BREAKPOINTS.tablet,
+    isSmallScreen: w <= BREAKPOINTS.small,
   };
 };
 
@@ -42,7 +44,7 @@ export const useWindowSize = (): WindowSize => {
 
     const handleResize = () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(updateWindowSize, 150);
+      timeoutRef.current = setTimeout(updateWindowSize, DEBOUNCE_MS.resize);
     };
 
     window.addEventListener("resize", handleResize);

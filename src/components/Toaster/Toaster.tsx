@@ -1,27 +1,16 @@
 import { type FC } from "react";
 
 import {
-  Toaster as ChakraToaster,
   Portal,
   Spinner,
   Stack,
   Toast,
-  createToaster,
+  Toaster as ChakraToaster,
   Box,
   Text,
 } from "@chakra-ui/react";
 
-export interface SignatureMeta {
-  signature: string;
-  recoveredAddress: string;
-}
-
-export const toaster = createToaster({
-  placement: "bottom-end",
-  pauseOnPageIdle: true,
-  duration: 8000,
-  max: 3,
-});
+import { type SignatureMeta, toaster } from "@/lib/toaster";
 
 const renderSignatureDescription = (meta: SignatureMeta) => (
   <Box>

@@ -24,20 +24,28 @@ The pre-commit hook runs `yarn prettier`, `yarn lint`, then `git add .` automati
 ### Routing & Providers
 
 Next.js App Router with a single route (`/`). Provider chain in `src/app/providers.tsx`:
-`ChakraProvider` → `ThemeProvider` → `WagmiProvider` → `QueryClientProvider` → `RainbowKitProvider`. A `useSyncExternalStore` guard prevents SSR hydration mismatches.
+`ChakraProvider` → `ThemeProvider` → `WagmiProvider` → `QueryClientProvider` → `RainbowKitProvider` (with `<Toaster />` as sibling). A `useSyncExternalStore` guard prevents SSR hydration mismatches.
 
 ### Component Organization
 
 ```
 src/components/
+├── AddressInput/   — Address input with ENS resolution
+├── DarkModeButton/ — Theme toggle button
+├── Footer/
 ├── Header/         — Logo, RainbowKit ConnectButton, DarkModeButton
-├── MainPane/       — Main content; nested feature components in MainPane/components/
+├── InfoText/       — Reusable info display component
+├── Jazzicons/      — Reusable identicon component
+├── MainPane/       — Main content with flat sub-components
 │   ├── Status, Address, Chain, Balance, BlockNumber  — Display components
 │   ├── SignMessage      — Message signing with signature recovery
 │   └── TransferNative   — Native token transfer with ENS resolution
-├── Footer/
-└── elements/       — Reusable UI: AddressInput, DarkModeButton, InfoText, Toaster, Jazzicons
+└── Toaster/        — Toast notification component
 ```
+
+Other key directories:
+- `src/lib/` — Utility instances (`toaster.ts` — Chakra toaster instance + `SignatureMeta` type)
+- `src/constants.ts` — Shared constants (`BREAKPOINTS`, `DEBOUNCE_MS`, `TOAST_DURATION`, `TOAST_MAX`)
 
 Components use barrel exports (`index.ts` in each folder). All components are client components (`"use client"`).
 
@@ -50,7 +58,7 @@ Components use barrel exports (`index.ts` in each folder). All components are cl
 ### Custom Hooks (`src/hooks/`)
 
 - `useAddressInput` — ENS resolution via `useEnsAddress` + address validation with 3s debounce
-- `useSignMessageHook` — Message signing + address recovery via `recoverMessageAddress`
+- `useSignMessageHook` — Thin wrapper around Wagmi's `useSignMessage` (address recovery is in `SignMessage.tsx`)
 - `useNotify` — Chakra UI toast wrapper (`notifySuccess`/`notifyError`), memoized with `useCallback`
 - `useColorMode` — Dark mode via next-themes (`useColorModeValue<T>(light, dark)`)
 - `useWindowSize` — Responsive breakpoints with 150ms debounce: `isMobile` (≤549), `isTablet` (≤768), `isSmallScreen` (≤1050)
@@ -68,7 +76,7 @@ Chakra UI v3 with `defaultSystem` + CSS Modules (`*.module.css`) + global CSS va
 - **Semicolons**: Always
 - **Trailing commas**: All
 - **Import order** (enforced by ESLint): React first, then external, then internal — alphabetized with newlines between groups
-- **ESLint**: v9 flat config (`eslint.config.mjs`), extends `eslint-config-next` (native flat config) + TypeScript recommended + Prettier + CSS plugins.
+- **ESLint**: v9 flat config (`eslint.config.mjs`), extends `eslint-config-next` (native flat config) + `@typescript-eslint` plugin + Prettier + CSS + import plugins.
 - **Lint command**: `eslint --fix .` (Next.js 16 removed `next lint`)
 
 ## Environment Setup

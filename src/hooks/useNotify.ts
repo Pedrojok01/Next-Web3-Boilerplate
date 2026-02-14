@@ -1,6 +1,7 @@
 import { type ReactNode, useCallback } from "react";
 
-import { toaster } from "@/components/Toaster/Toaster";
+import { TOAST_DURATION } from "@/constants";
+import { toaster } from "@/lib/toaster";
 
 interface NotifyAction {
   label: string;
@@ -22,7 +23,7 @@ interface UseNotifyResult {
 
 export const useNotify = (): UseNotifyResult => {
   const notifySuccess = useCallback(
-    ({ title, message, duration = 8000, action, meta }: NotifyProps) => {
+    ({ title, message, duration = TOAST_DURATION, action, meta }: NotifyProps) => {
       toaster.success({
         title,
         description: message,
@@ -35,7 +36,7 @@ export const useNotify = (): UseNotifyResult => {
   );
 
   const notifyError = useCallback(
-    ({ title, message, duration = 8000, action, meta }: NotifyProps) => {
+    ({ title, message, duration = TOAST_DURATION, action, meta }: NotifyProps) => {
       toaster.error({
         title,
         description: message,

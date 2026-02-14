@@ -35,7 +35,6 @@
     "wagmi": "2.19.5"
   },
   "devDependencies": {
-    "@eslint/js": "10.0.1",
     "@types/node": "25.2.3",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
@@ -43,7 +42,6 @@
     "eslint": "9.39.2",
     "eslint-config-next": "16.1.6",
     "eslint-config-prettier": "10.1.8",
-    "eslint-import-resolver-typescript": "4.4.4",
     "eslint-plugin-css": "0.12.0",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-prettier": "5.5.5",

@@ -4,6 +4,8 @@ import { zeroAddress } from "viem";
 import { normalize } from "viem/ens";
 import { useEnsAddress } from "wagmi";
 
+import { DEBOUNCE_MS } from "@/constants";
+
 import { useDebounce } from "./useDebounce";
 
 interface UseAddressInputResult {
@@ -17,15 +19,16 @@ interface UseAddressInputResult {
   isValidEthAddress: (value: string) => boolean;
 }
 
-const isValidEthAddress = (value: string): boolean => value.startsWith("0x") && value.length === 42;
+function isValidEthAddress(value: string): boolean {
+  return value.startsWith("0x") && value.length === 42;
+}
 
 export function useAddressInput(address: string): UseAddressInputResult {
-  const debouncedAddress = useDebounce(address, 3000);
+  const debouncedAddress = useDebounce(address, DEBOUNCE_MS.ens);
   const isTyping = address !== debouncedAddress;
 
-  // Validate and normalize the address
   const validation = useMemo(() => {
-    if (!address || address.trim() === "") {
+    if (!address.trim()) {
       return { normalizedName: null, directAddress: null, validationError: null };
     }
 
@@ -48,7 +51,6 @@ export function useAddressInput(address: string): UseAddressInputResult {
 
   const { normalizedName, directAddress, validationError } = validation;
 
-  // ENS resolution
   const {
     data: resolvedAddress,
     isLoading: isResolvingInProgress,
@@ -58,7 +60,6 @@ export function useAddressInput(address: string): UseAddressInputResult {
     name: normalizedName || undefined,
   });
 
-  // Derive final results from ENS resolution + validation
   const result = useMemo(() => {
     if (directAddress) {
       return {
@@ -89,7 +90,7 @@ export function useAddressInput(address: string): UseAddressInputResult {
 
     if (resolvedAddress && resolvedAddress !== zeroAddress) {
       return {
-        resolvedEthAddress: resolvedAddress as string,
+        resolvedEthAddress: resolvedAddress,
         isValidInput: true,
         hasError: false,
         errorMessage: null,
@@ -97,11 +98,11 @@ export function useAddressInput(address: string): UseAddressInputResult {
     }
 
     if (isError || resolvedAddress === zeroAddress) {
-      const showError = debouncedAddress && !isTyping;
+      const showError = Boolean(debouncedAddress) && !isTyping;
       return {
         resolvedEthAddress: null,
         isValidInput: false,
-        hasError: !!showError,
+        hasError: showError,
         errorMessage: showError ? (error?.message ?? "This ENS name could not be resolved.") : null,
       };
     }

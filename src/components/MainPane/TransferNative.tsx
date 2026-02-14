@@ -1,8 +1,8 @@
-import { type FC, useState, useCallback } from "react";
+import { type FC, useState } from "react";
 
 import { Button, HStack, NumberInput, VStack } from "@chakra-ui/react";
 import { waitForTransactionReceipt } from "@wagmi/core";
-import { isAddress, parseEther } from "viem";
+import { type Address, isAddress, parseEther } from "viem";
 import { useConfig, useSendTransaction } from "wagmi";
 
 import { AddressInput } from "@/components";
@@ -16,17 +16,18 @@ const TransferNative: FC = () => {
   const [receiver, setReceiver] = useState<string>("");
   const [isWaitingReceipt, setIsWaitingReceipt] = useState(false);
 
-  const resetData = useCallback(() => {
-    setAmount("0");
-    setReceiver("");
-  }, []);
+  const handleReceiverChange = (value: string): void => {
+    setReceiver(value);
+    resetTransaction();
+  };
 
   const handleAmountChange = (value: { value: string }): void => {
     setAmount(value.value);
+    resetTransaction();
   };
 
-  const handleTransfer = async () => {
-    if (receiver.length === 0 || !isAddress(receiver)) {
+  const handleTransfer = async (): Promise<void> => {
+    if (!receiver || !isAddress(receiver)) {
       return notifyError({ title: "Error:", message: "The receiver address is not set!" });
     }
 
@@ -39,14 +40,15 @@ const TransferNative: FC = () => {
 
     try {
       const value = parseEther(amount);
-      const hash = await sendTransactionAsync({ to: receiver, value });
+      const hash = await sendTransactionAsync({ to: receiver as Address, value });
       setIsWaitingReceipt(true);
       const receipt = await waitForTransactionReceipt(config, { hash });
       notifySuccess({
         title: "Transfer successfully sent!",
         message: `Hash: ${receipt.transactionHash || "Unknown"}`,
       });
-      resetData();
+      setAmount("0");
+      setReceiver("");
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Transaction failed";
       notifyError({
@@ -61,21 +63,12 @@ const TransferNative: FC = () => {
 
   return (
     <VStack w={"45%"} minWidth={"270px"} gap={2}>
-      <AddressInput
-        receiver={receiver}
-        setReceiver={(value) => {
-          setReceiver(value);
-          resetTransaction();
-        }}
-      />
+      <AddressInput receiver={receiver} setReceiver={handleReceiverChange} />
 
       <HStack w={"100%"}>
         <NumberInput.Root
           value={amount}
-          onValueChange={(value) => {
-            handleAmountChange(value);
-            resetTransaction();
-          }}
+          onValueChange={handleAmountChange}
           step={0.00000001}
           min={0}
           formatOptions={{ minimumFractionDigits: 0, maximumFractionDigits: 8 }}
