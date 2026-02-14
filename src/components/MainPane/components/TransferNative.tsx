@@ -1,49 +1,31 @@
-import { type FC, useState, useEffect, useCallback } from "react";
+import { type FC, useState, useCallback } from "react";
 
 import { Button, HStack, NumberInput, VStack } from "@chakra-ui/react";
+import { waitForTransactionReceipt } from "@wagmi/core";
 import { isAddress, parseEther } from "viem";
-import { useSendTransaction, useWaitForTransactionReceipt } from "wagmi";
+import { useConfig, useSendTransaction } from "wagmi";
 
 import { AddressInput } from "@/components";
 import { useNotify } from "@/hooks";
 
 const TransferNative: FC = () => {
-  const {
-    data,
-    error,
-    isPending,
-    isError,
-    sendTransaction,
-    reset: resetTransaction,
-  } = useSendTransaction();
-  const { data: receipt, isLoading } = useWaitForTransactionReceipt({
-    hash: data,
-  });
+  const config = useConfig();
+  const { isPending, sendTransactionAsync, reset: resetTransaction } = useSendTransaction();
   const { notifyError, notifySuccess } = useNotify();
   const [amount, setAmount] = useState<string>("0");
   const [receiver, setReceiver] = useState<string>("");
-  const [hasShownError, setHasShownError] = useState<boolean>(false);
-  const [hasShownSuccess, setHasShownSuccess] = useState<boolean>(false);
+  const [isWaitingReceipt, setIsWaitingReceipt] = useState(false);
 
   const resetData = useCallback(() => {
     setAmount("0");
     setReceiver("");
-    setHasShownError(false);
-    setHasShownSuccess(false);
   }, []);
-
-  const resetAll = useCallback(() => {
-    resetData();
-    if (resetTransaction) resetTransaction();
-  }, [resetData, resetTransaction]);
 
   const handleAmountChange = (value: { value: string }): void => {
     setAmount(value.value);
-    setHasShownError(false);
-    setHasShownSuccess(false);
   };
 
-  const handleTransfer = () => {
+  const handleTransfer = async () => {
     if (receiver.length === 0 || !isAddress(receiver)) {
       return notifyError({ title: "Error:", message: "The receiver address is not set!" });
     }
@@ -55,55 +37,27 @@ const TransferNative: FC = () => {
       });
     }
 
-    resetAll();
-    sendTransaction({ to: receiver, value: parseEther(amount) });
-  };
-
-  useEffect(() => {
-    if (receipt && !hasShownSuccess) {
-      try {
-        notifySuccess({
-          title: "Transfer successfully sent!",
-          message: `Hash: ${receipt.transactionHash || "Unknown"}`,
-        });
-        setHasShownSuccess(true);
-        setAmount("0");
-        setReceiver("");
-      } catch (err) {
-        console.error("Error processing receipt:", err);
-      }
-
-      // Schedule reset of transaction data after notification is shown
-      setTimeout(() => {
-        if (resetTransaction) resetTransaction();
-      }, 100);
-    }
-
-    if (isError && error && !hasShownError) {
-      // Ensure we have a string message
-      const errorMessage = typeof error.message === "string" ? error.message : "Transaction failed";
-
+    try {
+      const value = parseEther(amount);
+      const hash = await sendTransactionAsync({ to: receiver, value });
+      setIsWaitingReceipt(true);
+      const receipt = await waitForTransactionReceipt(config, { hash });
+      notifySuccess({
+        title: "Transfer successfully sent!",
+        message: `Hash: ${receipt.transactionHash || "Unknown"}`,
+      });
+      resetData();
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Transaction failed";
       notifyError({
         title: "An error occurred:",
         message: errorMessage,
       });
-      setHasShownError(true);
-
-      // Schedule reset of transaction data after notification is shown
-      setTimeout(() => {
-        if (resetTransaction) resetTransaction();
-      }, 100);
+    } finally {
+      setIsWaitingReceipt(false);
+      resetTransaction();
     }
-  }, [
-    receipt,
-    isError,
-    error,
-    notifyError,
-    notifySuccess,
-    hasShownError,
-    hasShownSuccess,
-    resetTransaction,
-  ]);
+  };
 
   return (
     <VStack w={"45%"} minWidth={"270px"} gap={2}>
@@ -111,11 +65,7 @@ const TransferNative: FC = () => {
         receiver={receiver}
         setReceiver={(value) => {
           setReceiver(value);
-          setHasShownError(false);
-          setHasShownSuccess(false);
-
-          // Clear any previous transaction data
-          if (resetTransaction) resetTransaction();
+          resetTransaction();
         }}
       />
 
@@ -124,9 +74,7 @@ const TransferNative: FC = () => {
           value={amount}
           onValueChange={(value) => {
             handleAmountChange(value);
-
-            // Clear any previous transaction data
-            if (resetTransaction) resetTransaction();
+            resetTransaction();
           }}
           step={0.00000001}
           min={0}
@@ -151,7 +99,7 @@ const TransferNative: FC = () => {
         <Button
           variant="ghost"
           onClick={handleTransfer}
-          loading={isLoading || isPending}
+          loading={isWaitingReceipt || isPending}
           className="custom-button"
           h="40px"
           minW="100px"

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface WindowSize {
   width: number;
@@ -8,7 +8,7 @@ interface WindowSize {
   isSmallScreen: boolean;
 }
 
-const DEFAULT_SIZE = {
+const DEFAULT_SIZE: WindowSize = {
   width: 0,
   height: 0,
   isMobile: false,
@@ -16,35 +16,42 @@ const DEFAULT_SIZE = {
   isSmallScreen: false,
 };
 
+const getWindowSize = (): WindowSize => {
+  if (typeof window === "undefined") return DEFAULT_SIZE;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  return {
+    width: w,
+    height: h,
+    isMobile: w <= 549,
+    isTablet: w <= 768,
+    isSmallScreen: w <= 1050,
+  };
+};
+
 export const useWindowSize = (): WindowSize => {
-  const [windowSize, setWindowSize] = useState<WindowSize>(DEFAULT_SIZE);
+  const [windowSize, setWindowSize] = useState<WindowSize>(getWindowSize);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
+
+  const updateWindowSize = useCallback(() => {
+    setWindowSize(getWindowSize());
+  }, []);
 
   useEffect(() => {
-    // Only execute this code on the client
     if (typeof window === "undefined") return;
 
-    const updateWindowSize = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-
-      setWindowSize({
-        width,
-        height,
-        isMobile: width <= 549,
-        isTablet: width <= 768,
-        isSmallScreen: width <= 1050,
-      });
+    const handleResize = () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(updateWindowSize, 150);
     };
 
-    // Set initial size
-    updateWindowSize();
+    window.addEventListener("resize", handleResize);
 
-    // Add event listener
-    window.addEventListener("resize", updateWindowSize);
-
-    // Clean up
-    return () => window.removeEventListener("resize", updateWindowSize);
-  }, []);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [updateWindowSize]);
 
   return windowSize;
 };

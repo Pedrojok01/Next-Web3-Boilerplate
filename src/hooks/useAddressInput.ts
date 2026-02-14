@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 
 import { zeroAddress } from "viem";
 import { normalize } from "viem/ens";
-import { useEnsResolver } from "wagmi";
+import { useEnsAddress } from "wagmi";
 
 import { useDebounce } from "./useDebounce";
 
@@ -17,61 +17,36 @@ interface UseAddressInputResult {
   isValidEthAddress: (value: string) => boolean;
 }
 
+const isValidEthAddress = (value: string): boolean => value.startsWith("0x") && value.length === 42;
+
 export function useAddressInput(address: string): UseAddressInputResult {
-  const [isTyping, setIsTyping] = useState(true);
-  const [normalizedName, setNormalizedName] = useState<string | null>(null);
-  const [resolvedEthAddress, setResolvedEthAddress] = useState<string | null>(null);
-  const [isValidInput, setIsValidInput] = useState<boolean>(false);
-  const [hasError, setHasError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
   const debouncedAddress = useDebounce(address, 3000);
+  const isTyping = address !== debouncedAddress;
 
-  const isValidEthAddress = (value: string): boolean =>
-    value.startsWith("0x") && value.length === 42;
-
-  // Reset typing state when address changes
-  useEffect(() => {
-    setIsTyping(true);
-    const timer = setTimeout(() => setIsTyping(false), 3000);
-    return () => clearTimeout(timer);
-  }, [address]);
-
-  // Handle address validation and normalization
-  useEffect(() => {
-    // Reset error state
-    setHasError(false);
-    setErrorMessage(null);
-
+  // Validate and normalize the address
+  const validation = useMemo(() => {
     if (!address || address.trim() === "") {
-      // Clear states when input is empty
-      setNormalizedName(null);
-      setResolvedEthAddress(null);
-      setIsValidInput(false);
-      return;
+      return { normalizedName: null, directAddress: null, validationError: null };
     }
 
     if (isValidEthAddress(address)) {
-      // Valid ETH address, store directly
-      setNormalizedName(null);
-      setResolvedEthAddress(address);
-      setIsValidInput(true);
-      return;
+      return { normalizedName: null, directAddress: address, validationError: null };
     }
 
-    // Try to normalize as ENS name
     try {
       const normalized = normalize(address);
-      setNormalizedName(normalized);
-    } catch (error) {
-      setNormalizedName(null);
-      setResolvedEthAddress(null);
-      setIsValidInput(false);
-      setHasError(true);
-      setErrorMessage("The ENS name contains unsupported characters.");
-      console.error("Error normalizing ENS name:", error);
+      return { normalizedName: normalized, directAddress: null, validationError: null };
+    } catch (err) {
+      console.error("Error normalizing ENS name:", err);
+      return {
+        normalizedName: null,
+        directAddress: null,
+        validationError: "The ENS name contains unsupported characters.",
+      };
     }
   }, [address]);
+
+  const { normalizedName, directAddress, validationError } = validation;
 
   // ENS resolution
   const {
@@ -79,37 +54,79 @@ export function useAddressInput(address: string): UseAddressInputResult {
     isLoading: isResolvingInProgress,
     isError,
     error,
-  } = useEnsResolver({
+  } = useEnsAddress({
     name: normalizedName || undefined,
   });
 
-  // Update the resolved address when ENS resolution completes
-  useEffect(() => {
-    if (!normalizedName) return;
+  // Derive final results from ENS resolution + validation
+  const result = useMemo(() => {
+    if (directAddress) {
+      return {
+        resolvedEthAddress: directAddress,
+        isValidInput: true,
+        hasError: false,
+        errorMessage: null,
+      };
+    }
+
+    if (validationError) {
+      return {
+        resolvedEthAddress: null,
+        isValidInput: false,
+        hasError: true,
+        errorMessage: validationError,
+      };
+    }
+
+    if (!normalizedName) {
+      return {
+        resolvedEthAddress: null,
+        isValidInput: false,
+        hasError: false,
+        errorMessage: null,
+      };
+    }
 
     if (resolvedAddress && resolvedAddress !== zeroAddress) {
-      setResolvedEthAddress(resolvedAddress);
-      setIsValidInput(true);
-      setHasError(false);
-    } else if (isError || resolvedAddress === zeroAddress) {
-      setResolvedEthAddress(null);
-      setIsValidInput(false);
-
-      // Only show error if user has stopped typing and there's a value
-      if (debouncedAddress && !isTyping) {
-        setHasError(true);
-        setErrorMessage(error?.message ?? "This ENS name could not be resolved.");
-      }
+      return {
+        resolvedEthAddress: resolvedAddress as string,
+        isValidInput: true,
+        hasError: false,
+        errorMessage: null,
+      };
     }
-  }, [resolvedAddress, isError, normalizedName, error, debouncedAddress, isTyping]);
+
+    if (isError || resolvedAddress === zeroAddress) {
+      const showError = debouncedAddress && !isTyping;
+      return {
+        resolvedEthAddress: null,
+        isValidInput: false,
+        hasError: !!showError,
+        errorMessage: showError ? (error?.message ?? "This ENS name could not be resolved.") : null,
+      };
+    }
+
+    return {
+      resolvedEthAddress: null,
+      isValidInput: false,
+      hasError: false,
+      errorMessage: null,
+    };
+  }, [
+    directAddress,
+    validationError,
+    normalizedName,
+    resolvedAddress,
+    isError,
+    error,
+    debouncedAddress,
+    isTyping,
+  ]);
 
   return {
     normalizedName,
-    resolvedEthAddress,
+    ...result,
     isResolvingInProgress,
-    isValidInput,
-    hasError,
-    errorMessage,
     isTyping,
     isValidEthAddress,
   };

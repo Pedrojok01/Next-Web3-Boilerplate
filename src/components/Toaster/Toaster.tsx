@@ -11,6 +11,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+export interface SignatureMeta {
+  signature: string;
+  recoveredAddress: string;
+}
+
 export const toaster = createToaster({
   placement: "bottom-end",
   pauseOnPageIdle: true,
@@ -18,53 +23,35 @@ export const toaster = createToaster({
   max: 3,
 });
 
-const renderSignatureDescription = (description: string) => {
-  const signaturePart =
-    description.split("Signature:")[1]?.split("Recovered Address:")[0]?.trim() || "";
-  const recoveredAddressPart = description.split("Recovered Address:")[1]?.trim() || "";
-
-  return (
-    <Box>
-      <Text fontWeight="medium">Signature:</Text>
-      <Text
-        fontSize="xs"
-        fontFamily="monospace"
-        p={1.5}
-        bg="blackAlpha.50"
-        borderRadius="sm"
-        overflow="auto"
-        my={1}
-      >
-        {signaturePart}
-      </Text>
-      <Text fontWeight="medium" mt={2}>
-        Recovered Address:
-      </Text>
-      <Text
-        fontSize="xs"
-        fontFamily="monospace"
-        p={1.5}
-        bg="blackAlpha.50"
-        borderRadius="sm"
-        overflow="auto"
-      >
-        {recoveredAddressPart}
-      </Text>
-    </Box>
-  );
-};
-
-const renderDescription = (description: React.ReactNode) => {
-  if (
-    typeof description === "string" &&
-    description.includes("Signature:") &&
-    description.includes("Recovered Address:")
-  ) {
-    return renderSignatureDescription(description);
-  }
-
-  return description;
-};
+const renderSignatureDescription = (meta: SignatureMeta) => (
+  <Box>
+    <Text fontWeight="medium">Signature:</Text>
+    <Text
+      fontSize="xs"
+      fontFamily="monospace"
+      p={1.5}
+      bg="blackAlpha.50"
+      borderRadius="sm"
+      overflow="auto"
+      my={1}
+    >
+      {meta.signature}
+    </Text>
+    <Text fontWeight="medium" mt={2}>
+      Recovered Address:
+    </Text>
+    <Text
+      fontSize="xs"
+      fontFamily="monospace"
+      p={1.5}
+      bg="blackAlpha.50"
+      borderRadius="sm"
+      overflow="auto"
+    >
+      {meta.recoveredAddress}
+    </Text>
+  </Box>
+);
 
 const Toaster: FC = () => {
   return (
@@ -77,7 +64,9 @@ const Toaster: FC = () => {
               {toast.title && <Toast.Title fontWeight="bold">{toast.title}</Toast.Title>}
               {toast.description && (
                 <Toast.Description whiteSpace="pre-line" wordBreak="break-word">
-                  {renderDescription(toast.description)}
+                  {toast.meta?.signatureData
+                    ? renderSignatureDescription(toast.meta.signatureData as SignatureMeta)
+                    : toast.description}
                 </Toast.Description>
               )}
             </Stack>

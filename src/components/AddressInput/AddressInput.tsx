@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, type FC, type ChangeEvent, type ReactNode, useEffect } from "react";
+import { useCallback, type FC, type ChangeEvent, type ReactNode, useEffect } from "react";
 
 import { Box, Input, InputGroup, Spinner } from "@chakra-ui/react";
 import Image from "next/image";
@@ -73,7 +73,7 @@ const AddressInput: FC<AddressInputProps> = ({ receiver, setReceiver }) => {
       <Box display="flex" justifyContent="center" alignItems="center" pl={2}>
         <Image
           alt="warning icon"
-          src={warningImage.src}
+          src={warningImage}
           className="icon-wrapper error-icon"
           width={25}
           height={25}

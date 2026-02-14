@@ -15,23 +15,23 @@ import {
   mainnet,
   sepolia,
   polygon,
-  polygonMumbai,
+  polygonAmoy,
   avalanche,
   avalancheFuji,
   optimism,
-  optimismGoerli,
+  optimismSepolia,
   arbitrum,
-  arbitrumGoerli,
+  arbitrumSepolia,
   linea,
-  lineaTestnet,
+  lineaSepolia,
   base,
-  baseGoerli,
+  baseSepolia,
   bsc,
   bscTestnet,
 } from "wagmi/chains";
 
 import linea_logo from "../public/img/linea_logo.png";
-import lineaTesnet_logo from "../public/img/lineaTesnet_logo.png";
+import lineaTestnet_logo from "../public/img/lineaTestnet_logo.png";
 
 const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
@@ -62,23 +62,23 @@ const connectors = connectorsForWallets(
 
 // Fix missing icons
 const customLinea = { ...linea, iconUrl: linea_logo.src };
-const customLineaTestnet = { ...lineaTestnet, iconUrl: lineaTesnet_logo.src };
+const customLineaSepolia = { ...lineaSepolia, iconUrl: lineaTestnet_logo.src };
 
 const transports: Record<number, Transport> = {
   [mainnet.id]: http(),
   [sepolia.id]: http(),
   [arbitrum.id]: http(),
-  [arbitrumGoerli.id]: http(),
+  [arbitrumSepolia.id]: http(),
   [optimism.id]: http(),
-  [optimismGoerli.id]: http(),
+  [optimismSepolia.id]: http(),
   [base.id]: http(),
-  [baseGoerli.id]: http(),
+  [baseSepolia.id]: http(),
   [polygon.id]: http(),
-  [polygonMumbai.id]: http(),
+  [polygonAmoy.id]: http(),
   [avalanche.id]: http(),
   [avalancheFuji.id]: http(),
   [linea.id]: http(),
-  [lineaTestnet.id]: http(),
+  [lineaSepolia.id]: http(),
   [bsc.id]: http(),
   [bscTestnet.id]: http(),
 };
@@ -88,17 +88,17 @@ export const wagmiConfig = createConfig({
     mainnet,
     sepolia,
     arbitrum,
-    arbitrumGoerli,
+    arbitrumSepolia,
     optimism,
-    optimismGoerli,
+    optimismSepolia,
     base,
-    baseGoerli,
+    baseSepolia,
     polygon,
-    polygonMumbai,
+    polygonAmoy,
     avalanche,
     avalancheFuji,
     customLinea,
-    customLineaTestnet,
+    customLineaSepolia,
     bsc,
     bscTestnet,
   ],

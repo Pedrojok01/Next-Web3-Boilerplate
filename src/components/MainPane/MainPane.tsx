@@ -3,9 +3,9 @@
 import { type FC } from "react";
 
 import { Box, Separator, Flex, Heading } from "@chakra-ui/react";
-import { useTheme } from "next-themes";
 import { useAccount } from "wagmi";
 
+import { useColorModeValue } from "@/hooks";
 import styles from "@/styles/mainPane.module.css";
 
 import {
@@ -20,14 +20,10 @@ import {
 
 const MainPane: FC = () => {
   const { isConnected } = useAccount();
-  const { resolvedTheme } = useTheme();
-  const isDarkMode = resolvedTheme === "dark";
+  const border = useColorModeValue("none", "1px solid rgba(152, 161, 192, 0.24)");
 
   return (
-    <Box
-      className={styles.container}
-      border={isDarkMode ? "1px solid rgba(152, 161, 192, 0.24)" : "none"}
-    >
+    <Box className={styles.container} border={border}>
       <Heading as="h2" fontSize="2rem" mb={10} className="text-shadow">
         Display Info
       </Heading>

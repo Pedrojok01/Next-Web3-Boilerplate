@@ -11,7 +11,7 @@ const Balance: FC = () => {
   let displayBalance = "0";
   if (isLoading) displayBalance = "Loading...";
   else if (isError) displayBalance = "Error fetching balance";
-  else if (data?.formatted) displayBalance = `Ξ ${data?.formatted}`;
+  else if (data?.formatted) displayBalance = `${data.symbol} ${data.formatted}`;
 
   return <InfoText label="Balance" value={displayBalance} />;
 };

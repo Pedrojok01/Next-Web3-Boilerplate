@@ -16,7 +16,7 @@ COPY package*.json ./
 COPY --from=deps /app/node_modules ./node_modules
 
 # Copy only necessary files for building
-COPY next.config.js ./
+COPY next.config.ts ./
 COPY tsconfig.json ./
 COPY public ./public
 COPY src ./src
@@ -44,7 +44,7 @@ USER nextjs
 
 EXPOSE 3000
 
-ENV NODE_ENV=development \
+ENV NODE_ENV=production \
     PORT=3000 \
     HOSTNAME="0.0.0.0" \
     NEXT_TELEMETRY_DISABLED=1

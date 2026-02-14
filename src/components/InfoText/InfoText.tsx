@@ -1,8 +1,8 @@
 import { type FC } from "react";
 
-import { Text, type BoxProps } from "@chakra-ui/react";
+import { Text, type TextProps } from "@chakra-ui/react";
 
-interface InfoTextProps extends BoxProps {
+interface InfoTextProps extends TextProps {
   label: string;
   value?: string;
 }

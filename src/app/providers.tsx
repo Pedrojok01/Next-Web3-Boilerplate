@@ -1,5 +1,5 @@
 "use client";
-import { type ReactNode, useState, useEffect } from "react";
+import { type ReactNode, useState, useSyncExternalStore } from "react";
 
 import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
@@ -14,13 +14,17 @@ export interface ProviderProps {
   value?: typeof defaultSystem;
 }
 
+const emptySubscribe = () => () => {};
+
 export function Providers({ children, value = defaultSystem }: Readonly<ProviderProps>) {
   const [queryClient] = useState(() => new QueryClient());
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
 
   const appInfo = { appName: "Next-Web3-Boilerplate" };
-
-  useEffect(() => setMounted(true), []);
 
   // Prevent hydration issues by only rendering once mounted
   if (!mounted) {
