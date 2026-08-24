@@ -33,6 +33,7 @@
   - [Add your API keys in the .env file:](#add-your-api-keys-in-the-env-file)
   - [To start the Next-Web3-Boilerplate:](#to-start-the-next-web3-boilerplate)
 - [Features:](#features)
+- [Support](#support)
 
 ## Update:
 
@@ -141,16 +142,24 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [x] Dark mode support
 - [x] Hook to query user's Token Balances
 
-<br></br>
 
-<div align="center">
-<h2> Enjoy!!!</h2>
+<br/>
+
+## Support
+
+If this boilerplate saved you a few hours of setup, buy me a coffee:
+
+<p align="center">
+  <a href="https://www.buymeacoffee.com/Pedrojok01"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="48" width="173"></a>
+</p>
 
 <br>
 
-## ... and don't forget to leave a star if you like it!
+### Enjoy!!!
 
-</div>
+### ... and don't forget to leave a ⭐ if you like it!
+
+<br/>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
