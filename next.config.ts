@@ -19,7 +19,10 @@ const nextConfig: NextConfig = {
   turbopack: {
     resolveAlias: Object.fromEntries(x402Stubs.map((id) => [id, "./src/stubs/empty-module.cjs"])),
   },
-  output: "standalone",
+  // `output: "standalone"` exists for the Docker image only. Vercel's build
+  // adapter does its own output file tracing, and combining the two breaks its
+  // onBuildComplete step with a missing `.next/next-server.js.nft.json`.
+  output: process.env.VERCEL ? undefined : "standalone",
 };
 
 export default nextConfig;
