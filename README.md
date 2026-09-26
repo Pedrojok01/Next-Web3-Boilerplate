@@ -61,7 +61,7 @@
 
 Simple and minimalist Web3 boilerplate to boost your Dapp development. Built using the latest tech out there: [Next.js](https://nextjs.org/), [Viem](https://viem.sh/), [Wagmi](https://wagmi.sh/), [RainbowKit](https://www.rainbowkit.com/), [ChakraUI](https://chakra-ui.com/), and [Typescript](https://www.typescriptlang.org/). Docker, Eslint, Prettier, and Husky are already configured. The perfect starting point for your next web3 project.
 
-Try it yourself: [web3-boilerplate.pedrojok.com](https://web3-boilerplate.pedrojok.com/)
+Try it yourself: [next-web3-boilerplate.pedrojok.com](https://next-web3-boilerplate.pedrojok.com/)
 
 ## Built With
 
